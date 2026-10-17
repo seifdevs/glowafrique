@@ -4,19 +4,19 @@ import { cpSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const apiRoutes = {
-  '/control': '/api/control.js',
-  '/api/orders': '/api/orders.js',
-  '/api/order-quote': '/api/order-quote.js',
-  '/api/locations': '/api/locations.js',
-  '/api/payment-proof': '/api/payment-proof.js',
-  '/api/reviews': '/api/reviews.js',
-  '/api/admin/orders': '/api/admin/orders.js',
-  '/api/chat': '/api/chat.js',
-  '/api/auth/register': '/api/auth/register.js',
-  '/api/auth/login': '/api/auth/login.js',
-  '/api/auth/logout': '/api/auth/logout.js',
-  '/api/auth/me': '/api/auth/me.js',
-  '/api/auth/profile': '/api/auth/profile.js',
+  '/control': '/api-handlers/control.js',
+  '/api/orders': '/api-handlers/orders.js',
+  '/api/order-quote': '/api-handlers/order-quote.js',
+  '/api/locations': '/api-handlers/locations.js',
+  '/api/payment-proof': '/api-handlers/payment-proof.js',
+  '/api/reviews': '/api-handlers/reviews.js',
+  '/api/admin/orders': '/api-handlers/admin/orders.js',
+  '/api/chat': '/api-handlers/chat.js',
+  '/api/auth/register': '/api-handlers/auth/register.js',
+  '/api/auth/login': '/api-handlers/auth/login.js',
+  '/api/auth/logout': '/api-handlers/auth/logout.js',
+  '/api/auth/me': '/api-handlers/auth/me.js',
+  '/api/auth/profile': '/api-handlers/auth/profile.js',
 };
 
 export default defineConfig(({ mode }) => {
