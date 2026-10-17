@@ -1,0 +1,35 @@
+id,name,brand,category,concerns,price,priceCurrency,pricingType,oldPrice,bestSeller,isNew
+kundal-linen-flower-deodorant,Kundal linen flower deodorant,KUNDAL,Cheveux & corps,Cheveux & corps,10000,XOF,beta,,false,false
+kundal-travel-kit-baby-powder,KUNDAL Travel KIT baby powder,KUNDAL,Cheveux & corps,Cheveux & corps,7000,XOF,beta,,false,false
+medicube-deodorant-vanilla-pistachio,Medicube deodorant vanilla pistachio,MEDICUBE,Cheveux & corps,Cheveux & corps,10000,XOF,beta,,false,false
+medicube-glow-vanilla-hair-body-mist,Medicube glow vanilla hair body mist,MEDICUBE,Cheveux & corps,Cheveux & corps,10000,XOF,beta,,true,false
+kundal-caffeine-scalp-serum,KUNDAL caffeine scalp serum,KUNDAL,Cheveux & corps,Cheveux & corps,10000,XOF,beta,,false,false
+lip-sleeping-mask-medicube,Lip sleeping mask medicube,MEDICUBE,Lèvres,Lèvres,9000,XOF,beta,,false,false
+lip-sleeping-mask,Lip sleeping mask,,Lèvres,Lèvres,9000,XOF,beta,,false,false
+medicube-lip-sleeping-mask,Medicube lip sleeping mask,MEDICUBE,Lèvres,Lèvres,9000,XOF,beta,,false,false
+axis-y-sunday-morning-cleansing-foam,AXIS Y Sunday morning cleansing foam,AXIS-Y,Soins de la peau,Pores dilatés & excès de sébum,9500,XOF,beta,,false,false
+axix-y-unsay-morning-cleanser-foam,AXIX Y unsay morning cleanser foam,AXIS-Y,Soins de la peau,Pores dilatés & excès de sébum,9500,XOF,beta,,false,false
+biodance-bio-collagen-real-deep-mask,BIODANCE bio collagen real deep mask,BIODANCE,Soins de la peau,Peau sèche | Peau terne,9500,XOF,beta,,true,false
+biodance-rejuvenating-caviar-pdrn-mask,BIODANCE rejuvenating caviar PDRN mask,BIODANCE,Soins de la peau,Peau sèche | Peau terne,9500,XOF,beta,,true,false
+celimax-retinal-shot,Celimax retinal shot,Celimax,Soins de la peau,Rides & fermeté,17000,XOF,beta,,false,false
+celimax-the-vita-a-retinal-shot-tightening-booster,Celimax the vita A retinal shot tightening booster,Celimax,Soins de la peau,Rides & fermeté,17000,XOF,beta,,false,false
+cosrx-acne-pimple-master-patch,COSRX Acne Pimple Master Patch,COSRX,Soins de la peau,Acné & imperfections,12000,XOF,beta,,false,false
+cosrx-pimple-patch,COSRX pimple patch,COSRX,Soins de la peau,Acné & imperfections,4000,XOF,beta,,false,false
+dr-althea-147-barrier-cream,Dr Althea 147 barrier cream,Dr. Althea,Soins de la peau,Barrière cutanée | Peau sèche,16000,XOF,beta,,false,false
+dr-althea-345-relief-cream,Dr Althea 345 relief cream,Dr. Althea,Soins de la peau,Barrière cutanée | Peau sèche,16000,XOF,beta,,true,false
+dr-althea-35-relief-mist-webp,DR Althea 35 relief MIST WEBP,Dr. Althea,Soins de la peau,-,16000,XOF,beta,,false,false
+dr-althea-35-relief-mist,DR Althea 35 relief MIST,Dr. Althea,Soins de la peau,-,16000,XOF,beta,,false,false
+dr-althea-35-relief-mistt,DR Althea 35 relief MISTT,Dr. Althea,Soins de la peau,-,16000,XOF,beta,,false,false
+dr-melaxin-black-rice-peel-shot,DR melaxin black rice peel shot,DR. MELAXIN,Soins de la peau,Peau terne,18000,XOF,beta,,false,false
+dr-melaxin-peel-shot-exfoliating-black-rice-ampoule,Dr MElaxin peel shot exfoliating black rice ampoule,DR. MELAXIN,Soins de la peau,Peau terne,18000,XOF,beta,,false,false
+medicube-kojic-acid-capsule-cream,Medicube kojic acid CAPSULE cream,MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier | Barrière cutanée | Peau sèche,16000,XOF,beta,,false,false
+medicube-kojic-acid-peel-shot-80ml,Medicube kojic acid peel shot 80ML,MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier | Peau terne,18000,XOF,beta,,false,false
+medicube-kojic-acid-turmeric-peel-shot-80ml,Medicube Kojic acid turmeric peel shot 80ML,MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier | Peau terne,18000,XOF,beta,,false,false
+medicube-pdrn-collagen-jelly-eye-mask,Medicube PDRN collagen jelly eye mask,MEDICUBE,Soins de la peau,Contour des yeux | Peau sèche | Peau terne,9500,XOF,beta,,true,false
+medicube-pdrn-gel-mask,Medicube PDRN gel mask,MEDICUBE,Soins de la peau,Peau sèche | Peau terne,9500,XOF,beta,,false,false
+medicube-pdrn-pink-capsule-cream,Medicube PDRN pink capsule cream,MEDICUBE,Soins de la peau,Barrière cutanée | Peau sèche,16000,XOF,beta,,true,false
+medicube-pdrn-pink-collagen-gel-mask,MEDICUBE PDRN Pink Collagen Gel Mask,MEDICUBE,Soins de la peau,Peau sèche | Peau terne,9500,XOF,beta,,false,false
+medicube-pink-pdrn-capsule-cream,MEDICUBE pink PDRN capsule cream,MEDICUBE,Soins de la peau,Barrière cutanée | Peau sèche,16000,XOF,beta,,false,false
+medicube-txa-serum,MEDICUBE TXA SERUM,MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier,17000,XOF,beta,,false,false
+beauty-of-joseon-mate-sun-stick,Beauty of joseon mate sun stick,Beauty of Joseon,Soins de la peau,Protection solaire,14000,XOF,beta,,false,false
+medicube-glow-sunscreen,Medicube Glow Sunscreen,MEDICUBE,Soins de la peau,Protection solaire,14000,XOF,beta,,false,false

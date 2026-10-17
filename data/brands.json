@@ -1,0 +1,11 @@
+[
+  { "brand": "Beauty of Joseon", "aliases": ["Beauty of joseon"] },
+  { "brand": "DR. MELAXIN", "aliases": ["DR MELAXIN", "Dr MELAXIN", "DR MElaxin", "Dr melaxin"] },
+  { "brand": "Dr. Althea", "aliases": ["DR Althea", "Dr Althea"] },
+  { "brand": "AXIS-Y", "aliases": ["AXIS Y", "AXIX Y"] },
+  { "brand": "BIODANCE", "aliases": ["BIODANCE"] },
+  { "brand": "MEDICUBE", "aliases": ["MEDICUBE", "Medicube"] },
+  { "brand": "COSRX", "aliases": ["COSRX"] },
+  { "brand": "KUNDAL", "aliases": ["KUNDAL", "Kundal"] },
+  { "brand": "Celimax", "aliases": ["Celimax", "CELIMAX"] }
+]

@@ -1,0 +1,24 @@
+{
+  "name": "glowafrique-storefront",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "test": "node --test",
+    "preview": "vite preview --host 0.0.0.0",
+    "build-products": "node scripts/build-products.cjs",
+    "admin:promote": "node scripts/promote-admin.mjs",
+    "admin:bootstrap": "node scripts/bootstrap-admin.mjs",
+    "optimize-products": "python3 scripts/optimize-product-images.py"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "bcryptjs": "^3.0.3",
+    "mongodb": "^7.7.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "vite": "latest"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    { "source": "/control", "destination": "/api/control" },
+    { "source": "/account", "destination": "/account.html" },
+    { "source": "/policies", "destination": "/policies.html" },
+    { "source": "/products", "destination": "/products.html" },
+    { "source": "/collection", "destination": "/collection.html" },
+    { "source": "/product", "destination": "/product.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/contact", "destination": "/contact.html" }
+  ]
+}
