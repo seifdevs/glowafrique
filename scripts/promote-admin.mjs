@@ -1,5 +1,5 @@
 import { loadEnv } from 'vite';
-import { getAuthCollections, getDatabase, normalizeEmail, validEmail } from '../lib/auth.js';
+import { getAuthCollections, normalizeEmail, validEmail } from '../lib/auth.js';
 
 const env = loadEnv('development', process.cwd(), '');
 for (const key of ['MONGODB_URI', 'MONGODB_DB']) {
@@ -18,13 +18,19 @@ if (!validEmail(email)) {
       { $set: { role: 'admin', roleGrantedAt: new Date(), updatedAt: new Date() } },
     );
     if (!result.matchedCount) {
-      console.error('No active account exists for that email. Create the account first, then run this command again.');
+      console.error(
+        'No active account exists for that email. Create the account first, then run this command again.',
+      );
       process.exitCode = 1;
     } else {
       console.log('Administrator role granted to the existing account.');
     }
   } catch (error) {
-    console.error('Could not grant administrator access:', error && error.name, error && error.code || '');
+    console.error(
+      'Could not grant administrator access:',
+      error && error.name,
+      (error && error.code) || '',
+    );
     process.exitCode = 1;
   } finally {
     const database = globalThis.__glowAfriqueDatabase;

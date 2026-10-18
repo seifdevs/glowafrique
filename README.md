@@ -31,6 +31,7 @@ The Vite build creates `dist/` with prerendered storefront routes, bundled style
 - Authenticated purchase points are calculated from discounted merchandise subtotal, excluding delivery, at one point per complete 630 XOF. Points are credited only after an administrator marks the order delivered. One saved review per customer and product awards 15 points. Guest checkout is available, but guests do not receive account points.
 - `/control` requires a signed-in administrator, and its order APIs enforce the admin role on the server. Create an account normally, then grant an administrator role from a trusted machine with database access: `npm run admin:promote -- customer@example.com`. The command only promotes an existing account; it does not create or expose credentials.
 - Configure MongoDB using `.env.example` as a template. Never commit `.env`. The login database-name selection bug that raised `ERR_INVALID_URL` with otherwise valid MongoDB settings is fixed; a local diagnostic login now reaches the database and returns the expected invalid-credentials response.
+
 ## Product images and catalog
 
 1. Keep original files in `assets/products/`, organized in subfolders. The importer scans every depth and never moves or edits originals.

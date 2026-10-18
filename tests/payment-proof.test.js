@@ -13,7 +13,12 @@ test('accepts the real Wave QR JPEG asset as a proof image', async () => {
 test('rejects a mismatched MIME type and non-image upload', () => {
   const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0x00, 0xff, 0xd9]).toString('base64');
   assert.throws(() => validatePaymentProof({ mimeType: 'image/png', data: jpeg }));
-  assert.throws(() => validatePaymentProof({ mimeType: 'image/svg+xml', data: Buffer.from('<svg/>').toString('base64') }));
+  assert.throws(() =>
+    validatePaymentProof({
+      mimeType: 'image/svg+xml',
+      data: Buffer.from('<svg/>').toString('base64'),
+    }),
+  );
 });
 
 test('rejects oversized payment proof files', () => {

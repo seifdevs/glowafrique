@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build && node scripts/prerender.mjs",
+    "lint": "eslint .",
+    "format": "prettier --write \"src/**/*.{js,jsx}\" \"api/**/*.js\" \"api-handlers/**/*.js\" \"lib/**/*.js\" \"scripts/**/*.{js,cjs,mjs}\" \"tests/**/*.js\" \".github/workflows/*.yml\" \"*.{js,json,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx}\" \"api/**/*.js\" \"api-handlers/**/*.js\" \"lib/**/*.js\" \"scripts/**/*.{js,cjs,mjs}\" \"tests/**/*.js\" \".github/workflows/*.yml\" \"*.{js,json,md}\"",
+    "typecheck": "tsc --noEmit",
     "test": "node --test",
     "preview": "vite preview --host 0.0.0.0",
     "build-products": "node scripts/build-products.cjs",
@@ -21,5 +25,14 @@
     "react-dom": "19.3.0",
     "react-router-dom": "7.18.4",
     "vite": "8.3.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@types/node": "24.10.0",
+    "eslint": "10.0.0",
+    "globals": "17.0.0",
+    "prettier": "3.9.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.56.0"
   }
 }

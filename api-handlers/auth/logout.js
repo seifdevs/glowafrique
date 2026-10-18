@@ -1,8 +1,19 @@
-import { authHeaders, destroySession, methodNotAllowed, sameOriginRequest } from '../../lib/auth.js';
+import {
+  authHeaders,
+  destroySession,
+  methodNotAllowed,
+  rateLimit,
+  sameOriginRequest,
+} from '../../lib/auth.js';
 
 export default async function logout(req, res) {
   authHeaders(res);
-  if (methodNotAllowed(req, res, 'POST') || sameOriginRequest(req, res)) return;
+  if (
+    methodNotAllowed(req, res, 'POST') ||
+    sameOriginRequest(req, res) ||
+    (await rateLimit(req, res, 'auth-logout'))
+  )
+    return;
   try {
     await destroySession(req, res);
     return res.status(200).json({ ok: true });

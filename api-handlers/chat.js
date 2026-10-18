@@ -1,12 +1,12 @@
 const MAX_MESSAGE_LENGTH = 600;
 const MAX_HISTORY_ITEMS = 8;
 const MAX_PRODUCT_ITEMS = 40;
-const RATE_WINDOW_MS = 60 * 1000;
-const RATE_LIMIT = 12;
-const requestWindows = new Map();
+import { rateLimit, sameOriginRequest } from '../lib/auth.js';
 
 function text(value, maxLength) {
-  return String(value == null ? '' : value).replace(/[<>]/g, '').slice(0, maxLength);
+  return String(value == null ? '' : value)
+    .replace(/[<>]/g, '')
+    .slice(0, maxLength);
 }
 
 export default async function chat(req, res) {
@@ -19,28 +19,28 @@ export default async function chat(req, res) {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return res.status(503).json({ error: 'chat_not_configured' });
 
-  const ip = String(req.headers['x-forwarded-for'] || 'unknown').split(',')[0].trim();
-  const now = Date.now();
-  const rateState = requestWindows.get(ip);
-  if (!rateState || now - rateState.start >= RATE_WINDOW_MS) requestWindows.set(ip, { start: now, count: 1 });
-  else if (rateState.count >= RATE_LIMIT) return res.status(429).json({ error: 'rate_limited' });
-  else rateState.count += 1;
+  if (sameOriginRequest(req, res)) return;
+  if (await rateLimit(req, res, 'chat', { windowMs: 60 * 1000, limit: 12 })) return;
 
   const body = req.body && typeof req.body === 'object' ? req.body : {};
   const message = text(body.message, MAX_MESSAGE_LENGTH).trim();
   if (!message) return res.status(400).json({ error: 'message_required' });
 
-  const history = Array.isArray(body.history) ? body.history.slice(-MAX_HISTORY_ITEMS).map((item) => ({
-    role: item && item.role === 'assistant' ? 'assistant' : 'user',
-    content: text(item && item.content, 500),
-  })) : [];
-  const catalog = Array.isArray(body.products) ? body.products.slice(0, MAX_PRODUCT_ITEMS).map((product) => ({
-    name: text(product && product.name, 100),
-    brand: text(product && product.brand, 60),
-    category: text(product && product.category, 60),
-    price: product && Number.isFinite(Number(product.price)) ? Number(product.price) : null,
-    id: text(product && product.id, 100),
-  })) : [];
+  const history = Array.isArray(body.history)
+    ? body.history.slice(-MAX_HISTORY_ITEMS).map((item) => ({
+        role: item && item.role === 'assistant' ? 'assistant' : 'user',
+        content: text(item && item.content, 500),
+      }))
+    : [];
+  const catalog = Array.isArray(body.products)
+    ? body.products.slice(0, MAX_PRODUCT_ITEMS).map((product) => ({
+        name: text(product && product.name, 100),
+        brand: text(product && product.brand, 60),
+        category: text(product && product.category, 60),
+        price: product && Number.isFinite(Number(product.price)) ? Number(product.price) : null,
+        id: text(product && product.id, 100),
+      }))
+    : [];
 
   const language = body.language === 'en' ? 'English' : 'French';
   const input = [
@@ -66,7 +66,11 @@ export default async function chat(req, res) {
     });
     const data = await response.json();
     if (!response.ok) {
-      console.error('Glow Guide API request failed:', response.status, data && data.error && data.error.code);
+      console.error(
+        'Glow Guide API request failed:',
+        response.status,
+        data && data.error && data.error.code,
+      );
       return res.status(502).json({ error: 'chat_unavailable' });
     }
     const reply = text(data.output_text, 1800).trim();
@@ -76,4 +80,4 @@ export default async function chat(req, res) {
     console.error('Glow Guide API request failed:', error && error.name);
     return res.status(502).json({ error: 'chat_unavailable' });
   }
-};
+}
