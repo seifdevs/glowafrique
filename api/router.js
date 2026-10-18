@@ -11,6 +11,7 @@ import login from '../api-handlers/auth/login.js';
 import logout from '../api-handlers/auth/logout.js';
 import me from '../api-handlers/auth/me.js';
 import profile from '../api-handlers/auth/profile.js';
+import passwordReset from '../api-handlers/auth/password-reset.js';
 import register from '../api-handlers/auth/register.js';
 
 export const routeHandlers = Object.freeze({
@@ -27,6 +28,7 @@ export const routeHandlers = Object.freeze({
   'auth/logout': logout,
   'auth/me': me,
   'auth/profile': profile,
+  'auth/password-reset': passwordReset,
   'auth/register': register,
 });
 

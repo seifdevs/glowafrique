@@ -965,6 +965,14 @@ function AccountPage() {
   const [feedback, setFeedback] = useState('');
   const [busy, setBusy] = useState(false);
   const [orders, setOrders] = useState([]);
+  const [resetToken, setResetToken] = useState('');
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get('resetToken') || '';
+    if (token) {
+      setResetToken(token);
+      setMode('reset');
+    }
+  }, []);
   useEffect(() => {
     if (!user) return;
     fetch('/api/orders', { credentials: 'same-origin' })
@@ -978,6 +986,27 @@ function AccountPage() {
     setFeedback('');
     const data = Object.fromEntries(new FormData(event.currentTarget));
     try {
+      if (mode === 'request-reset' || mode === 'reset') {
+        const response = await fetch('/api/auth/password-reset', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(
+            mode === 'reset'
+              ? { action: 'reset', token: resetToken, password: data.password }
+              : { action: 'request', email: data.email },
+          ),
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || text(locale, 'unavailable'));
+        setFeedback(result.message || text(locale, 'success'));
+        if (mode === 'reset') {
+          setResetToken('');
+          window.history.replaceState({}, '', window.location.pathname);
+          setMode('login');
+        }
+        return;
+      }
       const response = await fetch(`/api/auth/${mode === 'register' ? 'register' : 'login'}`, {
         method: 'POST',
         credentials: 'same-origin',
@@ -1044,32 +1073,61 @@ function AccountPage() {
             </label>
           </>
         ) : null}
-        <label>
-          {text(locale, 'email')}
-          <input name="email" type="email" autoComplete="email" required maxLength="254" />
-        </label>
-        <label>
-          {text(locale, 'password')}
-          <input
-            name="password"
-            type="password"
-            autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
-            minLength="8"
-            maxLength="72"
-            required
-          />
-        </label>
-        <button className="button" disabled={busy}>
-          {busy ? text(locale, 'loading') : text(locale, mode === 'register' ? 'create' : 'signIn')}
+        {mode !== 'reset' ? (
+          <label>
+            {text(locale, 'email')}
+            <input name="email" type="email" autoComplete="email" required maxLength="254" />
+          </label>
+        ) : null}
+        {mode === 'register' || mode === 'login' || mode === 'reset' ? (
+          <label>
+            {text(locale, 'password')}
+            <input
+              name="password"
+              type="password"
+              autoComplete={
+                mode === 'register' || mode === 'reset' ? 'new-password' : 'current-password'
+              }
+              minLength="8"
+              maxLength="72"
+              required
+            />
+          </label>
+        ) : null}
+        <button className="button" disabled={busy || (mode === 'reset' && !resetToken)}>
+          {busy
+            ? text(locale, 'loading')
+            : mode === 'register'
+              ? text(locale, 'create')
+              : mode === 'login'
+                ? text(locale, 'signIn')
+                : mode === 'reset'
+                  ? locale === 'en'
+                    ? 'Update Password'
+                    : 'Mettre À Jour Le Mot De Passe'
+                  : locale === 'en'
+                    ? 'Send Reset Link'
+                    : 'Envoyer Le Lien De Réinitialisation'}
         </button>
         <p role="status">{feedback}</p>
       </form>
-      <button
-        className="text-button"
-        onClick={() => setMode((m) => (m === 'register' ? 'login' : 'register'))}
-      >
-        {mode === 'register' ? text(locale, 'signIn') : text(locale, 'create')}
-      </button>
+      {mode === 'login' ? (
+        <button className="text-button" onClick={() => setMode('request-reset')}>
+          {locale === 'en' ? 'Forgot password?' : 'Mot De Passe Oublié ?'}
+        </button>
+      ) : null}
+      {mode === 'request-reset' || mode === 'reset' ? (
+        <button className="text-button" onClick={() => setMode('login')}>
+          {text(locale, 'signIn')}
+        </button>
+      ) : (
+        <button
+          className="text-button"
+          onClick={() => setMode((m) => (m === 'register' ? 'login' : 'register'))}
+        >
+          {mode === 'register' ? text(locale, 'signIn') : text(locale, 'create')}
+        </button>
+      )}
     </section>
   );
 }

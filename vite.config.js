@@ -18,6 +18,7 @@ const apiRoutes = {
   '/api/auth/logout': '/api-handlers/auth/logout.js',
   '/api/auth/me': '/api-handlers/auth/me.js',
   '/api/auth/profile': '/api-handlers/auth/profile.js',
+  '/api/auth/password-reset': '/api-handlers/auth/password-reset.js',
 };
 
 export default defineConfig(({ mode }) => {
@@ -28,6 +29,10 @@ export default defineConfig(({ mode }) => {
     'OPENAI_API_KEY',
     'OPENAI_MODEL',
     'OPENAI_MONTHLY_REQUEST_CAP',
+    'RESEND_API_KEY',
+    'RESEND_FROM_EMAIL',
+    'SUPPORT_EMAIL',
+    'PUBLIC_SITE_URL',
     'ADMIN_USERNAME',
     'ADMIN_PASSWORD',
     'ADMIN_EMAIL',

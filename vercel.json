@@ -13,7 +13,8 @@
     { "source": "/api/auth/login", "destination": "/api/router?route=auth/login" },
     { "source": "/api/auth/logout", "destination": "/api/router?route=auth/logout" },
     { "source": "/api/auth/me", "destination": "/api/router?route=auth/me" },
-    { "source": "/api/auth/profile", "destination": "/api/router?route=auth/profile" }
+    { "source": "/api/auth/profile", "destination": "/api/router?route=auth/profile" },
+    { "source": "/api/auth/password-reset", "destination": "/api/router?route=auth/password-reset" }
   ],
   "headers": [
     {
