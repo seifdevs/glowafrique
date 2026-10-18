@@ -14,7 +14,7 @@ import { pointsForXof } from '../lib/currency.js';
 import { validatePaymentProof } from '../lib/payment-proof.js';
 import { initializePaystackTransaction } from '../lib/payments/paystack.js';
 import { notifyOrder } from '../lib/order-notifications.js';
-import { releaseReservedInventory, reserveInventory } from '../lib/inventory.js';
+import { reserveInventory } from '../lib/inventory.js';
 
 const FREE_DELIVERY_XOF = 45000;
 const MAX_ITEMS = 50;
@@ -323,31 +323,30 @@ export default async function ordersApi(req, res) {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    let stockReservation;
+    const database = await getDatabase();
+    const inventory = database.collection('glowafrique_inventory');
+    await inventory.createIndex({ productId: 1 }, { unique: true });
+    const session = database.client.startSession();
     try {
-      stockReservation = await reserveInventory(await getDatabase(), items);
+      await session.withTransaction(async () => {
+        await reserveInventory(database, items, { session });
+        document.stockReserved = true;
+        if (waveProof) {
+          await database.collection('glowafrique_payment_proofs').insertOne(
+            {
+              proofId: waveProof.proofId,
+              orderNumber: document.orderNumber,
+              mimeType: waveProof.mimeType,
+              data: waveProof.data,
+              createdAt: new Date(),
+            },
+            { session },
+          );
+        }
+        await orders.insertOne(document, { session });
+      });
     } catch (error) {
       if (error.statusCode) return res.status(error.statusCode).json({ error: error.message });
-      throw error;
-    }
-    document.stockReserved = true;
-    let proofs = null;
-    try {
-      if (waveProof) {
-        proofs = (await getDatabase()).collection('glowafrique_payment_proofs');
-        await proofs.insertOne({
-          proofId: waveProof.proofId,
-          orderNumber: document.orderNumber,
-          mimeType: waveProof.mimeType,
-          data: waveProof.data,
-          createdAt: new Date(),
-        });
-      }
-      await orders.insertOne(document);
-    } catch (error) {
-      await releaseReservedInventory(stockReservation.inventory, stockReservation.reserved);
-      if (waveProof && proofs)
-        await proofs.deleteOne({ proofId: waveProof.proofId }).catch(() => {});
       if (error && error.code === 11000) {
         const existing = await orders.findOne({ idempotencyKey }, { projection: { _id: 0 } });
         const sameCustomer =
@@ -367,6 +366,8 @@ export default async function ordersApi(req, res) {
         });
       }
       throw error;
+    } finally {
+      await session.endSession();
     }
     if (paymentMethod === 'paystack') {
       try {
@@ -399,8 +400,33 @@ export default async function ordersApi(req, res) {
           authorizationUrl: transaction.authorizationUrl,
         });
       } catch (error) {
-        await orders.deleteOne({ orderNumber: document.orderNumber }).catch(() => {});
-        await releaseReservedInventory(stockReservation.inventory, stockReservation.reserved);
+        const cleanupSession = database.client.startSession();
+        try {
+          await cleanupSession.withTransaction(async () => {
+            const order = await orders.findOne(
+              { orderNumber: document.orderNumber },
+              { session: cleanupSession },
+            );
+            if (order?.stockReserved && !order.stockReleasedAt) {
+              for (const item of order.items || []) {
+                await inventory.updateOne(
+                  { productId: item.productId },
+                  {
+                    $inc: { quantity: Number(item.quantity) || 0 },
+                    $set: { updatedAt: new Date() },
+                  },
+                  { session: cleanupSession },
+                );
+              }
+            }
+            await orders.deleteOne(
+              { orderNumber: document.orderNumber },
+              { session: cleanupSession },
+            );
+          });
+        } finally {
+          await cleanupSession.endSession();
+        }
         console.error('[orders] Paystack initialization failed:', error && error.message);
         return res
           .status(503)
