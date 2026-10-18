@@ -7,6 +7,7 @@ import orders from '../api-handlers/orders.js';
 import paymentProof from '../api-handlers/payment-proof.js';
 import reviews from '../api-handlers/reviews.js';
 import adminOrders from '../api-handlers/admin/orders.js';
+import adminInventory from '../api-handlers/admin/inventory.js';
 import login from '../api-handlers/auth/login.js';
 import logout from '../api-handlers/auth/logout.js';
 import me from '../api-handlers/auth/me.js';
@@ -25,6 +26,7 @@ export const routeHandlers = Object.freeze({
   'payment-proof': paymentProof,
   reviews,
   'admin/orders': adminOrders,
+  'admin/inventory': adminInventory,
   'auth/login': login,
   'auth/logout': logout,
   'auth/me': me,

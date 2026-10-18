@@ -6,6 +6,7 @@ import {
   parseBody,
   rateLimit,
   sameOriginRequest,
+  updatedDocument,
 } from '../../lib/auth.js';
 import { notifyOrder } from '../../lib/order-notifications.js';
 
@@ -181,7 +182,7 @@ export default async function adminOrders(req, res) {
             },
             { returnDocument: 'after', session },
           );
-          updatedOrder = updated && (updated.value || updated);
+          updatedOrder = updatedDocument(updated);
           if (updatedOrder) {
             await auditLogs.insertOne(
               {
@@ -249,6 +250,17 @@ export default async function adminOrders(req, res) {
             await users.updateOne(
               { _id: order.customerId },
               { $inc: { points: order.pointsEarned }, $set: { updatedAt: now } },
+              { session },
+            );
+          }
+        }
+        if (nextStatus === 'cancelled' && order.stockReserved && !order.stockReleasedAt) {
+          patch.$set.stockReleasedAt = now;
+          const inventory = database.collection('glowafrique_inventory');
+          for (const item of order.items || []) {
+            await inventory.updateOne(
+              { productId: item.productId },
+              { $inc: { quantity: Number(item.quantity) || 0 }, $set: { updatedAt: now } },
               { session },
             );
           }

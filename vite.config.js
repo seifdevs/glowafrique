@@ -10,6 +10,7 @@ const apiRoutes = {
   '/api/payment-proof': '/api-handlers/payment-proof.js',
   '/api/reviews': '/api-handlers/reviews.js',
   '/api/admin/orders': '/api-handlers/admin/orders.js',
+  '/api/admin/inventory': '/api-handlers/admin/inventory.js',
   '/api/chat': '/api-handlers/chat.js',
   '/api/contact': '/api-handlers/contact.js',
   '/api/newsletter': '/api-handlers/newsletter.js',

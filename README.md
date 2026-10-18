@@ -28,6 +28,7 @@ The Vite build creates `dist/` with prerendered storefront routes, bundled style
 
 - Fill the actual legal name, registration details, registered address, customer-service email and phone, and WhatsApp number in `content/store-info.json`. Those fields deliberately stay blank until the business owner supplies the real information.
 - Replace beta/test product prices in `products-edit.csv` with owner-approved values and mark them `pricingType=retail`. Beta prices are intentionally rejected by both the storefront and API.
+- In `/control` → **Inventory**, set the real available-unit count for every product. Checkout rejects products with unconfigured stock, reserves units per order, and restores the reservation if an order is cancelled.
 - Set `SHIPPING_FEE_XOF` to the real below-threshold delivery fee. Delivery is free from 45,000 XOF after the first-order discount.
 - Configure `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, and `SUPPORT_EMAIL` to activate contact notifications, password reset, and order/payment/status emails.
 - Set `PUBLIC_SITE_URL` to the canonical HTTPS domain. Configure the Paystack secret in Vercel and set the public `VITE_PAYSTACK_ENABLED=true` only after the merchant account is approved for Côte d’Ivoire payments. The shopper is sent to Paystack-hosted checkout; the server verifies the transaction before it marks the order paid.

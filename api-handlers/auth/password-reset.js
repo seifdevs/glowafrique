@@ -10,6 +10,7 @@ import {
   rateLimit,
   sameOriginRequest,
   validEmail,
+  updatedDocument,
 } from '../../lib/auth.js';
 import { sendEmail } from '../../lib/email.js';
 
@@ -46,7 +47,7 @@ export default async function passwordReset(req, res) {
       const tokenHash = hashToken(token);
       const now = new Date();
       const reset = await resets.findOneAndDelete({ tokenHash, expiresAt: { $gt: now } });
-      const resetRecord = reset?.value || reset;
+      const resetRecord = updatedDocument(reset);
       if (!resetRecord)
         return res.status(400).json({ error: 'This reset link is invalid or has expired.' });
       const passwordHash = await bcrypt.hash(password, 12);

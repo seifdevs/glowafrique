@@ -6,6 +6,7 @@
     { "source": "/api/payment-proof", "destination": "/api/router?route=payment-proof" },
     { "source": "/api/reviews", "destination": "/api/router?route=reviews" },
     { "source": "/api/admin/orders", "destination": "/api/router?route=admin/orders" },
+    { "source": "/api/admin/inventory", "destination": "/api/router?route=admin/inventory" },
     { "source": "/api/chat", "destination": "/api/router?route=chat" },
     { "source": "/api/contact", "destination": "/api/router?route=contact" },
     { "source": "/api/newsletter", "destination": "/api/router?route=newsletter" },

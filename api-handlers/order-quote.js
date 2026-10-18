@@ -26,17 +26,40 @@ export default async function orderQuote(req, res) {
     if (!Array.isArray(body.items) || !body.items.length || body.items.length > 50)
       return res.status(400).json({ error: 'Your cart is empty.' });
     let subtotalXof = 0;
+    const requestedQuantities = new Map();
     const { PRODUCTS } = await import('../lib/catalog.js');
     for (const line of body.items) {
       const product = PRODUCTS.find((item) => item.id === String(line.productId || ''));
       const quantity = Number(line.quantity);
       if (!product || !Number.isSafeInteger(quantity) || quantity < 1 || quantity > 99)
         return res.status(400).json({ error: 'Check your cart items and quantities.' });
+      const productId = product.id;
+      const combinedQuantity = (requestedQuantities.get(productId) || 0) + quantity;
+      if (combinedQuantity > 99)
+        return res.status(400).json({ error: 'Product quantities cannot exceed 99.' });
+      requestedQuantities.set(productId, combinedQuantity);
       const unit = catalogPriceXof(product);
       if (unit == null) return res.status(409).json({ error: 'A product price is unavailable.' });
       subtotalXof += unit * quantity;
       if (!Number.isSafeInteger(subtotalXof))
         return res.status(400).json({ error: 'The order total is outside the supported range.' });
+    }
+    const inventory = (await getDatabase()).collection('glowafrique_inventory');
+    const inventoryRows = await inventory
+      .find({ productId: { $in: [...requestedQuantities.keys()] } })
+      .toArray();
+    const stockById = new Map(inventoryRows.map((item) => [item.productId, item.quantity]));
+    for (const [productId, quantity] of requestedQuantities) {
+      const product = PRODUCTS.find((item) => item.id === productId);
+      const stock = stockById.get(productId);
+      if (!Number.isSafeInteger(stock)) {
+        return res.status(409).json({
+          error: `${product.name} is not available for ordering yet.`,
+        });
+      }
+      if (stock < quantity) {
+        return res.status(409).json({ error: `${product.name} does not have enough stock.` });
+      }
     }
     const user = await authenticatedUser(req);
     const email = user ? user.email : normalizeEmail(body.email);

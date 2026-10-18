@@ -6,6 +6,7 @@ import {
   parseBody,
   rateLimit,
   sameOriginRequest,
+  updatedDocument,
 } from '../lib/auth.js';
 import { findCatalogProduct } from '../lib/catalog.js';
 
@@ -88,7 +89,8 @@ export default async function reviewsApi(req, res) {
           { $inc: { points: 15 }, $set: { updatedAt: new Date() } },
           { returnDocument: 'after', session, projection: { points: 1 } },
         );
-        review.pointsBalance = Number((updated && updated.points) || 15);
+        const updatedUser = updatedDocument(updated);
+        review.pointsBalance = Number((updatedUser && updatedUser.points) || 15);
       });
     } finally {
       await session.endSession();

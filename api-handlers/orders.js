@@ -14,6 +14,7 @@ import { pointsForXof } from '../lib/currency.js';
 import { validatePaymentProof } from '../lib/payment-proof.js';
 import { initializePaystackTransaction } from '../lib/payments/paystack.js';
 import { notifyOrder } from '../lib/order-notifications.js';
+import { releaseReservedInventory, reserveInventory } from '../lib/inventory.js';
 
 const FREE_DELIVERY_XOF = 45000;
 const MAX_ITEMS = 50;
@@ -250,6 +251,26 @@ export default async function ordersApi(req, res) {
       subtotalXof += lineTotalXof;
     }
     const orders = await ordersCollection();
+    const existingOrder = await orders.findOne({ idempotencyKey }, { projection: { _id: 0 } });
+    if (existingOrder) {
+      const sameCustomer =
+        (user &&
+          existingOrder.customerId &&
+          String(user._id) === String(existingOrder.customerId)) ||
+        (!user && !existingOrder.customerId && existingOrder.customer.email === customer.email);
+      if (!sameCustomer) {
+        return res.status(409).json({
+          error: 'This order was already submitted. Refresh the checkout to start another order.',
+        });
+      }
+      return res.status(200).json({
+        order: safeOrder(existingOrder),
+        duplicate: true,
+        ...(existingOrder.paystackAuthorizationUrl
+          ? { authorizationUrl: existingOrder.paystackAuthorizationUrl }
+          : {}),
+      });
+    }
     const firstPurchaseKey = customer.email;
     const previousPurchase = await orders.findOne(
       { $or: [{ firstPurchaseKey }, { 'customer.email': customer.email }] },
@@ -302,6 +323,14 @@ export default async function ordersApi(req, res) {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+    let stockReservation;
+    try {
+      stockReservation = await reserveInventory(await getDatabase(), items);
+    } catch (error) {
+      if (error.statusCode) return res.status(error.statusCode).json({ error: error.message });
+      throw error;
+    }
+    document.stockReserved = true;
     let proofs = null;
     try {
       if (waveProof) {
@@ -316,6 +345,7 @@ export default async function ordersApi(req, res) {
       }
       await orders.insertOne(document);
     } catch (error) {
+      await releaseReservedInventory(stockReservation.inventory, stockReservation.reserved);
       if (waveProof && proofs)
         await proofs.deleteOne({ proofId: waveProof.proofId }).catch(() => {});
       if (error && error.code === 11000) {
@@ -370,6 +400,7 @@ export default async function ordersApi(req, res) {
         });
       } catch (error) {
         await orders.deleteOne({ orderNumber: document.orderNumber }).catch(() => {});
+        await releaseReservedInventory(stockReservation.inventory, stockReservation.reserved);
         console.error('[orders] Paystack initialization failed:', error && error.message);
         return res
           .status(503)
