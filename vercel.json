@@ -7,6 +7,8 @@
     { "source": "/api/reviews", "destination": "/api/router?route=reviews" },
     { "source": "/api/admin/orders", "destination": "/api/router?route=admin/orders" },
     { "source": "/api/chat", "destination": "/api/router?route=chat" },
+    { "source": "/api/contact", "destination": "/api/router?route=contact" },
+    { "source": "/api/newsletter", "destination": "/api/router?route=newsletter" },
     { "source": "/api/auth/register", "destination": "/api/router?route=auth/register" },
     { "source": "/api/auth/login", "destination": "/api/router?route=auth/login" },
     { "source": "/api/auth/logout", "destination": "/api/router?route=auth/logout" },

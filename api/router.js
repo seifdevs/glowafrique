@@ -1,5 +1,7 @@
 import chat from '../api-handlers/chat.js';
+import contact from '../api-handlers/contact.js';
 import locations from '../api-handlers/locations.js';
+import newsletter from '../api-handlers/newsletter.js';
 import orderQuote from '../api-handlers/order-quote.js';
 import orders from '../api-handlers/orders.js';
 import paymentProof from '../api-handlers/payment-proof.js';
@@ -13,7 +15,9 @@ import register from '../api-handlers/auth/register.js';
 
 export const routeHandlers = Object.freeze({
   chat,
+  contact,
   locations,
+  newsletter,
   'order-quote': orderQuote,
   orders,
   'payment-proof': paymentProof,

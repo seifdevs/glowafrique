@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { PRODUCTS } from '../data/catalog.js';
+import STORE_INFO from '../content/store-info.json';
 import { formatXof, toXof } from '../lib/currency.js';
+import { POLICIES } from './content/policies.js';
 
 const StoreContext = createContext(null);
 const LOGOS = {
@@ -608,7 +610,7 @@ function CollectionPage({ path, search }) {
 }
 
 function ProductPage({ id }) {
-  const { locale, addItem, user } = useStore();
+  const { locale, addItem, user, setUser } = useStore();
   const product = PRODUCTS.find((p) => p.id === id);
   const [reviews, setReviews] = useState([]);
   const [feedback, setFeedback] = useState('');
@@ -634,7 +636,8 @@ function ProductPage({ id }) {
     event.preventDefault();
     setLoading(true);
     setFeedback('');
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     try {
       const response = await fetch('/api/reviews', {
         method: 'POST',
@@ -650,8 +653,10 @@ function ProductPage({ id }) {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || text(locale, 'unavailable'));
       setReviews((items) => [data.review, ...items]);
+      if (Number.isFinite(Number(data.points)))
+        setUser((current) => (current ? { ...current, points: Number(data.points) } : current));
       setFeedback(`${text(locale, 'success')} +15 ${text(locale, 'pointsCount')}.`);
-      event.currentTarget.reset();
+      formElement.reset();
     } catch (error) {
       setFeedback(error.message);
     } finally {
@@ -809,9 +814,33 @@ function AboutPage() {
 function ContactPage() {
   const { locale } = useStore();
   const [feedback, setFeedback] = useState('');
+  const [busy, setBusy] = useState(false);
   async function submit(event) {
     event.preventDefault();
-    setFeedback(text(locale, 'unavailable'));
+    setBusy(true);
+    setFeedback('');
+    const form = event.currentTarget;
+    const values = Object.fromEntries(new FormData(form));
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || text(locale, 'unavailable'));
+      setFeedback(
+        locale === 'en'
+          ? 'Thank you. Your message has been received.'
+          : 'Merci. Votre message a bien été reçu.',
+      );
+      form.reset();
+    } catch (error) {
+      setFeedback(error.message || text(locale, 'unavailable'));
+    } finally {
+      setBusy(false);
+    }
   }
   return (
     <>
@@ -822,6 +851,10 @@ function ContactPage() {
       </section>
       <section className="contact-layout">
         <form className="form-card" onSubmit={submit}>
+          <label className="sr-only" aria-hidden="true">
+            Leave This Field Empty
+            <input name="company" tabIndex={-1} autoComplete="off" />
+          </label>
           <label>
             {text(locale, 'name')}
             <input name="name" autoComplete="name" required maxLength="120" />
@@ -838,12 +871,35 @@ function ContactPage() {
             {text(locale, 'message')}
             <textarea name="message" rows="6" required maxLength="3000" />
           </label>
-          <button className="button">{text(locale, 'send')}</button>
+          <button className="button" disabled={busy}>
+            {busy ? text(locale, 'loading') : text(locale, 'send')}
+          </button>
           <p role="status">{feedback}</p>
         </form>
         <aside className="contact-details">
           <h2>{text(locale, 'hours')}</h2>
-          <p>{text(locale, 'messageHelp')}</p>
+          {STORE_INFO.supportEmail ? (
+            <p>
+              <a href={`mailto:${STORE_INFO.supportEmail}`}>{STORE_INFO.supportEmail}</a>
+            </p>
+          ) : null}
+          {STORE_INFO.supportPhone ? (
+            <p>
+              <a href={`tel:${STORE_INFO.supportPhone}`}>{STORE_INFO.supportPhone}</a>
+            </p>
+          ) : null}
+          {STORE_INFO.whatsappNumber ? (
+            <p>
+              <a href={`https://wa.me/${STORE_INFO.whatsappNumber.replace(/\D/g, '')}`}>WhatsApp</a>
+            </p>
+          ) : null}
+          {STORE_INFO.registeredAddress ? <p>{STORE_INFO.registeredAddress}</p> : null}
+          {STORE_INFO.legalName ? (
+            <p>
+              {STORE_INFO.legalName}
+              {STORE_INFO.registrationNumber ? ` · ${STORE_INFO.registrationNumber}` : ''}
+            </p>
+          ) : null}
         </aside>
       </section>
     </>
@@ -852,20 +908,50 @@ function ContactPage() {
 
 function PoliciesPage({ type }) {
   const { locale } = useStore();
-  const titles = {
-    returns: text(locale, 'return'),
-    shipping: text(locale, 'shipping'),
-    privacy: text(locale, 'privacy'),
-    terms: text(locale, 'terms'),
-    cookies: text(locale, 'cookies'),
-    'how-to-use': text(locale, 'howto'),
-  };
+  const content = POLICIES[type]?.[locale];
   return (
     <section className="policy-page page-intro">
       <p className="eyebrow">GlowAfrique</p>
-      <h1>{titles[type] || text(locale, 'info')}</h1>
-      <p>{text(locale, 'legalNotice')}</p>
-      <p>{text(locale, 'messageHelp')}</p>
+      <h1>{content?.title || text(locale, 'info')}</h1>
+      {content ? content.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>) : null}
+      {STORE_INFO.legalName ||
+      STORE_INFO.registeredAddress ||
+      STORE_INFO.supportEmail ||
+      STORE_INFO.supportPhone ? (
+        <section>
+          <h2>{locale === 'en' ? 'Store Contact Details' : 'Coordonnées De La Boutique'}</h2>
+          {STORE_INFO.legalName ? (
+            <p>
+              {STORE_INFO.legalName}
+              {STORE_INFO.registrationNumber ? ` · ${STORE_INFO.registrationNumber}` : ''}
+            </p>
+          ) : null}
+          {STORE_INFO.registeredAddress ? <p>{STORE_INFO.registeredAddress}</p> : null}
+          {STORE_INFO.supportEmail ? <p>{STORE_INFO.supportEmail}</p> : null}
+          {STORE_INFO.supportPhone ? <p>{STORE_INFO.supportPhone}</p> : null}
+        </section>
+      ) : null}
+      {['returns', 'terms'].includes(type) ? (
+        <p>
+          <a
+            href="https://www.economie-ivoirienne.ci/sites/default/files/sites/default/files/inline-files/loi-n-2016-412-du-15-juin-2016-relative-a-la-consommation.pdf"
+            rel="noreferrer"
+          >
+            {locale === 'en'
+              ? 'Côte d’Ivoire Consumer Law No. 2016-412'
+              : 'Loi ivoirienne relative à la consommation n° 2016-412'}
+          </a>
+        </p>
+      ) : null}
+      {type === 'privacy' ? (
+        <p>
+          <a href="https://www.artci.ci/images/stories/pdf/lois/loi_2013_450.pdf" rel="noreferrer">
+            {locale === 'en'
+              ? 'Côte d’Ivoire Personal Data Law No. 2013-450'
+              : 'Loi ivoirienne relative aux données personnelles n° 2013-450'}
+          </a>
+        </p>
+      ) : null}
       <p>
         <PageLink to="/contact">{text(locale, 'contact')}</PageLink>
       </p>
@@ -879,12 +965,6 @@ function AccountPage() {
   const [feedback, setFeedback] = useState('');
   const [busy, setBusy] = useState(false);
   const [orders, setOrders] = useState([]);
-  useEffect(() => {
-    fetch('/api/auth/me', { credentials: 'same-origin' })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data) => setUser(data?.user || null))
-      .catch(() => {});
-  }, [setUser]);
   useEffect(() => {
     if (!user) return;
     fetch('/api/orders', { credentials: 'same-origin' })
@@ -1043,9 +1123,33 @@ function AdminPage() {
 function Newsletter() {
   const { locale } = useStore();
   const [feedback, setFeedback] = useState('');
+  const [busy, setBusy] = useState(false);
   async function submit(e) {
     e.preventDefault();
-    setFeedback(text(locale, 'unavailable'));
+    setBusy(true);
+    setFeedback('');
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: data.get('email'), consent: data.get('consent') === 'yes' }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || text(locale, 'unavailable'));
+      setFeedback(
+        locale === 'en'
+          ? 'Your newsletter subscription has been saved.'
+          : 'Votre inscription à la newsletter a été enregistrée.',
+      );
+      form.reset();
+    } catch (error) {
+      setFeedback(error.message || text(locale, 'unavailable'));
+    } finally {
+      setBusy(false);
+    }
   }
   return (
     <section className="newsletter">
@@ -1054,8 +1158,20 @@ function Newsletter() {
         <label className="sr-only" htmlFor="newsletter-email">
           {text(locale, 'email')}
         </label>
-        <input id="newsletter-email" type="email" placeholder={text(locale, 'email')} required />
-        <button className="button" aria-label={text(locale, 'submit')}>
+        <input
+          id="newsletter-email"
+          name="email"
+          type="email"
+          placeholder={text(locale, 'email')}
+          required
+        />
+        <label className="newsletter-consent">
+          <input type="checkbox" name="consent" value="yes" required />
+          {locale === 'en'
+            ? 'I agree to receive GlowAfrique news by email. I can request removal at any time.'
+            : 'J’accepte de recevoir les actualités de GlowAfrique par e-mail. Je peux demander mon retrait à tout moment.'}
+        </label>
+        <button className="button" disabled={busy} aria-label={text(locale, 'submit')}>
           ›
         </button>
       </form>
@@ -1065,18 +1181,10 @@ function Newsletter() {
 }
 
 function Header() {
-  const { locale, cart, setCartOpen } = useStore();
+  const { locale, cart, setCartOpen, user } = useStore();
   const [search, setSearch] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
-  const [points, setPoints] = useState(0);
   const navigate = useNavigate();
-  useEffect(() => {
-    try {
-      setPoints(Number(window.localStorage.getItem('ga-points') || 0));
-    } catch {
-      setPoints(0);
-    }
-  }, []);
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   function switchLanguage() {
     const path = window.location.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
@@ -1125,7 +1233,7 @@ function Header() {
         </form>
         <div className="header-actions">
           <span className="points-counter">
-            ✦ <b>{points}</b> {text(locale, 'pointsCount')}
+            ✦ <b>{Number(user?.points || 0)}</b> {text(locale, 'pointsCount')}
           </span>
           <PageLink to="/account">{text(locale, 'account')}</PageLink>
           <button type="button" className="language-toggle" onClick={switchLanguage}>
@@ -1228,6 +1336,26 @@ function Footer() {
             ))}
           </section>
         </div>
+        {STORE_INFO.legalName ||
+        STORE_INFO.registeredAddress ||
+        STORE_INFO.supportEmail ||
+        STORE_INFO.supportPhone ? (
+          <address className="footer-identity">
+            {STORE_INFO.legalName ? (
+              <span>
+                {STORE_INFO.legalName}
+                {STORE_INFO.registrationNumber ? ` · ${STORE_INFO.registrationNumber}` : ''}
+              </span>
+            ) : null}
+            {STORE_INFO.registeredAddress ? <span>{STORE_INFO.registeredAddress}</span> : null}
+            {STORE_INFO.supportEmail ? (
+              <a href={`mailto:${STORE_INFO.supportEmail}`}>{STORE_INFO.supportEmail}</a>
+            ) : null}
+            {STORE_INFO.supportPhone ? (
+              <a href={`tel:${STORE_INFO.supportPhone}`}>{STORE_INFO.supportPhone}</a>
+            ) : null}
+          </address>
+        ) : null}
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} GlowAfrique</span>
           <span>{text(locale, 'pointsExplain')}</span>
@@ -1244,6 +1372,10 @@ function CartAndChat() {
   const [busy, setBusy] = useState(false);
   const [total, setTotal] = useState(null);
   const [proofPreview, setProofPreview] = useState('');
+  const [assistantOpen, setAssistantOpen] = useState(false);
+  const [chatInput, setChatInput] = useState('');
+  const [chatBusy, setChatBusy] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
   useEffect(() => {
     if (!open || !cart.length) return;
     fetch('/api/order-quote', {
@@ -1262,6 +1394,46 @@ function CartAndChat() {
         .map((item) => (item.id === id ? { ...item, quantity } : item))
         .filter((item) => item.quantity > 0),
     );
+  }
+  async function submitChat(event) {
+    event.preventDefault();
+    const message = chatInput.trim();
+    if (!message || chatBusy) return;
+    const history = chatMessages.slice(-8);
+    setChatMessages((items) => [...items, { role: 'user', content: message }]);
+    setChatInput('');
+    setChatBusy(true);
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message,
+          history,
+          language: locale,
+          products: PRODUCTS.slice(0, 20).map(({ id, name, brand, category, price }) => ({
+            id,
+            name,
+            brand,
+            category,
+            price,
+          })),
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(
+          locale === 'en'
+            ? 'Glow Guide is temporarily unavailable. Please contact us for help.'
+            : 'Glow Guide est momentanément indisponible. Contactez-nous pour obtenir de l’aide.',
+        );
+      setChatMessages((items) => [...items, { role: 'assistant', content: result.reply }]);
+    } catch (error) {
+      setChatMessages((items) => [...items, { role: 'assistant', content: error.message }]);
+    } finally {
+      setChatBusy(false);
+    }
   }
   async function placeOrder(e) {
     e.preventDefault();
@@ -1335,23 +1507,91 @@ function CartAndChat() {
   }
   return (
     <>
-      <PageLink className="whatsapp" to="/contact" aria-label={text(locale, 'contact')}>
-        ◉
-      </PageLink>
-      <aside className="shop-assistant" aria-label="GlowAfrique assistant">
-        <b>Glow Guide</b>
-        <button
-          type="button"
-          onClick={(e) => e.currentTarget.parentElement.classList.toggle('active')}
+      {STORE_INFO.whatsappNumber ? (
+        <a
+          className="whatsapp"
+          href={`https://wa.me/${STORE_INFO.whatsappNumber.replace(/\D/g, '')}`}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={
+            locale === 'en'
+              ? 'Contact GlowAfrique on WhatsApp'
+              : 'Contacter GlowAfrique sur WhatsApp'
+          }
         >
-          ✦
-        </button>
-        <p>
-          {locale === 'en'
-            ? 'How can I help you explore the shop?'
-            : 'Comment puis-je vous aider à découvrir la boutique ?'}
-        </p>
-      </aside>
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M16 3a12.8 12.8 0 0 0-11 19.3L3.4 29l6.9-1.8A12.9 12.9 0 1 0 16 3Zm0 23.2c-2 0-3.9-.5-5.6-1.5l-.4-.2-4.1 1.1 1.1-4-.3-.4A10.1 10.1 0 1 1 16 26.2Zm5.6-7.6c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.2 8.2 0 0 1-2.5-1.5 9.4 9.4 0 0 1-1.7-2.1c-.2-.3 0-.5.2-.7l.5-.6.3-.6c.1-.2 0-.4 0-.6l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.7 3.7 0 0 0-1.1 2.7 6.4 6.4 0 0 0 1.3 3.3 14.7 14.7 0 0 0 5.6 5 6.2 6.2 0 0 0 3.8.8 3.2 3.2 0 0 0 2.1-1.5 2.7 2.7 0 0 0 .2-1.5c-.1-.2-.3-.3-.6-.5Z"
+            />
+          </svg>
+        </a>
+      ) : null}
+      {assistantOpen ? (
+        <aside className="shop-assistant open" aria-label="GlowAfrique assistant">
+          <header className="assistant-head">
+            <b>Glow Guide</b>
+            <button
+              type="button"
+              onClick={() => setAssistantOpen(false)}
+              aria-label={locale === 'en' ? 'Close assistant' : 'Fermer l’assistant'}
+            >
+              ×
+            </button>
+          </header>
+          <div className="assistant-messages" role="log" aria-live="polite">
+            {!chatMessages.length ? (
+              <p className="assistant-bubble">
+                {locale === 'en'
+                  ? 'Ask a question about products, orders, or store information.'
+                  : 'Posez une question sur les produits, les commandes ou la boutique.'}
+              </p>
+            ) : null}
+            {chatMessages.map((message, index) => (
+              <p
+                className={`assistant-bubble ${message.role === 'user' ? 'user-bubble' : ''}`}
+                key={`${index}-${message.role}`}
+              >
+                {message.content}
+              </p>
+            ))}
+            {chatBusy ? (
+              <p className="assistant-bubble" role="status">
+                {text(locale, 'loading')}
+              </p>
+            ) : null}
+          </div>
+          <form onSubmit={submitChat}>
+            <label className="sr-only" htmlFor="glow-guide-input">
+              {locale === 'en' ? 'Your question' : 'Votre question'}
+            </label>
+            <input
+              id="glow-guide-input"
+              value={chatInput}
+              onChange={(event) => setChatInput(event.target.value)}
+              maxLength={600}
+              placeholder={locale === 'en' ? 'Ask Glow Guide' : 'Demandez à Glow Guide'}
+              required
+            />
+            <button
+              type="submit"
+              disabled={chatBusy}
+              aria-label={locale === 'en' ? 'Send question' : 'Envoyer la question'}
+            >
+              ↑
+            </button>
+          </form>
+        </aside>
+      ) : null}
+      <button
+        type="button"
+        className="assistant-launch"
+        onClick={() => setAssistantOpen((value) => !value)}
+        aria-expanded={assistantOpen}
+        aria-label={locale === 'en' ? 'Open Glow Guide assistant' : 'Ouvrir l’assistant Glow Guide'}
+      >
+        ✦
+      </button>
       {open ? (
         <div
           className="cart-overlay"
@@ -1561,6 +1801,12 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [user, setUser] = useState(null);
+  useEffect(() => {
+    fetch('/api/auth/me', { credentials: 'same-origin' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => setUser(data?.user || null))
+      .catch(() => {});
+  }, []);
   useEffect(() => {
     try {
       const saved = JSON.parse(localStorage.getItem('ga-cart') || '[]');
