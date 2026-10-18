@@ -124,7 +124,7 @@ function injectHead(html, route) {
     `<link rel="alternate" hreflang="fr-CI" href="${escapeAttribute(siteOrigin + alternate)}">`,
     `<link rel="alternate" hreflang="en" href="${escapeAttribute(siteOrigin + englishPath(alternate))}">`,
     `<link rel="alternate" hreflang="x-default" href="${escapeAttribute(siteOrigin + alternate)}">`,
-    data.pathName === '/account' || data.pathName === '/admin'
+    data.pathName === '/account' || data.pathName === '/admin' || data.pathName === '/control'
       ? '<meta name="robots" content="noindex,nofollow">'
       : '',
   ]
@@ -197,7 +197,9 @@ try {
   const sitemapRows = renderedPaths
     .filter(
       (route) =>
-        !route.startsWith('/en/') && route !== '/en' && !['/account', '/admin'].includes(route),
+        !route.startsWith('/en/') &&
+        route !== '/en' &&
+        !['/account', '/admin', '/control'].includes(route),
     )
     .map((route) => {
       const frenchUrl = `${siteOrigin}${route}`;
@@ -211,7 +213,7 @@ try {
   );
   await writeFile(
     path.join(outputDir, 'robots.txt'),
-    `User-agent: *\nAllow: /\nDisallow: /account\nDisallow: /admin\nSitemap: ${siteOrigin}/sitemap.xml\n`,
+    `User-agent: *\nAllow: /\nDisallow: /account\nDisallow: /admin\nDisallow: /control\nSitemap: ${siteOrigin}/sitemap.xml\n`,
   );
   console.log(`Pre-rendered ${renderedPaths.length} localized routes to real HTML.`);
 } finally {

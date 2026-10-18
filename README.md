@@ -24,6 +24,16 @@ The Vite build creates `dist/` with prerendered storefront routes, bundled style
 - Copy `.env.example` to `.env` for local secret storage and set `MONGODB_URI` to your rotated Atlas connection string. `.env` is ignored by Git; configure the same variable in Vercel for the deployed account API.
 - The API creates the minimal user and session collections and required unique/expiry indexes. Authentication uses bcrypt password hashes and HttpOnly session cookies. Vite mounts the same API handlers locally; Vercel deploys them as serverless functions.
 
+## Pre-launch configuration
+
+- Fill the actual legal name, registration details, registered address, customer-service email and phone, and WhatsApp number in `content/store-info.json`. Those fields deliberately stay blank until the business owner supplies the real information.
+- Replace beta/test product prices in `products-edit.csv` with owner-approved values and mark them `pricingType=retail`. Beta prices are intentionally rejected by both the storefront and API.
+- Set `SHIPPING_FEE_XOF` to the real below-threshold delivery fee. Delivery is free from 45,000 XOF after the first-order discount.
+- Configure `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, and `SUPPORT_EMAIL` to activate contact notifications, password reset, and order/payment/status emails.
+- Set `PUBLIC_SITE_URL` to the canonical HTTPS domain. Configure the Paystack secret in Vercel and set the public `VITE_PAYSTACK_ENABLED=true` only after the merchant account is approved for Côte d’Ivoire payments. The shopper is sent to Paystack-hosted checkout; the server verifies the transaction before it marks the order paid.
+- Set `MONGODB_URI` and `MONGODB_DB` in Vercel. Store every API secret as a server-side environment variable; never add it to a `VITE_` variable.
+- Confirm delivery areas, estimated delivery times, and account/order email templates with the store team before launch. The site does not invent a delivery schedule or company identity.
+
 ## Orders, XOF prices, and administration
 
 - Product prices in `products-edit.csv` must include an explicit `priceCurrency` value of `XOF` or `USD`. USD values are converted at the fixed rate of 630 XOF per USD when `npm run build-products` regenerates the catalog. The current catalog contains beta/test prices; they are hidden from shoppers and rejected by the order API. Replace them with owner-confirmed prices and set `pricingType` to the production value before enabling checkout for those products.

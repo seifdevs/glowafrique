@@ -16,7 +16,8 @@ export default async function newsletter(req, res) {
   if (await rateLimit(req, res, 'newsletter')) return;
   const body = parseBody(req);
   const email = normalizeEmail(body.email);
-  if (!validEmail(email) || body.consent !== true) {
+  const action = body.action === 'unsubscribe' ? 'unsubscribe' : 'subscribe';
+  if (!validEmail(email) || (action === 'subscribe' && body.consent !== true)) {
     return res
       .status(400)
       .json({ error: 'Enter a valid email and agree to receive GlowAfrique updates.' });
@@ -24,6 +25,13 @@ export default async function newsletter(req, res) {
   try {
     const subscribers = (await getDatabase()).collection('glowafrique_newsletter_subscribers');
     await subscribers.createIndex({ email: 1 }, { unique: true });
+    if (action === 'unsubscribe') {
+      await subscribers.updateOne(
+        { email },
+        { $set: { status: 'unsubscribed', unsubscribedAt: new Date() } },
+      );
+      return res.status(200).json({ ok: true });
+    }
     await subscribers.updateOne(
       { email },
       {

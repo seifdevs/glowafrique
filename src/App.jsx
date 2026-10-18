@@ -1394,6 +1394,7 @@ function Newsletter() {
   const { locale } = useStore();
   const [feedback, setFeedback] = useState('');
   const [busy, setBusy] = useState(false);
+  const [action, setAction] = useState('subscribe');
   async function submit(e) {
     e.preventDefault();
     setBusy(true);
@@ -1405,14 +1406,22 @@ function Newsletter() {
         method: 'POST',
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: data.get('email'), consent: data.get('consent') === 'yes' }),
+        body: JSON.stringify({
+          action,
+          email: data.get('email'),
+          consent: action === 'subscribe' && data.get('consent') === 'yes',
+        }),
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || text(locale, 'unavailable'));
       setFeedback(
         locale === 'en'
-          ? 'Your newsletter subscription has been saved.'
-          : 'Votre inscription à la newsletter a été enregistrée.',
+          ? action === 'subscribe'
+            ? 'Your newsletter subscription has been saved.'
+            : 'Your email has been unsubscribed from newsletter updates.'
+          : action === 'subscribe'
+            ? 'Votre inscription à la newsletter a été enregistrée.'
+            : 'Votre adresse e-mail a été désabonnée de la newsletter.',
       );
       form.reset();
     } catch (error) {
@@ -1435,16 +1444,43 @@ function Newsletter() {
           placeholder={text(locale, 'email')}
           required
         />
-        <label className="newsletter-consent">
-          <input type="checkbox" name="consent" value="yes" required />
-          {locale === 'en'
-            ? 'I agree to receive GlowAfrique news by email. I can request removal at any time.'
-            : 'J’accepte de recevoir les actualités de GlowAfrique par e-mail. Je peux demander mon retrait à tout moment.'}
-        </label>
-        <button className="button" disabled={busy} aria-label={text(locale, 'submit')}>
+        {action === 'subscribe' ? (
+          <label className="newsletter-consent">
+            <input type="checkbox" name="consent" value="yes" required />
+            {locale === 'en'
+              ? 'I agree to receive GlowAfrique news by email. I can unsubscribe at any time.'
+              : 'J’accepte de recevoir les actualités de GlowAfrique par e-mail. Je peux me désabonner à tout moment.'}
+          </label>
+        ) : null}
+        <button
+          className="button"
+          disabled={busy}
+          aria-label={
+            action === 'subscribe'
+              ? text(locale, 'submit')
+              : locale === 'en'
+                ? 'Unsubscribe'
+                : 'Se Désabonner'
+          }
+        >
           ›
         </button>
       </form>
+      <button
+        type="button"
+        className="text-button"
+        onClick={() =>
+          setAction((current) => (current === 'subscribe' ? 'unsubscribe' : 'subscribe'))
+        }
+      >
+        {action === 'subscribe'
+          ? locale === 'en'
+            ? 'Unsubscribe'
+            : 'Se Désabonner'
+          : locale === 'en'
+            ? 'Subscribe'
+            : 'S’inscrire'}
+      </button>
       <p role="status">{feedback}</p>
     </section>
   );

@@ -37,4 +37,7 @@ jobs:
           node-version: 24
       - name: Deploy Vercel preview
         if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_ORG_ID != '' && env.VERCEL_PROJECT_ID != '' }}
-        run: npx --yes vercel@64.0.2 deploy --yes --token "$VERCEL_TOKEN"
+        run: |
+          npx --yes vercel@64.0.2 pull --yes --environment=preview --token="$VERCEL_TOKEN"
+          npx --yes vercel@64.0.2 build --token="$VERCEL_TOKEN"
+          npx --yes vercel@64.0.2 deploy --prebuilt --yes --token="$VERCEL_TOKEN"
