@@ -1,5 +1,4 @@
 import chat from '../api-handlers/chat.js';
-import control from '../api-handlers/control.js';
 import locations from '../api-handlers/locations.js';
 import orderQuote from '../api-handlers/order-quote.js';
 import orders from '../api-handlers/orders.js';
@@ -13,7 +12,6 @@ import profile from '../api-handlers/auth/profile.js';
 import register from '../api-handlers/auth/register.js';
 
 export const routeHandlers = Object.freeze({
-  control,
   chat,
   locations,
   'order-quote': orderQuote,

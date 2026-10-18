@@ -9,16 +9,15 @@ test('Vercel exposes one API function for the existing endpoints', () => {
     .filter((entry) => entry.isFile() && entry.name.endsWith('.js'))
     .map((entry) => entry.name);
   assert.deepEqual(functionFiles, ['router.js']);
-  assert.equal(Object.keys(routeHandlers).length, 13);
+  assert.equal(Object.keys(routeHandlers).length, 12);
 });
 
 test('rewrites preserve all API paths and dispatch nested routes and query strings', () => {
   for (const key of Object.keys(routeHandlers)) {
-    const source = key === 'control' ? '/control' : `/api/${key}`;
+    const source = `/api/${key}`;
     assert.ok(vercelConfig.rewrites.some((rewrite) => rewrite.source === source && rewrite.destination === `/api/router?route=${key}`), `${source} should route to its handler`);
   }
   const routes = {
-    '/api/router?route=control': 'control',
     '/api/router?route=chat': 'chat',
     '/api/router?route=locations': 'locations',
     '/api/router?route=order-quote': 'order-quote',

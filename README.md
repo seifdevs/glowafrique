@@ -1,6 +1,6 @@
 # GlowAfrique
 
-A responsive, bilingual beauty storefront mounted through React and Vite. The HTML files are lightweight Vite entry shells; React mounts the storefront app, and the existing catalog and interaction module supplies the current shop behavior.
+A responsive, bilingual beauty storefront built with React and Vite. React Router is the only storefront router, and the production build statically renders the supported French and English routes for crawlers and visitors without JavaScript.
 
 ## Run locally
 
@@ -17,7 +17,7 @@ npm run dev
 npm run build
 ```
 
-The Vite build creates `dist/` with all storefront pages, classic scripts, styles, and static assets. In Vercel, use `npm run build` and set the output directory to `dist`. The optional clean page URLs in `vercel.json` map to their matching HTML files.
+The Vite build creates `dist/` with prerendered storefront routes, bundled styles and scripts, and static assets. In Vercel, use `npm run build` and set the output directory to `dist`. API paths are rewritten to the single `/api/router` function to fit the Hobby plan limit.
 
 ## MongoDB account configuration
 
@@ -41,32 +41,26 @@ The Vite build creates `dist/` with all storefront pages, classic scripts, style
 6. Edit brand names and filename aliases in `data/brands.json`. The generated product `name` contains the brand prefix once; the storefront renders it in uppercase while preserving accents. `brand` remains a separate data field for brand filters.
 7. Category folder mappings and keyword rules live in `scripts/category-rules.cjs`. Unknown folders are listed in `scripts/import-report.md` and remain unclassified until assigned. The full products catalog lists every record; unclassified products are omitted from category/concern navigation and category filters until assigned.
 8. `data/descriptions-report.csv` records that source descriptions are blocked. The supplied HBYTALA terms prohibit copying or exploiting its site content without written permission, so no source pages were fetched, and no descriptions were copied or translated. The report includes blank sections for review if you provide permission and an authorized source later.
-9. Re-run `npm run build-products` after editing product roles, brands, or merchandising. It regenerates `js/products.js` and the import reports. Product image optimization remains a separate command (`npm run optimize-products`).
+9. Re-run `npm run build-products` after editing product roles, brands, or merchandising. It regenerates `data/catalog.js` and the import reports. Product image optimization remains a separate command (`npm run optimize-products`).
 10. The import report records source image paths, category assignments, visual inspection findings, hero quality flags, brand gaps, and description restrictions. Originals and optimized versions are kept separately.
 
 The current source folder contains 73 images grouped into 34 product records (70 gallery images plus 3 before/after images). Numbered variants are why image-file count and product count differ. At present, 8 records have a confirmed category; 26 records from `Skincare` and `Sun Care` are listed in the full catalog without being added to category or concern listings until those folders are classified.
 
 ## Edit site content and translations
 
-- `js/content.js` holds editable storefront settings and the homepage/about/contact section structure and copy keys.
-- `js/i18n.js` is the single French/English dictionary for interface labels and editable section copy. French is the default; the FR | EN toggle saves the selection in local storage.
-- `src/main.jsx` mounts the React application and `src/App.jsx` starts the shared storefront. `js/main.js` currently provides the existing catalog and interaction behavior inside the React-mounted app. Product names use the catalog's original language and preserve brand capitalization.
+- `src/main.jsx` hydrates the statically rendered React application. `src/App.jsx` includes the storefront routes, components, and French/English interface copy. Product names use the catalog's original language and preserve brand capitalization.
 
 ## Pages
 
-- `index.html`: home, two-row bestseller grid, featured brands, rewards, category tiles, tips, FAQ, social block.
-- `products.html`: all categorized products, filters, sorting, and load-more pagination.
-- `collection.html`: category/concern, best-seller, and brand listings.
-- `product.html`: product gallery and related products.
-- `about.html`: editable brand story and values.
-- `contact.html`: contact form, contact details, and FAQ.
-- `policies.html`: how-to-use guidance, ordering, returns/refunds, shipping, payment methods, privacy, and terms.
-- `account.html`: email/password registration and login backed by MongoDB Atlas on Vercel.
-- `control.html` / `/control`: server-authorized order-management interface for administrators.
+- `/`: homepage, best sellers, featured brands, concern collections, loyalty information.
+- `/products`, `/collections/*`, `/product/*`: searchable and filtered product listings, brand/concern collections, and product detail pages.
+- `/about`, `/contact`, `/policies/*`: store information, contact, and policy routes.
+- `/account`: account registration, login, and order history backed by MongoDB.
+- `/admin`: order-management interface; all order API operations enforce administrator authorization on the server.
 
 ## Storefront configuration and integrations
 
-- `js/content.js` contains the 10% first-order announcement, 45,000 CFA free-delivery threshold, CFA currency, and rewards conversion settings.
+- The React storefront includes the 10% first-order announcement, 45,000 CFA free-delivery threshold, CFA currency, and rewards conversion display.
 - One authenticated review per product awards 15 server-stored points. Purchase points are calculated from the discounted XOF merchandise subtotal and credited to the customer account after an administrator marks the order delivered. Contact and newsletter forms are still not connected to a messaging or mailing-list service.
 - The Glow Guide uses a Vercel serverless endpoint at `api/chat.js` with OpenAI's Responses API. Set `OPENAI_API_KEY` as a server-side deployment environment variable; optionally set `OPENAI_MODEL`. The browser never receives the key. Without a configured endpoint, the guide uses its local catalog/FAQ fallback.
-- Add the official WhatsApp number, contact email, social links, and approved store policy details to `js/content.js` before publishing. Policies in `policies.html` are original starter copy and should be aligned with the business's actual terms.
+- Set the verified legal business name, business address, support email and phone, social account URLs, and confirmed shipping/returns terms before launch. These details must be supplied by the store owner; do not publish invented identity or policy facts.

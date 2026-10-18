@@ -11,14 +11,19 @@
     { "source": "/api/auth/login", "destination": "/api/router?route=auth/login" },
     { "source": "/api/auth/logout", "destination": "/api/router?route=auth/logout" },
     { "source": "/api/auth/me", "destination": "/api/router?route=auth/me" },
-    { "source": "/api/auth/profile", "destination": "/api/router?route=auth/profile" },
-    { "source": "/control", "destination": "/api/router?route=control" },
-    { "source": "/account", "destination": "/account.html" },
-    { "source": "/policies", "destination": "/policies.html" },
-    { "source": "/products", "destination": "/products.html" },
-    { "source": "/collection", "destination": "/collection.html" },
-    { "source": "/product", "destination": "/product.html" },
-    { "source": "/about", "destination": "/about.html" },
-    { "source": "/contact", "destination": "/contact.html" }
+    { "source": "/api/auth/profile", "destination": "/api/router?route=auth/profile" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://api.openai.com; upgrade-insecure-requests" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=()" }
+      ]
+    }
   ]
 }

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "test": "node --test",
     "preview": "vite preview --host 0.0.0.0",
     "build-products": "node scripts/build-products.cjs",
@@ -14,11 +14,12 @@
     "optimize-products": "python3 scripts/optimize-product-images.py"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "latest",
-    "bcryptjs": "^3.0.3",
-    "mongodb": "^7.7.0",
-    "react": "latest",
-    "react-dom": "latest",
-    "vite": "latest"
+    "@vitejs/plugin-react": "6.1.2",
+    "bcryptjs": "3.0.3",
+    "mongodb": "7.7.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-router-dom": "7.18.4",
+    "vite": "8.3.4"
   }
 }

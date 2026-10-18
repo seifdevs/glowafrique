@@ -4,7 +4,6 @@ import { cpSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const apiRoutes = {
-  '/control': '/api-handlers/control.js',
   '/api/orders': '/api-handlers/orders.js',
   '/api/order-quote': '/api-handlers/order-quote.js',
   '/api/locations': '/api-handlers/locations.js',
@@ -65,17 +64,15 @@ export default defineConfig(({ mode }) => {
         });
       },
     }, {
-      name: 'copy-static-storefront-assets',
+      name: 'copy-static-product-assets',
       closeBundle() {
-        for (const name of ['assets', 'js']) {
-          const source = resolve(name);
-          if (existsSync(source)) cpSync(source, resolve('dist', name), { recursive: true });
-        }
+        const source = resolve('assets');
+        if (existsSync(source)) cpSync(source, resolve('dist', 'assets'), { recursive: true });
       },
     }],
     build: {
       rollupOptions: {
-        input: Object.fromEntries(['index', 'products', 'collection', 'product', 'about', 'contact', 'policies', 'account', 'control'].map((name) => [name, resolve(`${name}.html`)])),
+        input: resolve('index.html'),
       },
     },
   };
