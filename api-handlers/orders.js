@@ -13,6 +13,7 @@ import { catalogPriceXof } from '../lib/catalog.js';
 import { pointsForXof } from '../lib/currency.js';
 import { validatePaymentProof } from '../lib/payment-proof.js';
 import { initializePaystackTransaction } from '../lib/payments/paystack.js';
+import { notifyOrder } from '../lib/order-notifications.js';
 
 const FREE_DELIVERY_XOF = 45000;
 const MAX_ITEMS = 50;
@@ -374,6 +375,11 @@ export default async function ordersApi(req, res) {
           .status(503)
           .json({ error: 'Hosted payment could not be started. Your order was not placed.' });
       }
+    }
+    try {
+      await notifyOrder(document, 'created');
+    } catch (error) {
+      console.error('[orders] confirmation email failed:', error && error.name);
     }
     return res.status(201).json({ order: safeOrder(document) });
   } catch (error) {

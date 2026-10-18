@@ -7,6 +7,7 @@ import {
   rateLimit,
   sameOriginRequest,
 } from '../../lib/auth.js';
+import { notifyOrder } from '../../lib/order-notifications.js';
 
 const TRANSITIONS = {
   pending: ['confirmed', 'cancelled'],
@@ -200,6 +201,14 @@ export default async function adminOrders(req, res) {
       }
       if (!updatedOrder)
         return res.status(409).json({ error: 'This Wave payment is not awaiting verification.' });
+      try {
+        await notifyOrder(
+          updatedOrder,
+          paymentAction === 'verify' ? 'payment_verified' : 'payment_rejected',
+        );
+      } catch (error) {
+        console.error('[admin/orders] payment notification failed:', error && error.name);
+      }
       return res.status(200).json({ order: outputOrder(updatedOrder) });
     }
     const nextStatus = String(body.status || '').trim();
@@ -207,11 +216,13 @@ export default async function adminOrders(req, res) {
       return res.status(400).json({ error: 'Provide an order number and a valid status.' });
     const { users } = await getAuthCollections();
     let updatedOrder = null;
+    let previousStatus = null;
     const session = database.client.startSession();
     try {
       await session.withTransaction(async () => {
         const order = await orders.findOne({ orderNumber }, { session });
         if (!order) throw Object.assign(new Error('ORDER_NOT_FOUND'), { statusCode: 404 });
+        previousStatus = order.status;
         if (order.status === nextStatus) {
           updatedOrder = order;
           return;
@@ -258,6 +269,13 @@ export default async function adminOrders(req, res) {
       });
     } finally {
       await session.endSession();
+    }
+    if (updatedOrder && updatedOrder.status !== previousStatus) {
+      try {
+        await notifyOrder(updatedOrder, 'status');
+      } catch (error) {
+        console.error('[admin/orders] status notification failed:', error && error.name);
+      }
     }
     return res.status(200).json({ order: outputOrder(updatedOrder) });
   } catch (error) {

@@ -3,6 +3,7 @@ import {
   paystackTransactionMatches,
   verifyPaystackTransaction,
 } from '../../lib/payments/paystack.js';
+import { notifyOrder } from '../../lib/order-notifications.js';
 
 export default async function paystackCallback(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -67,6 +68,13 @@ export default async function paystackCallback(req, res) {
     );
     const payment =
       updated.modifiedCount || order.paymentStatus === 'verified' ? 'verified' : 'pending';
+    if (payment === 'verified' && updated.modifiedCount) {
+      try {
+        await notifyOrder({ ...order, paymentStatus: 'verified' }, 'payment_verified');
+      } catch (error) {
+        console.error('[paystack/callback] order email failed:', error && error.name);
+      }
+    }
     return redirectTo(
       `/${order.customerLocale === 'en' ? 'en/' : ''}account?payment=${payment}&order=${encodeURIComponent(order.orderNumber)}`,
     );
