@@ -14,7 +14,14 @@
     { "source": "/api/auth/logout", "destination": "/api/router?route=auth/logout" },
     { "source": "/api/auth/me", "destination": "/api/router?route=auth/me" },
     { "source": "/api/auth/profile", "destination": "/api/router?route=auth/profile" },
-    { "source": "/api/auth/password-reset", "destination": "/api/router?route=auth/password-reset" }
+    {
+      "source": "/api/auth/password-reset",
+      "destination": "/api/router?route=auth/password-reset"
+    },
+    {
+      "source": "/api/payments/paystack/callback",
+      "destination": "/api/router?route=payments/paystack/callback"
+    }
   ],
   "headers": [
     {

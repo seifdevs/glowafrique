@@ -211,6 +211,8 @@ const slug = (value) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 const money = (value, currency = 'XOF') => formatXof(toXof(value, currency));
+const productHasVerifiedPrice = (product) =>
+  product?.price != null && product.isBetaPrice !== true && product.pricingType !== 'beta';
 const localePath = (path, locale) =>
   locale === 'en' ? (path === '/' ? '/en' : `/en${path}`) : path;
 
@@ -249,14 +251,14 @@ function ProductCard({ product }) {
           {product.rating ? `★ ${Number(product.rating).toFixed(1)}` : ''}
         </p>
         <p className="price">
-          {product.price == null
+          {!productHasVerifiedPrice(product)
             ? text(locale, 'noPrice')
             : money(product.price, product.priceCurrency)}
         </p>
         <button
           type="button"
           className="button small"
-          disabled={product.price == null}
+          disabled={!productHasVerifiedPrice(product)}
           onClick={() => addItem(product)}
         >
           {text(locale, 'add')}
@@ -679,7 +681,7 @@ function ProductPage({ id }) {
           <p className="eyebrow product-brand">{product.brand}</p>
           <h1>{product.name}</h1>
           <p className="price large">
-            {product.price == null
+            {!productHasVerifiedPrice(product)
               ? text(locale, 'noPrice')
               : money(product.price, product.priceCurrency)}
           </p>
@@ -687,7 +689,7 @@ function ProductPage({ id }) {
           <button
             className="button product-add"
             type="button"
-            disabled={product.price == null}
+            disabled={!productHasVerifiedPrice(product)}
             onClick={() => addItem(product)}
           >
             {text(locale, 'add')}
@@ -769,15 +771,13 @@ function ProductPage({ id }) {
             name: product.name,
             brand: { '@type': 'Brand', name: product.brand },
             image: productImage(product),
-            offers:
-              product.price == null
-                ? undefined
-                : {
-                    '@type': 'Offer',
-                    priceCurrency: 'XOF',
-                    price: product.price,
-                    availability: 'https://schema.org/InStock',
-                  },
+            offers: !productHasVerifiedPrice(product)
+              ? undefined
+              : {
+                  '@type': 'Offer',
+                  priceCurrency: 'XOF',
+                  price: product.price,
+                },
           }).replace(/</g, '\\u003c'),
         }}
       />
@@ -961,6 +961,7 @@ function PoliciesPage({ type }) {
 
 function AccountPage() {
   const { locale, user, setUser } = useStore();
+  const location = useLocation();
   const [mode, setMode] = useState('register');
   const [feedback, setFeedback] = useState('');
   const [busy, setBusy] = useState(false);
@@ -973,6 +974,21 @@ function AccountPage() {
       setMode('reset');
     }
   }, []);
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const payment = query.get('payment');
+    if (payment === 'verified') {
+      setFeedback(
+        `${locale === 'en' ? 'Payment verified for order' : 'Paiement vérifié pour la commande'} ${query.get('order') || ''}.`,
+      );
+    } else if (payment === 'pending') {
+      setFeedback(
+        locale === 'en'
+          ? 'Payment is still being confirmed. Keep your order reference and contact us if the status does not update.'
+          : 'Le paiement est en cours de confirmation. Conservez votre référence de commande et contactez-nous si le statut ne change pas.',
+      );
+    }
+  }, [locale, location.search]);
   useEffect(() => {
     if (!user) return;
     fetch('/api/orders', { credentials: 'same-origin' })
@@ -1717,6 +1733,7 @@ function CartAndChat() {
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          language: locale,
           idempotencyKey: crypto.randomUUID(),
           paymentMethod,
           waveSenderPhone: data.waveSenderPhone,
@@ -1742,6 +1759,10 @@ function CartAndChat() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || text(locale, 'unavailable'));
+      if (result.authorizationUrl) {
+        window.location.assign(result.authorizationUrl);
+        return;
+      }
       setFeedback(
         paymentMethod === 'wave'
           ? locale === 'en'
@@ -1886,7 +1907,7 @@ function CartAndChat() {
                         <div>
                           <b>{product.name}</b>
                           <p>
-                            {product.price == null
+                            {!productHasVerifiedPrice(product)
                               ? text(locale, 'noPrice')
                               : money(product.price, product.priceCurrency)}
                           </p>
@@ -1975,6 +1996,14 @@ function CartAndChat() {
                   <label>
                     <input name="paymentMethod" type="radio" value="wave" /> Wave
                   </label>
+                  {import.meta.env.VITE_PAYSTACK_ENABLED === 'true' ? (
+                    <label>
+                      <input name="paymentMethod" type="radio" value="paystack" />
+                      {locale === 'en'
+                        ? 'Pay Online (Card Or Mobile Money)'
+                        : 'Payer En Ligne (Carte Ou Mobile Money)'}
+                    </label>
+                  ) : null}
                 </fieldset>
                 <label>
                   Wave Sender Phone

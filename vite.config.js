@@ -19,6 +19,7 @@ const apiRoutes = {
   '/api/auth/me': '/api-handlers/auth/me.js',
   '/api/auth/profile': '/api-handlers/auth/profile.js',
   '/api/auth/password-reset': '/api-handlers/auth/password-reset.js',
+  '/api/payments/paystack/callback': '/api-handlers/payments/paystack-callback.js',
 };
 
 export default defineConfig(({ mode }) => {
@@ -33,6 +34,8 @@ export default defineConfig(({ mode }) => {
     'RESEND_FROM_EMAIL',
     'SUPPORT_EMAIL',
     'PUBLIC_SITE_URL',
+    'PAYSTACK_SECRET_KEY',
+    'VITE_PAYSTACK_ENABLED',
     'ADMIN_USERNAME',
     'ADMIN_PASSWORD',
     'ADMIN_EMAIL',

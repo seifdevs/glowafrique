@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { PRODUCTS } from '../data/catalog.js';
+import { catalogPriceXof } from '../lib/catalog.js';
 
-test('beta storefront catalog has a consistent, explicit XOF test price for every product', () => {
+test('beta test prices are never offered as verified production prices', () => {
   assert.equal(PRODUCTS.length, 34);
   for (const product of PRODUCTS) {
     assert.ok(
@@ -11,7 +12,8 @@ test('beta storefront catalog has a consistent, explicit XOF test price for ever
     );
     assert.equal(product.priceCurrency, 'XOF', `${product.id} remains in XOF`);
     assert.equal(product.pricingType, 'beta', `${product.id} is clearly marked as beta pricing`);
-    assert.equal(product.isBetaPrice, true, `${product.id} can display its beta price label`);
+    assert.equal(product.isBetaPrice, true, `${product.id} is clearly marked as beta pricing`);
+    assert.equal(catalogPriceXof(product), null, `${product.id} cannot be ordered at a test price`);
     assert.ok(
       product.images.length > 0 || product.beforeAfter?.images?.length > 0,
       `${product.id} retains usable product imagery`,

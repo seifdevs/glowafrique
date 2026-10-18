@@ -12,6 +12,7 @@ import {
 import { catalogPriceXof } from '../lib/catalog.js';
 import { pointsForXof } from '../lib/currency.js';
 import { validatePaymentProof } from '../lib/payment-proof.js';
+import { initializePaystackTransaction } from '../lib/payments/paystack.js';
 
 const FREE_DELIVERY_XOF = 45000;
 const MAX_ITEMS = 50;
@@ -166,8 +167,12 @@ export default async function ordersApi(req, res) {
 
     const body = parseBody(req);
     const paymentMethod = String(body.paymentMethod || '').trim();
-    if (!['cash_on_delivery', 'wave'].includes(paymentMethod))
-      return res.status(400).json({ error: 'Choose Cash on Delivery or Wave.' });
+    if (!['cash_on_delivery', 'wave', 'paystack'].includes(paymentMethod))
+      return res.status(400).json({ error: 'Choose Cash on Delivery, Wave, or Paystack.' });
+    if (paymentMethod === 'paystack' && !process.env.PAYSTACK_SECRET_KEY)
+      return res.status(503).json({ error: 'Hosted payment is not configured yet.' });
+    if (paymentMethod === 'paystack' && process.env.VITE_PAYSTACK_ENABLED !== 'true')
+      return res.status(503).json({ error: 'Hosted payment is not enabled yet.' });
     const waveSenderPhone = String(body.waveSenderPhone || '').trim();
     let waveProof = null;
     if (paymentMethod === 'wave') {
@@ -280,7 +285,13 @@ export default async function ordersApi(req, res) {
       currency: 'XOF',
       status: 'pending',
       paymentMethod,
-      paymentStatus: paymentMethod === 'wave' ? 'awaiting_verification' : 'due_on_delivery',
+      paymentStatus:
+        paymentMethod === 'wave'
+          ? 'awaiting_verification'
+          : paymentMethod === 'paystack'
+            ? 'awaiting_provider'
+            : 'due_on_delivery',
+      customerLocale: body.language === 'en' ? 'en' : 'fr',
       ...(paymentMethod === 'wave' ? { waveSenderPhone, paymentProofId: waveProof.proofId } : {}),
       pointsEarned: user ? pointsForXof(eligibleSubtotalXof) : 0,
       pointsAwardedAt: null,
@@ -313,12 +324,56 @@ export default async function ordersApi(req, res) {
           ((user && existing.customerId && String(user._id) === String(existing.customerId)) ||
             (!user && !existing.customerId && existing.customer.email === customer.email));
         if (sameCustomer)
-          return res.status(200).json({ order: safeOrder(existing), duplicate: true });
+          return res.status(200).json({
+            order: safeOrder(existing),
+            duplicate: true,
+            ...(existing.paystackAuthorizationUrl
+              ? { authorizationUrl: existing.paystackAuthorizationUrl }
+              : {}),
+          });
         return res.status(409).json({
           error: 'This order was already submitted. Refresh the page to start another order.',
         });
       }
       throw error;
+    }
+    if (paymentMethod === 'paystack') {
+      try {
+        const siteOrigin =
+          process.env.PUBLIC_SITE_URL ||
+          `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers['x-forwarded-host'] || req.headers.host}`;
+        const callbackUrl = new URL('/api/payments/paystack/callback', siteOrigin).href;
+        const transaction = await initializePaystackTransaction({
+          email: customer.email,
+          amountXof: totalXof,
+          reference: document.orderNumber,
+          callbackUrl,
+        });
+        document.paystackReference = transaction.reference;
+        document.paystackAuthorizationUrl = transaction.authorizationUrl;
+        document.paymentStatus = 'awaiting_provider';
+        document.updatedAt = new Date();
+        await orders.updateOne(
+          { orderNumber: document.orderNumber, paymentStatus: 'awaiting_provider' },
+          {
+            $set: {
+              paystackReference: transaction.reference,
+              paystackAuthorizationUrl: transaction.authorizationUrl,
+              updatedAt: document.updatedAt,
+            },
+          },
+        );
+        return res.status(201).json({
+          order: safeOrder(document),
+          authorizationUrl: transaction.authorizationUrl,
+        });
+      } catch (error) {
+        await orders.deleteOne({ orderNumber: document.orderNumber }).catch(() => {});
+        console.error('[orders] Paystack initialization failed:', error && error.message);
+        return res
+          .status(503)
+          .json({ error: 'Hosted payment could not be started. Your order was not placed.' });
+      }
     }
     return res.status(201).json({ order: safeOrder(document) });
   } catch (error) {

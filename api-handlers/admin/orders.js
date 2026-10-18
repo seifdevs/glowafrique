@@ -216,6 +216,11 @@ export default async function adminOrders(req, res) {
           updatedOrder = order;
           return;
         }
+        if (
+          nextStatus === 'confirmed' &&
+          !['verified', 'due_on_delivery'].includes(order.paymentStatus)
+        )
+          throw Object.assign(new Error('PAYMENT_NOT_VERIFIED'), { statusCode: 409 });
         if (!TRANSITIONS[order.status] || !TRANSITIONS[order.status].includes(nextStatus))
           throw Object.assign(new Error('INVALID_ORDER_TRANSITION'), { statusCode: 409 });
         const now = new Date();
@@ -261,7 +266,9 @@ export default async function adminOrders(req, res) {
         error:
           error.message === 'ORDER_NOT_FOUND'
             ? 'Order not found.'
-            : 'That order status change is not allowed.',
+            : error.message === 'PAYMENT_NOT_VERIFIED'
+              ? 'Verify the payment before confirming this order.'
+              : 'That order status change is not allowed.',
       });
     console.error(
       '[admin/orders] request failed:',

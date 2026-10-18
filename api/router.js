@@ -13,6 +13,7 @@ import me from '../api-handlers/auth/me.js';
 import profile from '../api-handlers/auth/profile.js';
 import passwordReset from '../api-handlers/auth/password-reset.js';
 import register from '../api-handlers/auth/register.js';
+import paystackCallback from '../api-handlers/payments/paystack-callback.js';
 
 export const routeHandlers = Object.freeze({
   chat,
@@ -30,6 +31,7 @@ export const routeHandlers = Object.freeze({
   'auth/profile': profile,
   'auth/password-reset': passwordReset,
   'auth/register': register,
+  'payments/paystack/callback': paystackCallback,
 });
 
 export function routeKeyFromUrl(url) {
