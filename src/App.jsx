@@ -1137,6 +1137,10 @@ function AdminPage() {
   const [orders, setOrders] = useState([]);
   const [status, setStatus] = useState('pending');
   const [feedback, setFeedback] = useState('');
+  const [expandedProof, setExpandedProof] = useState('');
+  const [busyOrder, setBusyOrder] = useState('');
+  const [manualEvidence, setManualEvidence] = useState({});
+  const [rejectionReasons, setRejectionReasons] = useState({});
   useEffect(() => {
     fetch(`/api/admin/orders?status=${encodeURIComponent(status)}`, { credentials: 'same-origin' })
       .then(async (r) => {
@@ -1146,6 +1150,34 @@ function AdminPage() {
       })
       .catch((error) => setFeedback(error.message));
   }, [locale, status]);
+  async function updateOrder(order, patch) {
+    setBusyOrder(order.orderNumber);
+    setFeedback('');
+    try {
+      const response = await fetch('/api/admin/orders', {
+        method: 'PATCH',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderNumber: order.orderNumber, ...patch }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || text(locale, 'unavailable'));
+      setOrders((items) =>
+        items.map((item) => (item.orderNumber === order.orderNumber ? data.order : item)),
+      );
+      setFeedback(locale === 'en' ? 'Order updated.' : 'Commande mise à jour.');
+    } catch (error) {
+      setFeedback(error.message);
+    } finally {
+      setBusyOrder('');
+    }
+  }
+  const transitions = {
+    pending: ['confirmed', 'cancelled'],
+    confirmed: ['processing', 'cancelled'],
+    processing: ['shipped', 'cancelled'],
+    shipped: ['delivered'],
+  };
   return (
     <section className="section">
       <h1>GlowAfrique · {locale === 'en' ? 'Administration' : 'Administration'}</h1>
@@ -1172,6 +1204,170 @@ function AdminPage() {
           <p>
             {order.customer?.fullName} · {order.customer?.email}
           </p>
+          {order.paymentMethod === 'wave' && order.paymentStatus === 'awaiting_verification' ? (
+            <div className="admin-payment-review">
+              {order.paymentProofId ? (
+                <details
+                  className="admin-payment-details"
+                  open={expandedProof === order.orderNumber}
+                  onToggle={(event) =>
+                    setExpandedProof(event.currentTarget.open ? order.orderNumber : '')
+                  }
+                >
+                  <summary>
+                    {locale === 'en' ? 'Show Payment Details' : 'Afficher Les Détails Du Paiement'}
+                    <span>{order.waveSenderPhone}</span>
+                  </summary>
+                  {expandedProof === order.orderNumber ? (
+                    <div className="payment-proof-details">
+                      <img
+                        className="admin-proof-image"
+                        src={`/api/payment-proof?id=${encodeURIComponent(order.paymentProofId)}`}
+                        alt={
+                          locale === 'en'
+                            ? `Wave payment proof for ${order.orderNumber}`
+                            : `Justificatif Wave pour ${order.orderNumber}`
+                        }
+                      />
+                    </div>
+                  ) : null}
+                </details>
+              ) : (
+                <div className="admin-manual-evidence">
+                  <p>
+                    {locale === 'en'
+                      ? 'No screenshot was attached. Match the payment in Wave before approving it.'
+                      : 'Aucune capture n’est jointe. Vérifiez le paiement dans Wave avant de l’approuver.'}
+                  </p>
+                  <label>
+                    {locale === 'en'
+                      ? 'Wave Transaction Reference'
+                      : 'Référence De Transaction Wave'}
+                    <input
+                      value={manualEvidence[order.orderNumber]?.reference || ''}
+                      maxLength="120"
+                      onChange={(event) =>
+                        setManualEvidence((items) => ({
+                          ...items,
+                          [order.orderNumber]: {
+                            ...items[order.orderNumber],
+                            reference: event.target.value,
+                          },
+                        }))
+                      }
+                    />
+                  </label>
+                  <label>
+                    {locale === 'en' ? 'Sender Phone' : 'Téléphone De L’expéditeur'}
+                    <input
+                      value={manualEvidence[order.orderNumber]?.senderPhone || ''}
+                      maxLength="32"
+                      onChange={(event) =>
+                        setManualEvidence((items) => ({
+                          ...items,
+                          [order.orderNumber]: {
+                            ...items[order.orderNumber],
+                            senderPhone: event.target.value,
+                          },
+                        }))
+                      }
+                    />
+                  </label>
+                  <label className="admin-attestation">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(manualEvidence[order.orderNumber]?.confirmed)}
+                      onChange={(event) =>
+                        setManualEvidence((items) => ({
+                          ...items,
+                          [order.orderNumber]: {
+                            ...items[order.orderNumber],
+                            confirmed: event.target.checked,
+                          },
+                        }))
+                      }
+                    />
+                    {locale === 'en'
+                      ? 'I matched the transaction and order amount in Wave.'
+                      : 'J’ai vérifié la transaction et le montant de la commande dans Wave.'}
+                  </label>
+                </div>
+              )}
+              <div className="admin-order-actions">
+                <button
+                  className="button"
+                  type="button"
+                  disabled={
+                    busyOrder === order.orderNumber ||
+                    (!order.paymentProofId &&
+                      (!manualEvidence[order.orderNumber]?.confirmed ||
+                        (manualEvidence[order.orderNumber]?.reference || '').trim().length < 5 ||
+                        (manualEvidence[order.orderNumber]?.senderPhone || '').trim().length < 8))
+                  }
+                  onClick={() =>
+                    updateOrder(order, {
+                      paymentAction: 'verify',
+                      ...(!order.paymentProofId
+                        ? {
+                            manualConfirmed: true,
+                            manualReference: manualEvidence[order.orderNumber]?.reference,
+                            manualSenderPhone: manualEvidence[order.orderNumber]?.senderPhone,
+                          }
+                        : {}),
+                    })
+                  }
+                >
+                  {locale === 'en' ? 'Approve Payment' : 'Approuver Le Paiement'}
+                </button>
+                <label>
+                  {locale === 'en' ? 'Rejection Reason' : 'Motif Du Rejet'}
+                  <input
+                    value={rejectionReasons[order.orderNumber] || ''}
+                    maxLength="500"
+                    onChange={(event) =>
+                      setRejectionReasons((items) => ({
+                        ...items,
+                        [order.orderNumber]: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+                <button
+                  className="button secondary"
+                  type="button"
+                  disabled={
+                    busyOrder === order.orderNumber ||
+                    (rejectionReasons[order.orderNumber] || '').trim().length < 8
+                  }
+                  onClick={() =>
+                    updateOrder(order, {
+                      paymentAction: 'reject',
+                      rejectionReason: rejectionReasons[order.orderNumber],
+                    })
+                  }
+                >
+                  {locale === 'en' ? 'Reject Payment' : 'Rejeter Le Paiement'}
+                </button>
+              </div>
+            </div>
+          ) : null}
+          {(transitions[order.status] || []).length ? (
+            <div className="admin-order-actions">
+              {(transitions[order.status] || []).map((nextStatus) => (
+                <button
+                  className="button secondary"
+                  type="button"
+                  key={nextStatus}
+                  disabled={busyOrder === order.orderNumber}
+                  onClick={() => updateOrder(order, { status: nextStatus })}
+                >
+                  {busyOrder === order.orderNumber
+                    ? text(locale, 'loading')
+                    : `${locale === 'en' ? 'Mark' : 'Passer En'} ${nextStatus}`}
+                </button>
+              ))}
+            </div>
+          ) : null}
         </article>
       ))}
     </section>

@@ -57,7 +57,12 @@ export default async function adminOrders(req, res) {
 
     const database = await getDatabase();
     const orders = database.collection('glowafrique_orders');
+    const auditLogs = database.collection('glowafrique_admin_audit_logs');
     await orders.createIndex({ status: 1, createdAt: 1 });
+    await Promise.all([
+      auditLogs.createIndex({ createdAt: -1 }),
+      auditLogs.createIndex({ actorUserId: 1, createdAt: -1 }),
+    ]);
 
     if (req.method === 'GET') {
       const url = new URL(req.url || '/', 'http://localhost');
@@ -156,20 +161,43 @@ export default async function adminOrders(req, res) {
             confirmedAt: now,
           };
       }
-      const updated = await orders.findOneAndUpdate(
-        { orderNumber, paymentMethod: 'wave', paymentStatus: 'awaiting_verification' },
-        {
-          $set: {
-            paymentStatus,
-            paymentRejectionReason: paymentAction === 'reject' ? rejectionReason : null,
-            paymentVerification: verification,
-            ...(paymentAction === 'verify' && !proof ? { waveSenderPhone: manualSenderPhone } : {}),
-            updatedAt: now,
-          },
-        },
-        { returnDocument: 'after' },
-      );
-      const updatedOrder = updated && (updated.value || updated);
+      let updatedOrder = null;
+      const session = database.client.startSession();
+      try {
+        await session.withTransaction(async () => {
+          const updated = await orders.findOneAndUpdate(
+            { orderNumber, paymentMethod: 'wave', paymentStatus: 'awaiting_verification' },
+            {
+              $set: {
+                paymentStatus,
+                paymentRejectionReason: paymentAction === 'reject' ? rejectionReason : null,
+                paymentVerification: verification,
+                ...(paymentAction === 'verify' && !proof
+                  ? { waveSenderPhone: manualSenderPhone }
+                  : {}),
+                updatedAt: now,
+              },
+            },
+            { returnDocument: 'after', session },
+          );
+          updatedOrder = updated && (updated.value || updated);
+          if (updatedOrder) {
+            await auditLogs.insertOne(
+              {
+                actorUserId: user._id,
+                action: `payment.${paymentStatus}`,
+                targetOrderNumber: orderNumber,
+                from: 'awaiting_verification',
+                to: paymentStatus,
+                createdAt: now,
+              },
+              { session },
+            );
+          }
+        });
+      } finally {
+        await session.endSession();
+      }
       if (!updatedOrder)
         return res.status(409).json({ error: 'This Wave payment is not awaiting verification.' });
       return res.status(200).json({ order: outputOrder(updatedOrder) });
@@ -211,6 +239,17 @@ export default async function adminOrders(req, res) {
         }
         await orders.updateOne({ _id: order._id, status: order.status }, patch, { session });
         updatedOrder = await orders.findOne({ _id: order._id }, { session });
+        await auditLogs.insertOne(
+          {
+            actorUserId: user._id,
+            action: 'order.status',
+            targetOrderNumber: orderNumber,
+            from: order.status,
+            to: nextStatus,
+            createdAt: now,
+          },
+          { session },
+        );
       });
     } finally {
       await session.endSession();
