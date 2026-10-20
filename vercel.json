@@ -7,7 +7,6 @@
     { "source": "/api/reviews", "destination": "/api/router?route=reviews" },
     { "source": "/api/admin/orders", "destination": "/api/router?route=admin/orders" },
     { "source": "/api/admin/inventory", "destination": "/api/router?route=admin/inventory" },
-    { "source": "/api/chat", "destination": "/api/router?route=chat" },
     { "source": "/api/contact", "destination": "/api/router?route=contact" },
     { "source": "/api/newsletter", "destination": "/api/router?route=newsletter" },
     { "source": "/api/auth/register", "destination": "/api/router?route=auth/register" },
@@ -30,7 +29,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://api.openai.com; upgrade-insecure-requests"
+          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self'; upgrade-insecure-requests"
         },
         { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains" },
         { "key": "X-Frame-Options", "value": "DENY" },

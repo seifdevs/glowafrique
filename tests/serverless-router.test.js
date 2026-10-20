@@ -9,7 +9,7 @@ test('Vercel exposes one API function for the existing endpoints', () => {
     .filter((entry) => entry.isFile() && entry.name.endsWith('.js'))
     .map((entry) => entry.name);
   assert.deepEqual(functionFiles, ['router.js']);
-  assert.equal(Object.keys(routeHandlers).length, 17);
+  assert.equal(Object.keys(routeHandlers).length, 16);
 });
 
 test('rewrites preserve all API paths and dispatch nested routes and query strings', () => {
@@ -24,7 +24,6 @@ test('rewrites preserve all API paths and dispatch nested routes and query strin
     );
   }
   const routes = {
-    '/api/router?route=chat': 'chat',
     '/api/router?route=contact': 'contact',
     '/api/router?route=locations': 'locations',
     '/api/router?route=newsletter': 'newsletter',

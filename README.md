@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-`npm run dev` starts the Vite React storefront and local `/api` handlers together on one origin. Copy `.env.example` to `.env` and configure `MONGODB_URI` to enable account registration, login, orders, reviews, and control-panel data; configure `OPENAI_API_KEY` to enable AI chat replies. Without those values, the frontend still loads and the related APIs return a configuration error. Run through Vite because the React frontend and API routes require it.
+`npm run dev` starts the Vite React storefront and local `/api` handlers together on one origin. Copy `.env.example` to `.env` and configure `MONGODB_URI` to enable account registration, login, orders, reviews, and control-panel data. Without that value, the frontend still loads and database-backed APIs return a configuration error. Run through Vite because the React frontend and API routes require it.
 
 ## Build and deploy
 
@@ -74,5 +74,4 @@ The current source folder contains 73 images grouped into 34 product records (70
 
 - The React storefront includes the 10% first-order announcement, 45,000 CFA free-delivery threshold, CFA currency, and rewards conversion display.
 - One authenticated review per product awards 15 server-stored points. Purchase points are calculated from the discounted XOF merchandise subtotal and credited to the customer account after an administrator marks the order delivered. Contact and newsletter forms are still not connected to a messaging or mailing-list service.
-- The Glow Guide uses a Vercel serverless endpoint at `api/chat.js` with OpenAI's Responses API. Set `OPENAI_API_KEY` as a server-side deployment environment variable; optionally set `OPENAI_MODEL`. The browser never receives the key. Without a configured endpoint, the guide uses its local catalog/FAQ fallback.
 - Set the verified legal business name, business address, support email and phone, social account URLs, and confirmed shipping/returns terms before launch. These details must be supplied by the store owner; do not publish invented identity or policy facts.

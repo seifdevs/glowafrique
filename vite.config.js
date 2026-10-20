@@ -11,7 +11,6 @@ const apiRoutes = {
   '/api/reviews': '/api-handlers/reviews.js',
   '/api/admin/orders': '/api-handlers/admin/orders.js',
   '/api/admin/inventory': '/api-handlers/admin/inventory.js',
-  '/api/chat': '/api-handlers/chat.js',
   '/api/contact': '/api-handlers/contact.js',
   '/api/newsletter': '/api-handlers/newsletter.js',
   '/api/auth/register': '/api-handlers/auth/register.js',
@@ -28,9 +27,6 @@ export default defineConfig(({ mode }) => {
   for (const key of [
     'MONGODB_URI',
     'MONGODB_DB',
-    'OPENAI_API_KEY',
-    'OPENAI_MODEL',
-    'OPENAI_MONTHLY_REQUEST_CAP',
     'RESEND_API_KEY',
     'RESEND_FROM_EMAIL',
     'SUPPORT_EMAIL',

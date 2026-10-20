@@ -1,4 +1,3 @@
-import chat from '../api-handlers/chat.js';
 import contact from '../api-handlers/contact.js';
 import locations from '../api-handlers/locations.js';
 import newsletter from '../api-handlers/newsletter.js';
@@ -17,7 +16,6 @@ import register from '../api-handlers/auth/register.js';
 import paystackCallback from '../api-handlers/payments/paystack-callback.js';
 
 export const routeHandlers = Object.freeze({
-  chat,
   contact,
   locations,
   newsletter,

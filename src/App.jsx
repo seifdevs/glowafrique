@@ -1235,12 +1235,30 @@ function AdminPage() {
     shipped: ['delivered'],
   };
   return (
-    <section className="section">
-      <h1>GlowAfrique · {locale === 'en' ? 'Administration' : 'Administration'}</h1>
-      <div className="admin-order-actions">
+    <section className="section control-page">
+      <div className="control-heading">
+        <div>
+          <p className="eyebrow">GLOWAFRIQUE / CONTROL PANEL</p>
+          <h1>{locale === 'en' ? 'Store Dashboard' : 'Tableau De Bord'}</h1>
+          <p className="control-subtitle">
+            {locale === 'en'
+              ? 'Manage orders, payment reviews, and product inventory.'
+              : 'Gérez Les Commandes, Les Paiements Et Le Stock Des Produits.'}
+          </p>
+        </div>
+        <span className="control-status">
+          <i aria-hidden="true" />
+          {locale === 'en' ? 'Store Admin' : 'Administration'}
+        </span>
+      </div>
+      <nav
+        className="control-tabs"
+        aria-label={locale === 'en' ? 'Admin sections' : 'Sections Admin'}
+      >
         <button
           className={`button ${section === 'orders' ? '' : 'secondary'}`}
           type="button"
+          aria-pressed={section === 'orders'}
           onClick={() => setSection('orders')}
         >
           {locale === 'en' ? 'Orders' : 'Commandes'}
@@ -1248,12 +1266,17 @@ function AdminPage() {
         <button
           className={`button ${section === 'inventory' ? '' : 'secondary'}`}
           type="button"
+          aria-pressed={section === 'inventory'}
           onClick={() => setSection('inventory')}
         >
           {locale === 'en' ? 'Inventory' : 'Stock'}
         </button>
-      </div>
-      <p role="status">{feedback}</p>
+      </nav>
+      {feedback ? (
+        <p className="control-feedback" role="status">
+          {feedback}
+        </p>
+      ) : null}
       {section === 'inventory' ? (
         <div className="inventory-list">
           {inventory.map((item) => (
@@ -1534,7 +1557,7 @@ function Newsletter() {
     }
   }
   return (
-    <section className="newsletter">
+    <section className="newsletter footer-newsletter">
       <h2>{text(locale, 'newsletter')}</h2>
       <form onSubmit={submit}>
         <label className="sr-only" htmlFor="newsletter-email">
@@ -1730,10 +1753,24 @@ function Footer() {
       </section>
       <footer className="site-footer">
         <div className="footer-columns">
-          <section className="footer-about">
-            <h3>{text(locale, 'about')}</h3>
-            <p>{text(locale, 'aboutText')}</p>
-            <PageLink to="/about">{text(locale, 'view')} →</PageLink>
+          <section className="footer-social">
+            <h3>{locale === 'en' ? 'Follow GlowAfrique' : 'Suivez GlowAfrique'}</h3>
+            <a
+              href="https://www.instagram.com/glowafrique.ci?obrf=YnNhdGhsZGQ0ZXF5&utm_source=qr"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+            >
+              Instagram ↗
+            </a>
+            <a
+              href="https://www.tiktok.com/@glowafrique7?_r=1&_t=ZS-9AdIk5iQXFU"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="TikTok"
+            >
+              TikTok ↗
+            </a>
           </section>
           <Newsletter />
           <section className="footer-policies">
@@ -1774,17 +1811,13 @@ function Footer() {
   );
 }
 
-function CartAndChat() {
+function CartAndSocialLinks() {
   const { locale, cart, setCart, cartOpen: open, setCartOpen: setOpen } = useStore();
   const [checkout, setCheckout] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [busy, setBusy] = useState(false);
   const [total, setTotal] = useState(null);
   const [proofPreview, setProofPreview] = useState('');
-  const [assistantOpen, setAssistantOpen] = useState(false);
-  const [chatInput, setChatInput] = useState('');
-  const [chatBusy, setChatBusy] = useState(false);
-  const [chatMessages, setChatMessages] = useState([]);
   useEffect(() => {
     if (!open || !cart.length) return;
     fetch('/api/order-quote', {
@@ -1803,46 +1836,6 @@ function CartAndChat() {
         .map((item) => (item.id === id ? { ...item, quantity } : item))
         .filter((item) => item.quantity > 0),
     );
-  }
-  async function submitChat(event) {
-    event.preventDefault();
-    const message = chatInput.trim();
-    if (!message || chatBusy) return;
-    const history = chatMessages.slice(-8);
-    setChatMessages((items) => [...items, { role: 'user', content: message }]);
-    setChatInput('');
-    setChatBusy(true);
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message,
-          history,
-          language: locale,
-          products: PRODUCTS.slice(0, 20).map(({ id, name, brand, category, price }) => ({
-            id,
-            name,
-            brand,
-            category,
-            price,
-          })),
-        }),
-      });
-      const result = await response.json();
-      if (!response.ok)
-        throw new Error(
-          locale === 'en'
-            ? 'Glow Guide is temporarily unavailable. Please contact us for help.'
-            : 'Glow Guide est momentanément indisponible. Contactez-nous pour obtenir de l’aide.',
-        );
-      setChatMessages((items) => [...items, { role: 'assistant', content: result.reply }]);
-    } catch (error) {
-      setChatMessages((items) => [...items, { role: 'assistant', content: error.message }]);
-    } finally {
-      setChatBusy(false);
-    }
   }
   async function placeOrder(e) {
     e.preventDefault();
@@ -1941,71 +1934,28 @@ function CartAndChat() {
           </svg>
         </a>
       ) : null}
-      {assistantOpen ? (
-        <aside className="shop-assistant open" aria-label="GlowAfrique assistant">
-          <header className="assistant-head">
-            <b>Glow Guide</b>
-            <button
-              type="button"
-              onClick={() => setAssistantOpen(false)}
-              aria-label={locale === 'en' ? 'Close assistant' : 'Fermer l’assistant'}
-            >
-              ×
-            </button>
-          </header>
-          <div className="assistant-messages" role="log" aria-live="polite">
-            {!chatMessages.length ? (
-              <p className="assistant-bubble">
-                {locale === 'en'
-                  ? 'Ask a question about products, orders, or store information.'
-                  : 'Posez une question sur les produits, les commandes ou la boutique.'}
-              </p>
-            ) : null}
-            {chatMessages.map((message, index) => (
-              <p
-                className={`assistant-bubble ${message.role === 'user' ? 'user-bubble' : ''}`}
-                key={`${index}-${message.role}`}
-              >
-                {message.content}
-              </p>
-            ))}
-            {chatBusy ? (
-              <p className="assistant-bubble" role="status">
-                {text(locale, 'loading')}
-              </p>
-            ) : null}
-          </div>
-          <form onSubmit={submitChat}>
-            <label className="sr-only" htmlFor="glow-guide-input">
-              {locale === 'en' ? 'Your question' : 'Votre question'}
-            </label>
-            <input
-              id="glow-guide-input"
-              value={chatInput}
-              onChange={(event) => setChatInput(event.target.value)}
-              maxLength={600}
-              placeholder={locale === 'en' ? 'Ask Glow Guide' : 'Demandez à Glow Guide'}
-              required
-            />
-            <button
-              type="submit"
-              disabled={chatBusy}
-              aria-label={locale === 'en' ? 'Send question' : 'Envoyer la question'}
-            >
-              ↑
-            </button>
-          </form>
-        </aside>
-      ) : null}
-      <button
-        type="button"
-        className="assistant-launch"
-        onClick={() => setAssistantOpen((value) => !value)}
-        aria-expanded={assistantOpen}
-        aria-label={locale === 'en' ? 'Open Glow Guide assistant' : 'Ouvrir l’assistant Glow Guide'}
+      <a
+        className="instagram-float"
+        href="https://www.instagram.com/glowafrique.ci?obrf=YnNhdGhsZGQ0ZXF5&utm_source=qr"
+        target="_blank"
+        rel="noreferrer"
+        aria-label={locale === 'en' ? 'Follow GlowAfrique on Instagram' : 'Suivez GlowAfrique sur Instagram'}
       >
-        ✦
-      </button>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect
+            x="3"
+            y="3"
+            width="18"
+            height="18"
+            rx="5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          />
+          <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2" />
+          <circle cx="17.5" cy="6.8" r="1.2" fill="currentColor" />
+        </svg>
+      </a>
       {open ? (
         <div
           className="cart-overlay"
@@ -2219,6 +2169,7 @@ function RouteContent() {
 
 export default function App() {
   const location = useLocation();
+  const isAdminRoute = /\/(control|admin)\/?$/.test(location.pathname);
   const locale = location.pathname.startsWith('/en') ? 'en' : 'fr';
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -2262,12 +2213,12 @@ export default function App() {
   );
   return (
     <StoreContext.Provider value={value}>
-      <Header />
-      <main id="page-content">
+      {!isAdminRoute ? <Header /> : null}
+      <main id="page-content" className={isAdminRoute ? 'admin-shell' : undefined}>
         <RouteContent />
       </main>
-      <Footer />
-      <CartAndChat />
+      {!isAdminRoute ? <Footer /> : null}
+      {!isAdminRoute ? <CartAndSocialLinks /> : null}
     </StoreContext.Provider>
   );
 }
