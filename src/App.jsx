@@ -83,6 +83,15 @@ const COPY = {
     skin: 'Shop trusted skincare, hair and body essentials selected for GlowAfrique.',
     bestHeading: 'Best Sellers',
     newHeading: 'Explore The Collection',
+    routineEyebrow: 'A THOUGHTFUL PLACE TO START',
+    routineHeading: 'Build a routine that feels like you',
+    routineIntro: 'Find a few care essentials that fit your needs and your everyday rhythm.',
+    routineStepOne: 'Start with what matters',
+    routineStepOneText: 'Explore the concerns you would like your routine to focus on.',
+    routineStepTwo: 'Discover trusted brands',
+    routineStepTwoText: 'Browse considered beauty and care from our featured brands.',
+    routineStepThree: 'Choose your essentials',
+    routineStepThreeText: 'Find products to make everyday care feel simple.',
     aboutText:
       'GlowAfrique is an independent beauty and care shop serving customers in Côte d’Ivoire. Browse the current product collection, review product information, and contact our team with questions about an item or order.',
     legalNotice:
@@ -175,6 +184,15 @@ const COPY = {
     skin: 'Découvrez une sélection de soins pour le visage, les cheveux et le corps proposée par GlowAfrique.',
     bestHeading: 'Meilleures Ventes',
     newHeading: 'Découvrir La Sélection',
+    routineEyebrow: 'UN BON POINT DE DÉPART',
+    routineHeading: 'Une routine qui vous ressemble',
+    routineIntro: 'Choisissez quelques soins adaptés à vos besoins et à votre quotidien.',
+    routineStepOne: 'Commencez par vos besoins',
+    routineStepOneText: 'Parcourez les besoins que vous souhaitez prendre en compte.',
+    routineStepTwo: 'Découvrez des marques de confiance',
+    routineStepTwoText: 'Explorez notre sélection de marques beauté et soin.',
+    routineStepThree: 'Choisissez vos essentiels',
+    routineStepThreeText: 'Trouvez des produits pour simplifier votre routine quotidienne.',
     aboutText:
       'GlowAfrique est une boutique indépendante de produits de beauté et de soin qui propose sa sélection aux clients en Côte d’Ivoire. Parcourez les produits disponibles et contactez notre équipe pour toute question sur un article ou une commande.',
     legalNotice:
@@ -288,61 +306,26 @@ function ProductGrid({ products }) {
 }
 
 function Carousel({ items, label, renderItem, variant = 'concern' }) {
-  const { locale } = useStore();
-  const [bounds, setBounds] = useState({ left: 0, max: 0 });
-  const ref = React.useRef(null);
-  const move = (direction) => {
-    const node = ref.current;
-    if (!node) return;
-    node.scrollBy({
-      left: direction * Math.max(200, node.clientWidth * 0.75),
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-    });
-  };
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const update = () =>
-      setBounds({ left: node.scrollLeft, max: Math.max(0, node.scrollWidth - node.clientWidth) });
-    update();
-    node.addEventListener('scroll', update, { passive: true });
-    const observer = new ResizeObserver(update);
-    observer.observe(node);
-    return () => {
-      observer.disconnect();
-      node.removeEventListener('scroll', update);
-    };
-  }, []);
+  const duration = `${Math.max(32, items.length * (variant === 'brand' ? 5.5 : 4.5))}s`;
   return (
-    <div className="react-carousel-wrap">
-      <div className="horizontal-controls" role="group" aria-label={label}>
-        <button
-          type="button"
-          className="icon-button"
-          aria-label={locale === 'en' ? 'Scroll Left' : 'Défiler À Gauche'}
-          onClick={() => move(-1)}
-          disabled={bounds.left < 2}
-        >
-          ‹
-        </button>
-        <button
-          type="button"
-          className="icon-button"
-          aria-label={locale === 'en' ? 'Scroll Right' : 'Défiler À Droite'}
-          onClick={() => move(1)}
-          disabled={bounds.left >= bounds.max - 2}
-        >
-          ›
-        </button>
-      </div>
+    <div
+      className={`infinite-carousel ${variant}-marquee`}
+      style={{ '--marquee-duration': duration }}
+      tabIndex={0}
+      role="region"
+      aria-label={label}
+    >
       <div
-        ref={ref}
-        className={variant === 'brand' ? 'featured-brand-grid' : 'concern-carousel'}
-        tabIndex="0"
-        role="region"
-        aria-label={label}
+        className="infinite-carousel-track"
       >
-        {items.map(renderItem)}
+        <div className="infinite-carousel-group">
+          {items.map(renderItem)}
+        </div>
+        <div className="infinite-carousel-group" aria-hidden="true" inert>
+          {items.map((item, index) =>
+            React.cloneElement(renderItem(item), { key: `duplicate-${index}` }),
+          )}
+        </div>
       </div>
     </div>
   );
@@ -358,6 +341,43 @@ function SectionHeading({ eyebrow = 'GlowAfrique', title, href }) {
       </div>
       {href ? <PageLink to={href}>{text(locale, 'view')} →</PageLink> : null}
     </div>
+  );
+}
+
+function ConcernIcon({ concern }) {
+  const name = concern.toLocaleLowerCase();
+  let icon = 'sparkle';
+  if (/cheveux|hair|corps|body/.test(name)) icon = 'hair';
+  else if (/sèche|dry/.test(name)) icon = 'drop';
+  else if (/solaire|sun protection|sunscreen/.test(name)) icon = 'sun';
+  else if (/acné|imperfection|blemish/.test(name)) icon = 'sparkle';
+  else if (/pores|sébum|oil/.test(name)) icon = 'pores';
+  else if (/rides|ferm|wrinkle|firmness/.test(name)) icon = 'lines';
+  else if (/taches|hyperpigmentation|dark spot/.test(name)) icon = 'spots';
+  else if (/yeux|eye care/.test(name)) icon = 'eye';
+  else if (/teint|tone/.test(name)) icon = 'tone';
+  else if (/barrière|barrier/.test(name)) icon = 'shield';
+  else if (/lèvres|lips/.test(name)) icon = 'lips';
+  else if (/terne|dull/.test(name)) icon = 'sun';
+
+  const shapes = {
+    hair: <><path d="M5 20c1-3 0-5-1-7s0-6 3-8" /><path d="M10 20c1-3 0-5-1-7s0-6 3-8" /><path d="M15 20c1-3 0-5-1-7s0-6 3-8" /><path d="M19 20c1-3 0-5-1-7s0-6 3-8" /></>,
+    drop: <><path d="M12 3s-6 6.5-6 11a6 6 0 0 0 12 0c0-4.5-6-11-6-11Z" /><path d="M9 15a3 3 0 0 0 3 3" /></>,
+    sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" /></>,
+    pores: <><circle cx="8" cy="8" r="1.5" /><circle cx="16" cy="7" r="1" /><circle cx="13" cy="13" r="1.5" /><circle cx="7" cy="16" r="1" /><circle cx="18" cy="17" r="1.5" /></>,
+    lines: <><path d="M12 3c4.4 0 7 3.6 7 8s-2.6 10-7 10-7-5.6-7-10 2.6-8 7-8Z" /><path d="M8 10h3m2 0h3M9 15c2 1 4 1 6 0" /></>,
+    spots: <><circle cx="12" cy="12" r="7" /><path d="M12 1v3m0 16v3M1 12h3m16 0h3M5 5l2 2m10 10 2 2" /><circle cx="12" cy="12" r="2" /></>,
+    eye: <><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" /><circle cx="12" cy="12" r="2.5" /></>,
+    tone: <><circle cx="12" cy="12" r="9" /><path d="M12 3v18a9 9 0 0 0 0-18Z" /></>,
+    shield: <><path d="M12 3 19 6v5c0 4.5-2.9 8-7 10-4.1-2-7-5.5-7-10V6l7-3Z" /><path d="m9 12 2 2 4-4" /></>,
+    lips: <><path d="M3 12s3.3-4 9-4 9 4 9 4-3.3 5-9 5-9-5-9-5Z" /><path d="M3 12c3 0 4-2 9-2s6 2 9 2" /></>,
+    sparkle: <><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" /><path d="m19 15 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z" /></>,
+  };
+
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" focusable="false">
+      {shapes[icon]}
+    </svg>
   );
 }
 
@@ -424,6 +444,49 @@ function HomePage() {
         <SectionHeading title={text(locale, 'bestHeading')} href="/collections/best-sellers" />
         <ProductGrid products={best.length ? best : PRODUCTS.slice(0, 8)} />
       </section>
+      <section className="section concern-section">
+        <SectionHeading title={text(locale, 'concerns')} href="/collections/concerns" />
+        <Carousel
+          items={concerns}
+          label={text(locale, 'concerns')}
+          renderItem={(concern) => {
+            const count = PRODUCTS.filter(
+              (p) => p.category === concern || (p.concerns || []).includes(concern),
+            ).length;
+            return (
+              <PageLink
+                className="concern-tile"
+                key={concern}
+                to={`/collections/concern/${slug(concern)}`}
+              >
+                <span className="concern-icon" aria-hidden="true">
+                  <ConcernIcon concern={concern} />
+                </span>
+                <span className="concern-label">{concernLabel(concern)}</span>
+                <small>
+                  {count} {locale === 'en' ? 'products' : 'produits'}
+                </small>
+              </PageLink>
+            );
+          }}
+        />
+      </section>
+      <section className="section routine-guide">
+        <div className="routine-guide-heading">
+          <p className="eyebrow">{text(locale, 'routineEyebrow')}</p>
+          <h2>{text(locale, 'routineHeading')}</h2>
+          <p>{text(locale, 'routineIntro')}</p>
+        </div>
+        <div className="routine-guide-steps">
+          {[1, 2, 3].map((step) => (
+            <article key={step}>
+              <span aria-hidden="true">0{step}</span>
+              <h3>{text(locale, `routineStep${['One', 'Two', 'Three'][step - 1]}`)}</h3>
+              <p>{text(locale, `routineStep${['One', 'Two', 'Three'][step - 1]}Text`)}</p>
+            </article>
+          ))}
+        </div>
+      </section>
       <section className="section featured-brand-section">
         <SectionHeading title={text(locale, 'brands')} href="/collections/brands" />
         <Carousel
@@ -452,33 +515,6 @@ function HomePage() {
               </span>
             </PageLink>
           )}
-        />
-      </section>
-      <section className="section concern-section">
-        <SectionHeading title={text(locale, 'concerns')} href="/collections/concerns" />
-        <Carousel
-          items={concerns}
-          label={text(locale, 'concerns')}
-          renderItem={(concern) => {
-            const count = PRODUCTS.filter(
-              (p) => p.category === concern || (p.concerns || []).includes(concern),
-            ).length;
-            return (
-              <PageLink
-                className="concern-tile"
-                key={concern}
-                to={`/collections/concern/${slug(concern)}`}
-              >
-                <span className="concern-icon" aria-hidden="true">
-                  ✧
-                </span>
-                <span className="concern-label">{concernLabel(concern)}</span>
-                <small>
-                  {count} {locale === 'en' ? 'products' : 'produits'}
-                </small>
-              </PageLink>
-            );
-          }}
         />
       </section>
       <section className="promo-strip">
