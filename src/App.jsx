@@ -1217,7 +1217,7 @@ function AccountPage() {
 }
 
 function AdminPage() {
-  const { locale } = useStore();
+  const { locale, user } = useStore();
   const [orders, setOrders] = useState([]);
   const [inventory, setInventory] = useState([]);
   const [status, setStatus] = useState('pending');
@@ -1228,6 +1228,7 @@ function AdminPage() {
   const [manualEvidence, setManualEvidence] = useState({});
   const [rejectionReasons, setRejectionReasons] = useState({});
   useEffect(() => {
+    if (user?.role !== 'admin') return;
     if (section === 'inventory') {
       fetch('/api/admin/inventory', { credentials: 'same-origin' })
         .then(async (response) => {
@@ -1245,7 +1246,7 @@ function AdminPage() {
         setOrders(data.orders || []);
       })
       .catch((error) => setFeedback(error.message));
-  }, [locale, status, section]);
+  }, [locale, status, section, user]);
   async function saveStock(event, item) {
     event.preventDefault();
     const quantity = Number(new FormData(event.currentTarget).get('quantity'));
@@ -1302,6 +1303,23 @@ function AdminPage() {
     processing: ['shipped', 'cancelled'],
     shipped: ['delivered'],
   };
+  if (!user)
+    return (
+      <section className="section account-shell">
+        <h1>Administrator sign-in required</h1>
+        <p>Sign in with an administrator account to manage orders and inventory.</p>
+        <PageLink to="/account">Go to sign in</PageLink>
+      </section>
+    );
+  if (user.role !== 'admin')
+    return (
+      <section className="section account-shell">
+        <h1>Administrator access required</h1>
+        <p>This page is available to administrator accounts only.</p>
+        <PageLink to="/account">Go to your account</PageLink>
+      </section>
+    );
+
   return (
     <section className="section control-page">
       <div className="control-heading">
@@ -2014,12 +2032,8 @@ function CartAndSocialLinks() {
       }
       setFeedback(
         paymentMethod === 'wave'
-          ? locale === 'en'
-            ? 'Thank you. Your payment will be reviewed by GlowAfrique.'
-            : 'Merci. Votre paiement sera vérifié par GlowAfrique.'
-          : locale === 'en'
-            ? `Order ${result.order.orderNumber} placed.`
-            : `Commande ${result.order.orderNumber} enregistrée.`,
+          ? `Thanks, we received your order. Your Wave payment will be reviewed by GlowAfrique. Order ${result.order.orderNumber}.`
+          : `Thanks, we received your order. Order ${result.order.orderNumber}.`,
       );
       setCart([]);
       setCheckout(false);
