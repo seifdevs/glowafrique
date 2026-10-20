@@ -1,0 +1,209 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const catalogFile = path.join(root, 'products-edit.csv');
+const pendingIngredients = {
+  en: 'Full ingredient list not yet provided by the supplier. Please refer to the product packaging.',
+  fr: 'La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.',
+};
+const copy = {
+  'axis-y-sunday-morning-cleansing-foam': {
+    name: 'AXIS-Y Sunday Morning Refreshing Cleansing Foam',
+    en: ['Start your skincare routine with a refreshing facial cleanser that helps lift away daily impurities and excess oil.', 'Its foaming texture creates a simple, comfortable cleansing step for your morning and evening routine.', 'A fresh, clean-feeling finish makes it an easy addition to everyday skincare.'].join('\n\n'),
+    fr: ['Commencez votre routine avec un nettoyant visage rafraîchissant qui aide à éliminer les impuretés du quotidien et l’excès de sébum.', 'Sa texture moussante offre une étape de nettoyage simple et agréable, le matin comme le soir.', 'Il laisse une sensation de fraîcheur et de propreté, pour s’intégrer facilement aux soins quotidiens.'].join('\n\n'),
+    useEn: ['1. Wet your face with lukewarm water.', '2. Work a small amount into a gentle lather.', '3. Massage over the face, avoiding the eyes, then rinse thoroughly.'].join('\n'),
+    useFr: ['1. Mouillez le visage à l’eau tiède.', '2. Faites mousser une petite quantité entre vos mains.', '3. Massez le visage en évitant les yeux, puis rincez soigneusement.'].join('\n'),
+  },
+  'beauty-of-joseon-mate-sun-stick': {
+    en: ['A convenient sunscreen stick designed for easy application and on-the-go reapplication.', 'Its soft-matte finish makes it a practical option for customers who prefer a less shiny feel.', 'Compact and easy to carry, it fits naturally into a daily sun-protection routine.'].join('\n\n'),
+    fr: ['Un stick solaire pratique, conçu pour une application facile et pour renouveler la protection en déplacement.', 'Son fini mat convient aux personnes qui préfèrent un toucher moins brillant.', 'Compact et facile à emporter, il trouve naturellement sa place dans une routine de protection solaire.'].join('\n\n'),
+    useEn: ['1. Apply generously as the final step of your morning skincare routine.', '2. Cover all exposed areas evenly, following the package instructions.', '3. Reapply regularly, especially after sweating, swimming, or wiping the skin.'].join('\n'),
+    useFr: ['1. Appliquez généreusement en dernière étape de votre routine du matin.', '2. Couvrez uniformément les zones exposées en suivant les instructions de l’emballage.', '3. Renouvelez régulièrement l’application, notamment après avoir transpiré, nagé ou essuyé la peau.'].join('\n'),
+  },
+  'biodance-rejuvenating-caviar-pdrn-mask': {
+    en: ['A Biodance mask featuring caviar and PDRN, as identified on the supplied packaging.', 'Its sheet-mask format offers a dedicated skincare session for a refreshed, comfortable feel.', 'Use it as part of a relaxing routine, leaving skin feeling refreshed and comfortable.'].join('\n\n'),
+    fr: ['Un masque Biodance au caviar et au PDRN, comme indiqué sur l’emballage fourni.', 'Son format masque en tissu propose une séance de soin dédiée pour une sensation de peau fraîche et confortable.', 'Intégrez-le à un rituel de soin relaxant pour une peau fraîche et confortable.'].join('\n\n'),
+    useEn: ['1. Cleanse your face and prepare your skin according to the package directions.', '2. Apply the mask in the correct position.', '3. Leave it on for the duration specified on the packaging, then remove it and follow the product directions for any remaining essence.', '', 'Confirm the exact mask format and instructions from the supplied product packaging.'].join('\n'),
+    useFr: ['1. Nettoyez votre visage et préparez la peau selon les instructions de l’emballage.', '2. Positionnez correctement le masque.', '3. Laissez poser pendant la durée indiquée sur l’emballage, puis retirez-le et suivez les instructions concernant l’essence restante.', '', 'Confirmez le format exact du masque et son mode d’emploi à partir de l’emballage fourni.'].join('\n'),
+  },
+  'celimax-the-vita-a-retinal-shot-tightening-booster': {
+    en: ['A targeted retinal skincare booster for customers looking to refine the appearance of uneven texture and visible pores.', 'Its treatment-focused formula is designed to complement a carefully layered nighttime routine.', 'Introduce it gradually rather than treating it like an ordinary daily moisturizer.'].join('\n\n'),
+    fr: ['Un booster ciblé au rétinal, destiné aux personnes souhaitant améliorer l’apparence d’une texture irrégulière et de pores visibles.', 'Ce soin s’intègre à une routine du soir appliquée avec précaution et par étapes.', 'Introduisez-le progressivement plutôt que de l’utiliser comme une crème hydratante quotidienne ordinaire.'].join('\n\n'),
+    useEn: ['1. At night, apply a small amount to clean, dry skin as directed on the package.', '2. Beginners should start every other night or less frequently, adjusting according to tolerance and product directions.', '3. Follow with moisturizer and wear sunscreen during the day.', '', 'Avoid combining it in the same routine with other strong retinoids or exfoliating treatments until compatibility is established. Patch test first and do not apply to irritated skin. Seek professional advice about retinoid use during pregnancy.'].join('\n'),
+    useFr: ['1. Le soir, appliquez une petite quantité sur une peau propre et sèche, selon les instructions de l’emballage.', '2. Si vous débutez, commencez un soir sur deux ou moins fréquemment, puis adaptez selon la tolérance et les consignes du produit.', '3. Appliquez ensuite une crème hydratante et utilisez une protection solaire le jour.', '', 'Évitez de l’associer dans la même routine à d’autres rétinoïdes puissants ou soins exfoliants avant d’en confirmer la compatibilité. Faites d’abord un test cutané et n’appliquez pas sur une peau irritée. Demandez conseil à un professionnel de santé concernant les rétinoïdes pendant la grossesse.'].join('\n'),
+  },
+  'cosrx-acne-pimple-master-patch': {
+    en: ['A hydrocolloid patch designed to cover individual blemishes and protect the surrounding area from unnecessary touching.', 'Its thin, targeted format makes it easy to incorporate into a simple spot-care routine.', 'A practical option for treating individual spots without applying a product to the entire face.'].join('\n\n'),
+    fr: ['Un patch hydrocolloïde conçu pour couvrir les imperfections ciblées et éviter de toucher inutilement la zone autour.', 'Son format fin et précis s’intègre facilement à une routine localisée.', 'Une option pratique pour traiter une imperfection sans appliquer de produit sur tout le visage.'].join('\n\n'),
+    useEn: ['1. Cleanse the skin and dry the area completely.', '2. Select a patch slightly larger than the blemish and apply it directly.', '3. Leave it in place according to the packaging instructions and replace it when needed.', '', 'Do not apply over infected or significantly damaged skin.'].join('\n'),
+    useFr: ['1. Nettoyez la peau et séchez complètement la zone.', '2. Choisissez un patch légèrement plus grand que l’imperfection et appliquez-le directement.', '3. Laissez-le en place selon les instructions de l’emballage et remplacez-le si nécessaire.', '', 'Ne l’appliquez pas sur une zone infectée ou fortement abîmée.'].join('\n'),
+  },
+  'dr-melaxin-peel-shot-exfoliating-black-rice-ampoule': {
+    en: ['A targeted ampoule from Dr. Melaxin for customers interested in adding a treatment-focused step to their skincare routine.', 'Its peel-shot format is intended for more specific skin-texture care than an everyday moisturizer.', 'Use it thoughtfully and follow the product’s own directions rather than increasing application frequency in pursuit of faster results.'].join('\n\n'),
+    fr: ['Une ampoule ciblée Dr. Melaxin pour ajouter une étape de soin spécifique à votre routine.', 'Son format Peel Shot s’adresse davantage au soin ciblé de la texture de la peau qu’une crème hydratante quotidienne.', 'Utilisez-la avec précaution et suivez son mode d’emploi plutôt que d’augmenter la fréquence pour rechercher des résultats plus rapides.'].join('\n\n'),
+    useEn: ['1. Read the package directions and check whether the product is intended for leave-on or rinse-off use.', '2. Apply only as instructed, keeping it away from the eyes and irritated areas.', '3. Do not combine it with other strong exfoliants or retinoids until its compatibility is confirmed, and use sunscreen during the day.', '', 'Verify the exact formulation and frequency instructions from the manufacturer before publishing definitive directions.'].join('\n'),
+    useFr: ['1. Lisez les instructions de l’emballage et vérifiez si le produit doit rester sur la peau ou être rincé.', '2. Appliquez-le uniquement comme indiqué, en évitant les yeux et les zones irritées.', '3. Ne l’associez pas à d’autres exfoliants puissants ou rétinoïdes avant d’en confirmer la compatibilité; utilisez une protection solaire le jour.', '', 'Vérifiez la formule exacte et la fréquence d’utilisation auprès du fabricant avant de publier des instructions définitives.'].join('\n'),
+  },
+  'dr-althea-345-relief-cream': {
+    en: ['A daily facial moisturizer designed to complement routines focused on comfort and skin-barrier care.', 'Its cream format helps leave skin feeling moisturized without adding a complicated step to your routine.', 'Use it as the finishing layer of your skincare routine or after lighter serums and treatments.'].join('\n\n'),
+    fr: ['Une crème hydratante visage quotidienne pour les routines axées sur le confort et le soin de la barrière cutanée.', 'Sa texture crème aide à laisser la peau hydratée sans compliquer la routine.', 'Utilisez-la en dernière étape de votre routine ou après les sérums et soins plus légers.'].join('\n\n'),
+    useEn: ['1. Cleanse and apply any lighter skincare products first.', '2. Smooth an appropriate amount over the face.', '3. Use in the morning or evening as tolerated.'].join('\n'),
+    useFr: ['1. Nettoyez la peau et appliquez d’abord les soins plus légers.', '2. Étalez une quantité adaptée sur le visage.', '3. Utilisez matin ou soir selon la tolérance de votre peau.'].join('\n'),
+  },
+  'dr-althea-147-barrier-cream': {
+    en: ['A facial cream intended to support a comfortable, moisturized skin barrier.', 'Its richer moisturizing step complements routines that include cleansing, serums, and other lightweight skincare products.', 'A useful option for customers seeking a simple final moisturizing layer.'].join('\n\n'),
+    fr: ['Une crème visage conçue pour contribuer au confort et à l’hydratation de la barrière cutanée.', 'Cette étape hydratante plus riche complète une routine composée d’un nettoyant, de sérums et d’autres soins légers.', 'Une option simple pour terminer la routine par une couche hydratante.'].join('\n\n'),
+    useEn: ['1. Apply after cleansing and any lighter serums.', '2. Smooth a suitable amount evenly over the face.', '3. Use morning or evening as directed by the manufacturer.'].join('\n'),
+    useFr: ['1. Appliquez après le nettoyage et les sérums plus légers.', '2. Étalez uniformément une quantité adaptée sur le visage.', '3. Utilisez matin ou soir selon les instructions du fabricant.'].join('\n'),
+  },
+  'kundal-caffeine-scalp-serum': {
+    en: ['A targeted scalp-care serum designed to complement a regular hair-care routine.', 'Its serum format makes it possible to apply directly to the scalp rather than treating it like a conventional hair-length product.', 'A focused step for customers who want to give their scalp routine additional attention.'].join('\n\n'),
+    fr: ['Un sérum ciblé pour le cuir chevelu, conçu pour compléter une routine capillaire régulière.', 'Son format sérum permet une application directe sur le cuir chevelu, plutôt que sur les longueurs comme un soin capillaire classique.', 'Une étape dédiée aux personnes souhaitant accorder davantage d’attention au cuir chevelu.'].join('\n\n'),
+    useEn: ['1. Part the hair to expose the areas of the scalp where the product is intended to be applied.', '2. Apply the recommended amount according to the label.', '3. Massage gently and leave in or rinse out exactly as specified by the manufacturer.', '', 'No claim is made that the serum prevents hair loss or guarantees hair growth.'].join('\n'),
+    useFr: ['1. Séparez les cheveux pour dégager les zones du cuir chevelu visées.', '2. Appliquez la quantité recommandée sur l’étiquette.', '3. Massez doucement, puis laissez agir ou rincez exactement comme l’indique le fabricant.', '', 'Aucune promesse de prévention de la chute ou de croissance des cheveux n’est avancée.'].join('\n'),
+  },
+  'kundal-linen-flower-deodorant': {
+    en: ['A convenient personal-care deodorant featuring the Linen Flower scent.', 'Its fragrance-focused format is suited to customers who enjoy a fresh, clean scent in their daily routine.', 'A straightforward finishing step for everyday personal care.'].join('\n\n'),
+    fr: ['Un déodorant pratique au parfum Linen Flower.', 'Son parfum frais et propre s’intègre facilement à la routine quotidienne.', 'Une étape simple pour compléter les soins personnels de tous les jours.'].join('\n\n'),
+    useEn: ['1. Check whether the supplied version is a stick, cream, or spray.', '2. Apply to clean, dry underarm skin according to the packaging directions.', '3. Allow the product to dry before dressing if instructed.', '', 'Avoid applying to irritated or freshly damaged skin.'].join('\n'),
+    useFr: ['1. Vérifiez si la version fournie est un stick, une crème ou un spray.', '2. Appliquez sur des aisselles propres et sèches selon les instructions de l’emballage.', '3. Laissez sécher avant de vous habiller si cela est indiqué.', '', 'Évitez l’application sur une peau irritée ou récemment abîmée.'].join('\n'),
+  },
+  'medicube-glow-vanilla-hair-body-mist': {
+    en: ['A vanilla-scented fragrance mist designed to add a soft, warm scent to your personal-care routine.', 'Its mist format makes application simple and convenient.', 'A fragrance option for customers who enjoy a comforting vanilla scent throughout the day.'].join('\n\n'),
+    fr: ['Une brume parfumée à la vanille pour ajouter une note douce et chaleureuse à votre routine de soin.', 'Son format spray facilite l’application.', 'Une option parfumée pour les personnes qui apprécient la vanille au quotidien.'].join('\n\n'),
+    useEn: ['1. Check the label for recommended application areas.', '2. Spray lightly from the recommended distance onto the permitted areas.', '3. Avoid the eyes, inhalation, and irritated skin. Allow the product to dry before dressing where appropriate.', '', 'The supplied product name identifies it for hair and body; follow the label for permitted use.'].join('\n'),
+    useFr: ['1. Vérifiez sur l’étiquette les zones d’application recommandées.', '2. Vaporisez légèrement à la distance indiquée sur les zones autorisées.', '3. Évitez les yeux, l’inhalation et les peaux irritées. Si nécessaire, laissez sécher avant de vous habiller.', '', 'Le nom du produit fourni indique un usage cheveux et corps; suivez l’étiquette pour les zones autorisées.'].join('\n'),
+  },
+  'medicube-deodorant-vanilla-pistachio': {
+    en: ['A personal-care deodorant with the warm fragrance combination of vanilla and pistachio.', 'Its everyday format makes it a convenient addition to a morning or post-shower routine.', 'A scented personal-care option for customers who prefer something more distinctive than a conventional fragrance.'].join('\n\n'),
+    fr: ['Un déodorant au parfum chaleureux de vanille et de pistache.', 'Son format quotidien s’ajoute facilement à une routine du matin ou après la douche.', 'Une option parfumée pour celles et ceux qui recherchent une senteur plus distinctive.'].join('\n\n'),
+    useEn: ['1. Confirm the exact product format from the supplied packaging.', '2. Apply to clean, dry underarm skin according to the manufacturer’s instructions.', '3. Allow it to dry before dressing if required.', '', 'No skin-brightening or other specific result is claimed.'].join('\n'),
+    useFr: ['1. Vérifiez le format exact sur l’emballage fourni.', '2. Appliquez sur des aisselles propres et sèches selon les instructions du fabricant.', '3. Laissez sécher avant de vous habiller si nécessaire.', '', 'Aucun effet éclaircissant ou autre résultat spécifique n’est promis.'].join('\n'),
+  },
+  'medicube-kojic-acid-capsule-cream': {
+    name: 'MEDICUBE Kojic Acid Turmeric Vita Capsule Cream',
+    en: ['A capsule-and-gel cream designed to let customers adjust the texture of their moisturizing step.', 'Its format supports a more customized application within a routine focused on uneven-looking skin tone.', 'Use the proportions recommended for the exact product rather than mixing arbitrary amounts. The supplied packaging identifies a 53 g Kojic Acid Turmeric Vita Capsule Cream.'].join('\n\n'),
+    fr: ['Une crème gel et capsules qui permet d’ajuster la texture de l’étape hydratante.', 'Son format s’intègre à une routine axée sur l’apparence du teint irrégulier.', 'Respectez les proportions recommandées pour ce produit précis. L’emballage fourni identifie une Kojic Acid Turmeric Vita Capsule Cream de 53 g.'].join('\n\n'),
+    useEn: ['1. After cleansing and applying any lighter products, prepare the capsule-and-gel combination as directed on the packaging.', '2. Follow the manufacturer’s recommended proportions for your skin type.', '3. Apply evenly and adjust frequency if irritation occurs.', '', 'The exact product version is confirmed by the supplied packaging. Do not use arbitrary mixing ratios.'].join('\n'),
+    useFr: ['1. Après le nettoyage et les soins plus légers, préparez le mélange capsules-gel comme indiqué sur l’emballage.', '2. Respectez les proportions recommandées par le fabricant pour votre type de peau.', '3. Appliquez uniformément et espacez les utilisations en cas d’irritation.', '', 'La version exacte est confirmée par l’emballage fourni. N’improvisez pas de proportions.'].join('\n'),
+  },
+  'medicube-kojic-acid-turmeric-peel-shot-80ml': {
+    name: 'MEDICUBE Kojic Acid Turmeric Peel Shot, 80 ml',
+    en: ['A targeted exfoliating-style skincare treatment intended for routines focused on the appearance of uneven texture and visible buildup.', 'Its peel-shot format makes it a more treatment-oriented step than an ordinary moisturizer.', 'Use according to the product’s specified application method and frequency.'].join('\n\n'),
+    fr: ['Un soin de type exfoliant pour les routines ciblant l’apparence d’une texture irrégulière et des dépôts visibles.', 'Son format Peel Shot est une étape plus ciblée qu’une crème hydratante ordinaire.', 'Utilisez-le selon le mode d’application et la fréquence indiqués pour le produit.'].join('\n\n'),
+    useEn: ['1. Follow the supplied product’s exact directions for application and whether rinsing is required.', '2. Avoid irritated skin and sensitive areas around the eyes and lips.', '3. Do not combine with other strong exfoliants or retinoids until compatibility is established. Use sunscreen during the day.', '', 'Confirm the exact SKU and usage instructions before publishing definitive details.'].join('\n'),
+    useFr: ['1. Suivez les instructions exactes fournies pour l’application et vérifiez si un rinçage est nécessaire.', '2. Évitez les peaux irritées et les zones sensibles du contour des yeux et des lèvres.', '3. N’associez pas à d’autres exfoliants puissants ou rétinoïdes avant d’en confirmer la compatibilité. Utilisez une protection solaire le jour.', '', 'Confirmez la référence exacte et le mode d’emploi avant de publier des informations définitives.'].join('\n'),
+  },
+  'medicube-glow-sunscreen': {
+    name: 'MEDICUBE Collagen Glow Sunscreen, SPF 50, 50 ml',
+    en: ['A facial sunscreen designed to be the sun-protection step in a daytime skincare routine.', 'Its compact 50 ml format makes it practical for everyday use. The supplied packaging confirms broad-spectrum SPF 50.', 'Apply it consistently as directed to maintain the labeled level of sun protection.'],
+    fr: ['Une protection solaire visage pour l’étape de protection d’une routine de jour.', 'Son format compact de 50 ml est pratique au quotidien. L’emballage fourni confirme une protection large spectre SPF 50.', 'Appliquez-la régulièrement selon les instructions pour maintenir le niveau de protection indiqué.'],
+    useEn: ['1. Apply as the final step of your morning skincare routine.', '2. Use the amount and application method specified on the packaging.', '3. Reapply at the interval indicated by the label, particularly after sweating, swimming, or wiping the skin.', '', 'The supplied package confirms SPF 50. No SPF 50+ or PA++++ rating is claimed.'].join('\n'),
+    useFr: ['1. Appliquez en dernière étape de votre routine du matin.', '2. Utilisez la quantité et la méthode d’application indiquées sur l’emballage.', '3. Renouvelez l’application selon l’intervalle indiqué, notamment après avoir transpiré, nagé ou essuyé la peau.', '', 'L’emballage fourni confirme SPF 50. Aucune mention SPF 50+ ou PA++++ n’est avancée.'].join('\n'),
+  },
+  'medicube-pdrn-pink-capsule-cream': {
+    en: ['A capsule-style moisturizing cream from MEDICUBE’s PDRN Pink product range.', 'Its distinctive texture offers a more customizable moisturizing step within a layered skincare routine.', 'A finishing cream for customers who want their moisturizing step to feel like a dedicated part of their skincare ritual.'].join('\n\n'),
+    fr: ['Une crème hydratante en capsules de la gamme PDRN Pink de MEDICUBE.', 'Sa texture particulière propose une étape hydratante modulable au sein d’une routine de soin par couches.', 'Une crème de finition pour celles et ceux qui souhaitent consacrer une étape à l’hydratation.'].join('\n\n'),
+    useEn: ['1. Apply after cleansing and any lighter serums.', '2. Mix or layer the capsules and gel exactly as directed for this specific formula.', '3. Smooth over the face and adjust the amount according to the manufacturer’s guidance.', '', 'Verify the exact product version. Do not copy instructions for MEDICUBE’s Kojic Acid Capsule Cream if the formulas use different application methods.'].join('\n'),
+    useFr: ['1. Appliquez après le nettoyage et les sérums plus légers.', '2. Mélangez ou superposez capsules et gel exactement comme indiqué pour cette formule.', '3. Étalez sur le visage et adaptez la quantité selon les recommandations du fabricant.', '', 'Vérifiez la version exacte. Ne reprenez pas le mode d’emploi de la crème Kojic Acid Capsule si la méthode diffère.'].join('\n'),
+  },
+  'medicube-lip-sleeping-mask': {
+    en: ['An overnight lip-care product designed to complement a simple evening routine.', 'Its leave-on format provides a convenient final step for customers who prefer dedicated nighttime lip care.', 'A practical bedside essential for keeping lip care part of your daily ritual.'].join('\n\n'),
+    fr: ['Un soin des lèvres de nuit pour compléter une routine du soir simple.', 'Son format sans rinçage offre une dernière étape pratique aux personnes qui préfèrent prendre soin de leurs lèvres la nuit.', 'Un essentiel à garder près du lit pour intégrer le soin des lèvres à votre rituel quotidien.'].join('\n\n'),
+    useEn: ['1. Apply an appropriate layer to clean lips before bed.', '2. Leave on overnight if the packaging confirms this is an overnight product.', '3. Remove or wipe away any remaining product in the morning if directed.', '', 'Verify the exact product name and formula from the supplied packaging before making ingredient or specific performance claims.'].join('\n'),
+    useFr: ['1. Appliquez une couche adaptée sur des lèvres propres avant le coucher.', '2. Laissez agir toute la nuit uniquement si l’emballage confirme cet usage.', '3. Retirez ou essuyez les résidus le matin si cela est indiqué.', '', 'Vérifiez le nom et la formule sur l’emballage fourni avant toute affirmation sur les ingrédients ou les performances.'].join('\n'),
+  },
+  'medicube-pdrn-collagen-jelly-eye-mask': {
+    en: ['A targeted eye-area mask designed to add a dedicated treatment step to your skincare routine.', 'Its ready-to-use format makes application convenient on days when the eye area needs extra attention.', 'The supplied product packaging confirms a box of 28 pairs.'],
+    fr: ['Un masque ciblé pour le contour des yeux, pour ajouter une étape dédiée à votre routine.', 'Son format prêt à l’emploi facilite l’application lorsque le contour des yeux demande une attention particulière.', 'L’emballage fourni confirme une boîte de 28 paires.'],
+    useEn: ['1. Place the patches on clean skin in the position shown on the packaging.', '2. Leave them on for the time specified by the manufacturer.', '3. Remove gently and pat in any remaining essence if the instructions permit.', '', 'Avoid applying too close to the eyes and stop using the product if irritation develops. The package confirms 28 pairs, not 28 individual patches.'].join('\n'),
+    useFr: ['1. Placez les patchs sur une peau propre, comme indiqué sur l’emballage.', '2. Laissez-les poser pendant la durée précisée par le fabricant.', '3. Retirez-les délicatement et faites pénétrer l’essence restante si les instructions le permettent.', '', 'Évitez de les placer trop près des yeux et arrêtez l’utilisation en cas d’irritation. L’emballage confirme 28 paires, et non 28 patchs individuels.'].join('\n'),
+  },
+  'medicube-txa-serum': {
+    en: ['A targeted facial serum for customers looking to build a routine focused on uneven-looking skin tone.', 'Its lightweight format is intended to sit between cleansing and moisturizing.', 'A concentrated-style skincare step for routines that require a more targeted product than a basic moisturizer.'].join('\n\n'),
+    fr: ['Un sérum visage ciblé pour les routines axées sur l’apparence d’un teint irrégulier.', 'Son format léger s’applique entre le nettoyage et l’hydratation.', 'Une étape de soin ciblée pour les routines qui nécessitent davantage qu’une crème hydratante de base.'].join('\n\n'),
+    useEn: ['1. Apply to clean skin after cleansing and any required toner.', '2. Spread a small amount evenly and follow with moisturizer.', '3. Use sunscreen during the day and follow the actual product’s directions for frequency.', '', 'No active concentrations or clinical results are claimed without verification from the packaging or manufacturer.'].join('\n'),
+    useFr: ['1. Appliquez sur une peau propre après le nettoyage et, si nécessaire, le tonique.', '2. Étalez une petite quantité uniformément, puis appliquez une crème hydratante.', '3. Utilisez une protection solaire le jour et respectez la fréquence indiquée pour ce produit.', '', 'Aucune concentration d’actif ni aucun résultat clinique ne sont avancés sans confirmation de l’emballage ou du fabricant.'].join('\n'),
+  },
+  'medicube-pdrn-gel-mask': {
+    en: ['A single-use mask featuring PDRN, as indicated by the product name.', 'Its format offers a focused skincare treatment without committing to a multi-mask pack.', 'A convenient option for adding an occasional mask session to your routine.'],
+    fr: ['Un masque à usage unique contenant du PDRN, comme l’indique le nom du produit.', 'Son format propose un soin ciblé sans nécessiter l’achat d’un coffret de plusieurs masques.', 'Une option pratique pour ajouter ponctuellement un masque à votre routine.'],
+    useEn: ['1. Cleanse your face before application.', '2. Apply the mask according to the specific product instructions, ensuring it fits comfortably.', '3. Leave it on for the duration indicated on the packaging, then remove and follow the directions for any remaining essence.', '', 'Verify the exact mask format and manufacturer instructions before publishing.'],
+    useFr: ['1. Nettoyez votre visage avant l’application.', '2. Appliquez le masque selon ses instructions, en vérifiant qu’il est bien positionné.', '3. Laissez poser le temps indiqué sur l’emballage, puis retirez-le et suivez les instructions concernant l’essence restante.', '', 'Vérifiez le format exact et le mode d’emploi du fabricant avant publication.'].join('\n'),
+  },
+};
+
+function parseCsv(input) {
+  const rows = [];
+  let row = [], cell = '', quoted = false;
+  for (let i = 0; i < input.length; i++) {
+    const c = input[i];
+    if (quoted) {
+      if (c === '"' && input[i + 1] === '"') { cell += '"'; i++; }
+      else if (c === '"') quoted = false;
+      else cell += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ',') { row.push(cell); cell = ''; }
+    else if (c === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; }
+    else if (c !== '\r') cell += c;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  const headers = rows.shift();
+  return { headers, rows: rows.filter((r) => r.some(Boolean)).map((r) => Object.fromEntries(headers.map((h, i) => [h, r[i] || '']))) };
+}
+const csvCell = (value) => {
+  const text = String(value ?? '');
+  return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+};
+
+const parsed = parseCsv(fs.readFileSync(catalogFile, 'utf8').replace(/^\uFEFF/, ''));
+const headers = [...new Set([...parsed.headers, 'about_en', 'about_fr', 'how_to_use_en', 'how_to_use_fr', 'ingredients_en', 'ingredients_fr'])];
+let updated = 0;
+for (const row of parsed.rows) {
+  const item = copy[row.id];
+  if (item) {
+    if (item.name) row.name = item.name;
+    row.about_en = item.en;
+    row.about_fr = item.fr;
+    row.how_to_use_en = item.useEn;
+    row.how_to_use_fr = item.useFr;
+    row.ingredients_en = pendingIngredients.en;
+    row.ingredients_fr = pendingIngredients.fr;
+    updated++;
+  }
+  // The three 35/345 spelling variants are legacy duplicate records for the same mist.
+  if (item && row.id.startsWith('dr-althea-35-relief-mist')) {
+    row.about_en = copy['dr-althea-345-relief-cream']?.en || row.about_en;
+  }
+}
+for (const id of ['dr-althea-35-relief-mist']) {
+  const row = parsed.rows.find((entry) => entry.id === id);
+  if (row) {
+    row.name = 'Dr Althea 345 Relief Cream Mist';
+    row.about_en = 'A fine facial mist designed to bring a convenient hydration step to your skincare routine.\n\nIts spray format makes it easy to use when your skin needs a refreshing layer of moisture.\n\nKeep it close for quick application throughout the day, following its specific package instructions.';
+    row.about_fr = 'Une brume visage fine conçue pour ajouter une étape d’hydratation pratique à votre routine.\n\nSon format spray facilite l’application lorsque la peau a besoin d’une touche de fraîcheur.\n\nGardez-la à portée de main pour une application dans la journée, selon les instructions de l’emballage.';
+    row.how_to_use_en = ['1. Shake the bottle if instructed on the label.', '2. Close your eyes and spray from the recommended distance.', '3. Allow the product to settle, or pat gently if directed.', '', 'Use before or after makeup only if supported by the product’s instructions.'].join('\n');
+    row.how_to_use_fr = ['1. Agitez le flacon si l’étiquette le demande.', '2. Fermez les yeux et vaporisez à la distance recommandée.', '3. Laissez le produit se déposer ou tapotez doucement si cela est indiqué.', '', 'Utilisez avant ou après le maquillage uniquement si les instructions du produit le permettent.'].join('\n');
+    row.ingredients_en = pendingIngredients.en;
+    row.ingredients_fr = pendingIngredients.fr;
+  }
+}
+// The supplied photos identify this legacy listing as a Honey & Macadamia travel kit, not Baby Powder.
+const travel = parsed.rows.find((entry) => entry.id === 'kundal-travel-kit-baby-powder');
+if (travel) {
+  travel.name = 'KUNDAL Honey & Macadamia Travel Set';
+  travel.about_en = 'A compact KUNDAL Honey & Macadamia travel set. The supplied package images show shampoo, treatment, body wash, and body lotion in a travel pouch.\n\nThe listing name and images previously conflicted; this title now follows the visible package.\n\nPrice remains unavailable until the exact set and proposed price are confirmed.';
+  travel.about_fr = 'Un coffret de voyage compact KUNDAL Honey & Macadamia. Les images de l’emballage fourni montrent du shampooing, un soin, un gel douche et une lotion pour le corps dans une trousse.\n\nL’ancien nom de la fiche ne correspondait pas aux images; ce titre suit maintenant l’emballage visible.\n\nLe prix reste indisponible jusqu’à confirmation du coffret exact et du prix proposé.';
+  travel.how_to_use_en = 'The supplied images identify a mixed hair-and-body travel set. Use each item only according to its own packaging directions; confirm the exact contents and sizes before purchase.';
+  travel.how_to_use_fr = 'Les images fournies identifient un coffret de voyage pour cheveux et corps. Utilisez chaque produit selon ses propres instructions; confirmez le contenu et les formats exacts avant l’achat.';
+  travel.ingredients_en = pendingIngredients.en;
+  travel.ingredients_fr = pendingIngredients.fr;
+  // The proposed price is deliberately not set until the item and price are confirmed.
+  travel.price = ''; travel.priceCurrency = ''; travel.pricingType = '';
+}
+const output = [headers.join(','), ...parsed.rows.map((row) => headers.map((header) => csvCell(row[header])).join(','))].join('\r\n') + '\r\n';
+fs.writeFileSync(catalogFile, output);
+console.log(`Wrote localized product content for ${updated} requested catalog records.`);

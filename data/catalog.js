@@ -8,7 +8,7 @@ export const PRODUCTS = [
     "concerns": [
       "Cheveux & corps"
     ],
-    "price": 10000,
+    "price": 11000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -22,7 +22,7 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Body%20Care/Kundal%20linen%20flower%20deodorant%20--459edf25.webp"
+      "images/catalog/kundal-linen-flower-deodorant-0.webp"
     ],
     "_sourceFiles": [
       "assets/products/Body Care/Kundal linen flower deodorant .WEBP"
@@ -30,19 +30,31 @@ export const PRODUCTS = [
     "_unmappedFolders": [],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A convenient personal-care deodorant featuring the Linen Flower scent.\n\nIts fragrance-focused format is suited to customers who enjoy a fresh, clean scent in their daily routine.\n\nA straightforward finishing step for everyday personal care.",
+        "howToUse": "1. Check whether the supplied version is a stick, cream, or spray.\n2. Apply to clean, dry underarm skin according to the packaging directions.\n3. Allow the product to dry before dressing if instructed.\n\nAvoid applying to irritated or freshly damaged skin.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un déodorant pratique au parfum Linen Flower.\n\nSon parfum frais et propre s’intègre facilement à la routine quotidienne.\n\nUne étape simple pour compléter les soins personnels de tous les jours.",
+        "howToUse": "1. Vérifiez si la version fournie est un stick, une crème ou un spray.\n2. Appliquez sur des aisselles propres et sèches selon les instructions de l’emballage.\n3. Laissez sécher avant de vous habiller si cela est indiqué.\n\nÉvitez l’application sur une peau irritée ou récemment abîmée.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
     "id": "kundal-travel-kit-baby-powder",
-    "name": "KUNDAL Travel KIT baby powder",
+    "name": "KUNDAL Honey & Macadamia Travel Set",
     "brand": "KUNDAL",
     "category": "Cheveux & corps",
     "concerns": [
       "Cheveux & corps"
     ],
-    "price": 7000,
+    "price": null,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -56,10 +68,10 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Body%20Care/KUNDAL%20Travel%20KIT-baby%20powder--979b8a59.webp",
-      "assets/products-web/Body%20Care/KUNDAL%20Travel%20KIT-baby%20powder--6a84486c.webp",
-      "assets/products-web/Body%20Care/KUNDAL%20Travel%20KIT-baby%20powder(1)--33492f36.webp",
-      "assets/products-web/Body%20Care/KUNDAL%20Travel%20KIT-baby%20powder(2)--5e81c46e.webp"
+      "images/catalog/kundal-travel-kit-baby-powder-0.jpg",
+      "images/catalog/kundal-travel-kit-baby-powder-1.webp",
+      "images/catalog/kundal-travel-kit-baby-powder-2.webp",
+      "images/catalog/kundal-travel-kit-baby-powder-3.webp"
     ],
     "_sourceFiles": [
       "assets/products/Body Care/KUNDAL Travel KIT-baby powder.JPG",
@@ -69,9 +81,21 @@ export const PRODUCTS = [
     ],
     "_unmappedFolders": [],
     "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "priceCurrency": null,
+    "pricingType": null,
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A compact KUNDAL Honey & Macadamia travel set. The supplied package images show shampoo, treatment, body wash, and body lotion in a travel pouch.\n\nThe listing name and images previously conflicted; this title now follows the visible package.\n\nPrice remains unavailable until the exact set and proposed price are confirmed.",
+        "howToUse": "The supplied images identify a mixed hair-and-body travel set. Use each item only according to its own packaging directions; confirm the exact contents and sizes before purchase.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un coffret de voyage compact KUNDAL Honey & Macadamia. Les images de l’emballage fourni montrent du shampooing, un soin, un gel douche et une lotion pour le corps dans une trousse.\n\nL’ancien nom de la fiche ne correspondait pas aux images; ce titre suit maintenant l’emballage visible.\n\nLe prix reste indisponible jusqu’à confirmation du coffret exact et du prix proposé.",
+        "howToUse": "Les images fournies identifient un coffret de voyage pour cheveux et corps. Utilisez chaque produit selon ses propres instructions; confirmez le contenu et les formats exacts avant l’achat.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -82,7 +106,7 @@ export const PRODUCTS = [
     "concerns": [
       "Cheveux & corps"
     ],
-    "price": 10000,
+    "price": 15000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -96,11 +120,11 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Body%20Care/Medicube%20deodorant%20vanilla%20pistachio--5ba96833.webp",
-      "assets/products-web/Body%20Care/Medicube%20deodorant%20vanilla%20pistachio(2)--538378c9.webp",
-      "assets/products-web/Body%20Care/Medicube%20deodorant%20vanilla%20pistachio(1)--90287380.webp",
-      "assets/products-web/Body%20Care/Medicube%20deodorant%20vanilla%20pistachio--e5ebc68d.webp",
-      "assets/products-web/Body%20Care/Medicube%20deodorant%20vanilla%20pistachio(3)--85d26638.webp"
+      "images/catalog/medicube-deodorant-vanilla-pistachio-0.webp",
+      "images/catalog/medicube-deodorant-vanilla-pistachio-1.jpg",
+      "images/catalog/medicube-deodorant-vanilla-pistachio-2.webp",
+      "images/catalog/medicube-deodorant-vanilla-pistachio-3.webp",
+      "images/catalog/medicube-deodorant-vanilla-pistachio-4.webp"
     ],
     "_sourceFiles": [
       "assets/products/Body Care/Medicube deodorant vanilla pistachio.JPG",
@@ -112,8 +136,20 @@ export const PRODUCTS = [
     "_unmappedFolders": [],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A personal-care deodorant with the warm fragrance combination of vanilla and pistachio.\n\nIts everyday format makes it a convenient addition to a morning or post-shower routine.\n\nA scented personal-care option for customers who prefer something more distinctive than a conventional fragrance.",
+        "howToUse": "1. Confirm the exact product format from the supplied packaging.\n2. Apply to clean, dry underarm skin according to the manufacturer’s instructions.\n3. Allow it to dry before dressing if required.\n\nNo skin-brightening or other specific result is claimed.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un déodorant au parfum chaleureux de vanille et de pistache.\n\nSon format quotidien s’ajoute facilement à une routine du matin ou après la douche.\n\nUne option parfumée pour celles et ceux qui recherchent une senteur plus distinctive.",
+        "howToUse": "1. Vérifiez le format exact sur l’emballage fourni.\n2. Appliquez sur des aisselles propres et sèches selon les instructions du fabricant.\n3. Laissez sécher avant de vous habiller si nécessaire.\n\nAucun effet éclaircissant ou autre résultat spécifique n’est promis.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -124,7 +160,7 @@ export const PRODUCTS = [
     "concerns": [
       "Cheveux & corps"
     ],
-    "price": 10000,
+    "price": 15000,
     "oldPrice": null,
     "bestSeller": true,
     "isNew": false,
@@ -138,8 +174,8 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Body%20Care/Medicube%20glow%20vanilla%20hair%20body%20mist--47894728.webp",
-      "assets/products-web/Body%20Care/Medicube%20glow%20vanilla%20hair%20body%20mist(1)--5ff74c26.webp"
+      "images/catalog/medicube-glow-vanilla-hair-body-mist-0.webp",
+      "images/catalog/medicube-glow-vanilla-hair-body-mist-1.webp"
     ],
     "_sourceFiles": [
       "assets/products/Body Care/Medicube glow vanilla hair body mist.WEBP",
@@ -148,8 +184,20 @@ export const PRODUCTS = [
     "_unmappedFolders": [],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A vanilla-scented fragrance mist designed to add a soft, warm scent to your personal-care routine.\n\nIts mist format makes application simple and convenient.\n\nA fragrance option for customers who enjoy a comforting vanilla scent throughout the day.",
+        "howToUse": "1. Check the label for recommended application areas.\n2. Spray lightly from the recommended distance onto the permitted areas.\n3. Avoid the eyes, inhalation, and irritated skin. Allow the product to dry before dressing where appropriate.\n\nThe supplied product name identifies it for hair and body; follow the label for permitted use.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Une brume parfumée à la vanille pour ajouter une note douce et chaleureuse à votre routine de soin.\n\nSon format spray facilite l’application.\n\nUne option parfumée pour les personnes qui apprécient la vanille au quotidien.",
+        "howToUse": "1. Vérifiez sur l’étiquette les zones d’application recommandées.\n2. Vaporisez légèrement à la distance indiquée sur les zones autorisées.\n3. Évitez les yeux, l’inhalation et les peaux irritées. Si nécessaire, laissez sécher avant de vous habiller.\n\nLe nom du produit fourni indique un usage cheveux et corps; suivez l’étiquette pour les zones autorisées.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -160,7 +208,7 @@ export const PRODUCTS = [
     "concerns": [
       "Cheveux & corps"
     ],
-    "price": 10000,
+    "price": 15000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -174,8 +222,8 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Hair%20Care/KUNDAL%20caffeine%20scalp%20serum(1)--680ff9af.webp",
-      "assets/products-web/Hair%20Care/KUNDAL%20caffeine%20scalp%20serum--d3a53632.webp"
+      "images/catalog/kundal-caffeine-scalp-serum-0.webp",
+      "images/catalog/kundal-caffeine-scalp-serum-1.webp"
     ],
     "_sourceFiles": [
       "assets/products/Hair Care/KUNDAL caffeine scalp serum.WEBP",
@@ -184,8 +232,20 @@ export const PRODUCTS = [
     "_unmappedFolders": [],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A targeted scalp-care serum designed to complement a regular hair-care routine.\n\nIts serum format makes it possible to apply directly to the scalp rather than treating it like a conventional hair-length product.\n\nA focused step for customers who want to give their scalp routine additional attention.",
+        "howToUse": "1. Part the hair to expose the areas of the scalp where the product is intended to be applied.\n2. Apply the recommended amount according to the label.\n3. Massage gently and leave in or rinse out exactly as specified by the manufacturer.\n\nNo claim is made that the serum prevents hair loss or guarantees hair growth.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un sérum ciblé pour le cuir chevelu, conçu pour compléter une routine capillaire régulière.\n\nSon format sérum permet une application directe sur le cuir chevelu, plutôt que sur les longueurs comme un soin capillaire classique.\n\nUne étape dédiée aux personnes souhaitant accorder davantage d’attention au cuir chevelu.",
+        "howToUse": "1. Séparez les cheveux pour dégager les zones du cuir chevelu visées.\n2. Appliquez la quantité recommandée sur l’étiquette.\n3. Massez doucement, puis laissez agir ou rincez exactement comme l’indique le fabricant.\n\nAucune promesse de prévention de la chute ou de croissance des cheveux n’est avancée.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -220,6 +280,18 @@ export const PRODUCTS = [
     "priceCurrency": "XOF",
     "pricingType": "beta",
     "isBetaPrice": true,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -254,6 +326,18 @@ export const PRODUCTS = [
     "priceCurrency": "XOF",
     "pricingType": "beta",
     "isBetaPrice": true,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": true
   },
   {
@@ -264,7 +348,7 @@ export const PRODUCTS = [
     "concerns": [
       "Lèvres"
     ],
-    "price": 9000,
+    "price": 12000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -278,7 +362,7 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Lip%20Care/Medicube%20lip%20sleeping%20mask--4e72519b.webp"
+      "images/catalog/medicube-lip-sleeping-mask-0.webp"
     ],
     "_sourceFiles": [
       "assets/products/Lip Care/Medicube lip sleeping mask.WEBP"
@@ -286,19 +370,31 @@ export const PRODUCTS = [
     "_unmappedFolders": [],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "An overnight lip-care product designed to complement a simple evening routine.\n\nIts leave-on format provides a convenient final step for customers who prefer dedicated nighttime lip care.\n\nA practical bedside essential for keeping lip care part of your daily ritual.",
+        "howToUse": "1. Apply an appropriate layer to clean lips before bed.\n2. Leave on overnight if the packaging confirms this is an overnight product.\n3. Remove or wipe away any remaining product in the morning if directed.\n\nVerify the exact product name and formula from the supplied packaging before making ingredient or specific performance claims.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un soin des lèvres de nuit pour compléter une routine du soir simple.\n\nSon format sans rinçage offre une dernière étape pratique aux personnes qui préfèrent prendre soin de leurs lèvres la nuit.\n\nUn essentiel à garder près du lit pour intégrer le soin des lèvres à votre rituel quotidien.",
+        "howToUse": "1. Appliquez une couche adaptée sur des lèvres propres avant le coucher.\n2. Laissez agir toute la nuit uniquement si l’emballage confirme cet usage.\n3. Retirez ou essuyez les résidus le matin si cela est indiqué.\n\nVérifiez le nom et la formule sur l’emballage fourni avant toute affirmation sur les ingrédients ou les performances.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
     "id": "axis-y-sunday-morning-cleansing-foam",
-    "name": "AXIS-Y Sunday morning cleansing foam",
+    "name": "AXIS-Y Sunday Morning Refreshing Cleansing Foam",
     "brand": "AXIS-Y",
     "category": "Soins de la peau",
     "concerns": [
       "Pores dilatés & excès de sébum"
     ],
-    "price": 9500,
+    "price": null,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -321,9 +417,21 @@ export const PRODUCTS = [
       "Skincare"
     ],
     "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "priceCurrency": null,
+    "pricingType": null,
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "Start your skincare routine with a refreshing facial cleanser that helps lift away daily impurities and excess oil.\n\nIts foaming texture creates a simple, comfortable cleansing step for your morning and evening routine.\n\nA fresh, clean-feeling finish makes it an easy addition to everyday skincare.",
+        "howToUse": "1. Wet your face with lukewarm water.\n2. Work a small amount into a gentle lather.\n3. Massage over the face, avoiding the eyes, then rinse thoroughly.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Commencez votre routine avec un nettoyant visage rafraîchissant qui aide à éliminer les impuretés du quotidien et l’excès de sébum.\n\nSa texture moussante offre une étape de nettoyage simple et agréable, le matin comme le soir.\n\nIl laisse une sensation de fraîcheur et de propreté, pour s’intégrer facilement aux soins quotidiens.",
+        "howToUse": "1. Mouillez le visage à l’eau tiède.\n2. Faites mousser une petite quantité entre vos mains.\n3. Massez le visage en évitant les yeux, puis rincez soigneusement.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -334,7 +442,7 @@ export const PRODUCTS = [
     "concerns": [
       "Pores dilatés & excès de sébum"
     ],
-    "price": 9500,
+    "price": null,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -357,9 +465,21 @@ export const PRODUCTS = [
       "Skincare"
     ],
     "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "priceCurrency": null,
+    "pricingType": null,
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -385,10 +505,10 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/BIODANCE%20bio%20collagen%20real%20deep%20mask--3f739f4a.webp",
-      "assets/products-web/Skincare/BIODANCE%20bio%20collagen%20real%20deep%20mask(1)--d1336e3f.webp",
-      "assets/products-web/Skincare/BIODANCE%20bio%20collagen%20real%20deep%20mask(2)--081ec6df.webp",
-      "assets/products-web/Skincare/BIODANCE%20bio%20collagen%20real%20deep%20mask(3)--2ecc7321.webp"
+      "images/catalog/biodance-bio-collagen-real-deep-mask-0.webp",
+      "images/catalog/biodance-bio-collagen-real-deep-mask-1.webp",
+      "images/catalog/biodance-bio-collagen-real-deep-mask-2.webp",
+      "images/catalog/biodance-bio-collagen-real-deep-mask-3.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/BIODANCE bio collagen real deep mask.WEBP",
@@ -403,6 +523,18 @@ export const PRODUCTS = [
     "priceCurrency": "XOF",
     "pricingType": "beta",
     "isBetaPrice": true,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -414,7 +546,7 @@ export const PRODUCTS = [
       "Peau sèche",
       "Peau terne"
     ],
-    "price": 9500,
+    "price": 18000,
     "oldPrice": null,
     "bestSeller": true,
     "isNew": false,
@@ -428,11 +560,11 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/BIODANCE%20rejuvenating%20caviar%20PDRN%20mask(1)--30348abe.webp",
-      "assets/products-web/Skincare/BIODANCE%20rejuvenating%20caviar%20PDRN%20mask--bead01e6.webp",
-      "assets/products-web/Skincare/BIODANCE%20rejuvenating%20caviar%20PDRN%20mask(2)--456d393d.webp",
-      "assets/products-web/Skincare/BIODANCE%20rejuvenating%20caviar%20PDRN%20mask(3)--ca496a71.webp",
-      "assets/products-web/Skincare/BIODANCE%20rejuvenating%20caviar%20PDRN%20mask(4)--faab4de2.webp"
+      "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-0.webp",
+      "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-1.webp",
+      "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-2.webp",
+      "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-3.webp",
+      "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-4.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/BIODANCE rejuvenating caviar PDRN mask.WEBP",
@@ -446,8 +578,20 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A Biodance mask featuring caviar and PDRN, as identified on the supplied packaging.\n\nIts sheet-mask format offers a dedicated skincare session for a refreshed, comfortable feel.\n\nUse it as part of a relaxing routine, leaving skin feeling refreshed and comfortable.",
+        "howToUse": "1. Cleanse your face and prepare your skin according to the package directions.\n2. Apply the mask in the correct position.\n3. Leave it on for the duration specified on the packaging, then remove it and follow the product directions for any remaining essence.\n\nConfirm the exact mask format and instructions from the supplied product packaging.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un masque Biodance au caviar et au PDRN, comme indiqué sur l’emballage fourni.\n\nSon format masque en tissu propose une séance de soin dédiée pour une sensation de peau fraîche et confortable.\n\nIntégrez-le à un rituel de soin relaxant pour une peau fraîche et confortable.",
+        "howToUse": "1. Nettoyez votre visage et préparez la peau selon les instructions de l’emballage.\n2. Positionnez correctement le masque.\n3. Laissez poser pendant la durée indiquée sur l’emballage, puis retirez-le et suivez les instructions concernant l’essence restante.\n\nConfirmez le format exact du masque et son mode d’emploi à partir de l’emballage fourni.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -486,6 +630,18 @@ export const PRODUCTS = [
     "priceCurrency": "XOF",
     "pricingType": "beta",
     "isBetaPrice": true,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -496,7 +652,7 @@ export const PRODUCTS = [
     "concerns": [
       "Rides & fermeté"
     ],
-    "price": 17000,
+    "price": 14000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -510,7 +666,7 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/Celimax%20the%20vita%20A%20retinal%20shot%20tightening%20booster--8bf8a7a2.webp"
+      "images/catalog/celimax-the-vita-a-retinal-shot-tightening-booster-0.png"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Celimax the vita A retinal shot tightening booster.PNG"
@@ -520,9 +676,21 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
-    "noGoodHero": true
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A targeted retinal skincare booster for customers looking to refine the appearance of uneven texture and visible pores.\n\nIts treatment-focused formula is designed to complement a carefully layered nighttime routine.\n\nIntroduce it gradually rather than treating it like an ordinary daily moisturizer.",
+        "howToUse": "1. At night, apply a small amount to clean, dry skin as directed on the package.\n2. Beginners should start every other night or less frequently, adjusting according to tolerance and product directions.\n3. Follow with moisturizer and wear sunscreen during the day.\n\nAvoid combining it in the same routine with other strong retinoids or exfoliating treatments until compatibility is established. Patch test first and do not apply to irritated skin. Seek professional advice about retinoid use during pregnancy.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un booster ciblé au rétinal, destiné aux personnes souhaitant améliorer l’apparence d’une texture irrégulière et de pores visibles.\n\nCe soin s’intègre à une routine du soir appliquée avec précaution et par étapes.\n\nIntroduisez-le progressivement plutôt que de l’utiliser comme une crème hydratante quotidienne ordinaire.",
+        "howToUse": "1. Le soir, appliquez une petite quantité sur une peau propre et sèche, selon les instructions de l’emballage.\n2. Si vous débutez, commencez un soir sur deux ou moins fréquemment, puis adaptez selon la tolérance et les consignes du produit.\n3. Appliquez ensuite une crème hydratante et utilisez une protection solaire le jour.\n\nÉvitez de l’associer dans la même routine à d’autres rétinoïdes puissants ou soins exfoliants avant d’en confirmer la compatibilité. Faites d’abord un test cutané et n’appliquez pas sur une peau irritée. Demandez conseil à un professionnel de santé concernant les rétinoïdes pendant la grossesse.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
+    "noGoodHero": false
   },
   {
     "id": "cosrx-acne-pimple-master-patch",
@@ -532,7 +700,7 @@ export const PRODUCTS = [
     "concerns": [
       "Acné & imperfections"
     ],
-    "price": 12000,
+    "price": 3500,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -546,9 +714,9 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/COSRX%20Acne%20Pimple%20Master%20Patch(1)--9f57b555.webp",
-      "assets/products-web/Skincare/COSRX%20Acne%20Pimple%20Master%20Patch--0421dc42.webp",
-      "assets/products-web/Skincare/COSRX%20Acne%20Pimple%20Master%20Patch%20(dup)--43b48bdb.webp"
+      "images/catalog/cosrx-acne-pimple-master-patch-0.jpg",
+      "images/catalog/cosrx-acne-pimple-master-patch-1.jpg",
+      "images/catalog/cosrx-acne-pimple-master-patch-2.jpg"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/COSRX Acne Pimple Master Patch (dup).JPG",
@@ -560,8 +728,20 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A hydrocolloid patch designed to cover individual blemishes and protect the surrounding area from unnecessary touching.\n\nIts thin, targeted format makes it easy to incorporate into a simple spot-care routine.\n\nA practical option for treating individual spots without applying a product to the entire face.",
+        "howToUse": "1. Cleanse the skin and dry the area completely.\n2. Select a patch slightly larger than the blemish and apply it directly.\n3. Leave it in place according to the packaging instructions and replace it when needed.\n\nDo not apply over infected or significantly damaged skin.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un patch hydrocolloïde conçu pour couvrir les imperfections ciblées et éviter de toucher inutilement la zone autour.\n\nSon format fin et précis s’intègre facilement à une routine localisée.\n\nUne option pratique pour traiter une imperfection sans appliquer de produit sur tout le visage.",
+        "howToUse": "1. Nettoyez la peau et séchez complètement la zone.\n2. Choisissez un patch légèrement plus grand que l’imperfection et appliquez-le directement.\n3. Laissez-le en place selon les instructions de l’emballage et remplacez-le si nécessaire.\n\nNe l’appliquez pas sur une zone infectée ou fortement abîmée.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -572,7 +752,7 @@ export const PRODUCTS = [
     "concerns": [
       "Acné & imperfections"
     ],
-    "price": 4000,
+    "price": 3500,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -596,8 +776,20 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": true
   },
   {
@@ -609,7 +801,7 @@ export const PRODUCTS = [
       "Barrière cutanée",
       "Peau sèche"
     ],
-    "price": 16000,
+    "price": 18000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -623,8 +815,8 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/Dr%20Althea%20147%20barrier%20cream(1)--8d28d625.webp",
-      "assets/products-web/Skincare/Dr%20Althea%20147%20barrier%20cream--0d873870.webp"
+      "images/catalog/dr-althea-147-barrier-cream-0.webp",
+      "images/catalog/dr-althea-147-barrier-cream-1.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Dr Althea 147 barrier cream.WEBP",
@@ -635,8 +827,20 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A facial cream intended to support a comfortable, moisturized skin barrier.\n\nIts richer moisturizing step complements routines that include cleansing, serums, and other lightweight skincare products.\n\nA useful option for customers seeking a simple final moisturizing layer.",
+        "howToUse": "1. Apply after cleansing and any lighter serums.\n2. Smooth a suitable amount evenly over the face.\n3. Use morning or evening as directed by the manufacturer.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Une crème visage conçue pour contribuer au confort et à l’hydratation de la barrière cutanée.\n\nCette étape hydratante plus riche complète une routine composée d’un nettoyant, de sérums et d’autres soins légers.\n\nUne option simple pour terminer la routine par une couche hydratante.",
+        "howToUse": "1. Appliquez après le nettoyage et les sérums plus légers.\n2. Étalez uniformément une quantité adaptée sur le visage.\n3. Utilisez matin ou soir selon les instructions du fabricant.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -648,7 +852,7 @@ export const PRODUCTS = [
       "Barrière cutanée",
       "Peau sèche"
     ],
-    "price": 16000,
+    "price": 17500,
     "oldPrice": null,
     "bestSeller": true,
     "isNew": false,
@@ -662,10 +866,9 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20%20--ed148ce2.webp",
-      "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20--8a8ebb40.webp",
-      "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20(1)--9a09c048.webp",
-      "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20(2)--8cc3cd9c.webp"
+      "images/catalog/dr-althea-345-relief-cream-0.webp",
+      "images/catalog/dr-althea-345-relief-cream-1.webp",
+      "images/catalog/dr-althea-345-relief-cream-2.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Dr Althea 345 relief cream  .WEBP",
@@ -678,8 +881,20 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A daily facial moisturizer designed to complement routines focused on comfort and skin-barrier care.\n\nIts cream format helps leave skin feeling moisturized without adding a complicated step to your routine.\n\nUse it as the finishing layer of your skincare routine or after lighter serums and treatments.",
+        "howToUse": "1. Cleanse and apply any lighter skincare products first.\n2. Smooth an appropriate amount over the face.\n3. Use in the morning or evening as tolerated.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Une crème hydratante visage quotidienne pour les routines axées sur le confort et le soin de la barrière cutanée.\n\nSa texture crème aide à laisser la peau hydratée sans compliquer la routine.\n\nUtilisez-la en dernière étape de votre routine ou après les sérums et soins plus légers.",
+        "howToUse": "1. Nettoyez la peau et appliquez d’abord les soins plus légers.\n2. Étalez une quantité adaptée sur le visage.\n3. Utilisez matin ou soir selon la tolérance de votre peau.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -688,7 +903,7 @@ export const PRODUCTS = [
     "brand": "Dr. Althea",
     "category": "Soins de la peau",
     "concerns": [],
-    "price": 16000,
+    "price": null,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -711,18 +926,30 @@ export const PRODUCTS = [
       "Skincare"
     ],
     "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "priceCurrency": null,
+    "pricingType": null,
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": true
   },
   {
     "id": "dr-althea-35-relief-mist",
-    "name": "Dr. Althea 35 relief MIST",
+    "name": "Dr. Althea 345 Relief Cream Mist",
     "brand": "Dr. Althea",
     "category": "Soins de la peau",
     "concerns": [],
-    "price": 16000,
+    "price": 15500,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -736,8 +963,9 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST--3f6ee80e.webp",
-      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST(1)--4f52b450.webp"
+      "images/catalog/dr-althea-35-relief-mist-0.webp",
+      "images/catalog/dr-althea-35-relief-mist-1.webp",
+      "images/catalog/dr-althea-35-relief-mist-2.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/DR Althea 35 relief MIST.WEBP",
@@ -748,9 +976,21 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
-    "noGoodHero": true
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A fine facial mist designed to bring a convenient hydration step to your skincare routine.\n\nIts spray format makes it easy to use when your skin needs a refreshing layer of moisture.\n\nKeep it close for quick application throughout the day, following its specific package instructions.",
+        "howToUse": "1. Shake the bottle if instructed on the label.\n2. Close your eyes and spray from the recommended distance.\n3. Allow the product to settle, or pat gently if directed.\n\nUse before or after makeup only if supported by the product’s instructions.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Une brume visage fine conçue pour ajouter une étape d’hydratation pratique à votre routine.\n\nSon format spray facilite l’application lorsque la peau a besoin d’une touche de fraîcheur.\n\nGardez-la à portée de main pour une application dans la journée, selon les instructions de l’emballage.",
+        "howToUse": "1. Agitez le flacon si l’étiquette le demande.\n2. Fermez les yeux et vaporisez à la distance recommandée.\n3. Laissez le produit se déposer ou tapotez doucement si cela est indiqué.\n\nUtilisez avant ou après le maquillage uniquement si les instructions du produit le permettent.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
+    "noGoodHero": false
   },
   {
     "id": "dr-althea-35-relief-mistt",
@@ -758,7 +998,7 @@ export const PRODUCTS = [
     "brand": "Dr. Althea",
     "category": "Soins de la peau",
     "concerns": [],
-    "price": 16000,
+    "price": null,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -781,9 +1021,21 @@ export const PRODUCTS = [
       "Skincare"
     ],
     "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "priceCurrency": null,
+    "pricingType": null,
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -822,6 +1074,18 @@ export const PRODUCTS = [
     "priceCurrency": "XOF",
     "pricingType": "beta",
     "isBetaPrice": true,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -846,7 +1110,7 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/Dr%20MElaxin%20peel%20shot%20exfoliating%20black%20rice%20ampoule--ab541588.webp"
+      "images/catalog/dr-melaxin-peel-shot-exfoliating-black-rice-ampoule-0.png"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Dr MElaxin peel shot exfoliating black rice ampoule.PNG"
@@ -856,13 +1120,25 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
-    "noGoodHero": true
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A targeted ampoule from Dr. Melaxin for customers interested in adding a treatment-focused step to their skincare routine.\n\nIts peel-shot format is intended for more specific skin-texture care than an everyday moisturizer.\n\nUse it thoughtfully and follow the product’s own directions rather than increasing application frequency in pursuit of faster results.",
+        "howToUse": "1. Read the package directions and check whether the product is intended for leave-on or rinse-off use.\n2. Apply only as instructed, keeping it away from the eyes and irritated areas.\n3. Do not combine it with other strong exfoliants or retinoids until its compatibility is confirmed, and use sunscreen during the day.\n\nVerify the exact formulation and frequency instructions from the manufacturer before publishing definitive directions.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Une ampoule ciblée Dr. Melaxin pour ajouter une étape de soin spécifique à votre routine.\n\nSon format Peel Shot s’adresse davantage au soin ciblé de la texture de la peau qu’une crème hydratante quotidienne.\n\nUtilisez-la avec précaution et suivez son mode d’emploi plutôt que d’augmenter la fréquence pour rechercher des résultats plus rapides.",
+        "howToUse": "1. Lisez les instructions de l’emballage et vérifiez si le produit doit rester sur la peau ou être rincé.\n2. Appliquez-le uniquement comme indiqué, en évitant les yeux et les zones irritées.\n3. Ne l’associez pas à d’autres exfoliants puissants ou rétinoïdes avant d’en confirmer la compatibilité; utilisez une protection solaire le jour.\n\nVérifiez la formule exacte et la fréquence d’utilisation auprès du fabricant avant de publier des instructions définitives.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
+    "noGoodHero": false
   },
   {
     "id": "medicube-kojic-acid-capsule-cream",
-    "name": "MEDICUBE kojic acid CAPSULE cream",
+    "name": "MEDICUBE Kojic Acid Turmeric Vita Capsule Cream",
     "brand": "MEDICUBE",
     "category": "Soins de la peau",
     "concerns": [
@@ -885,9 +1161,9 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/Medicube%20kojic%20acid%20CAPSULE%20CREAM(1)--c1deb02d.webp",
-      "assets/products-web/Skincare/Medicube%20kojic%20acid%20CAPSULE%20CREAM--cee1dcb5.webp",
-      "assets/products-web/Skincare/Medicube%20kojic%20acid%20CAPSULE%20cream--4abc5e1e.webp"
+      "images/catalog/medicube-kojic-acid-capsule-cream-0.webp",
+      "images/catalog/medicube-kojic-acid-capsule-cream-1.png",
+      "images/catalog/medicube-kojic-acid-capsule-cream-2.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Medicube kojic acid CAPSULE cream.PNG",
@@ -899,8 +1175,20 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A capsule-and-gel cream designed to let customers adjust the texture of their moisturizing step.\n\nIts format supports a more customized application within a routine focused on uneven-looking skin tone.\n\nUse the proportions recommended for the exact product rather than mixing arbitrary amounts. The supplied packaging identifies a 53 g Kojic Acid Turmeric Vita Capsule Cream.",
+        "howToUse": "1. After cleansing and applying any lighter products, prepare the capsule-and-gel combination as directed on the packaging.\n2. Follow the manufacturer’s recommended proportions for your skin type.\n3. Apply evenly and adjust frequency if irritation occurs.\n\nThe exact product version is confirmed by the supplied packaging. Do not use arbitrary mixing ratios.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Une crème gel et capsules qui permet d’ajuster la texture de l’étape hydratante.\n\nSon format s’intègre à une routine axée sur l’apparence du teint irrégulier.\n\nRespectez les proportions recommandées pour ce produit précis. L’emballage fourni identifie une Kojic Acid Turmeric Vita Capsule Cream de 53 g.",
+        "howToUse": "1. Après le nettoyage et les soins plus légers, préparez le mélange capsules-gel comme indiqué sur l’emballage.\n2. Respectez les proportions recommandées par le fabricant pour votre type de peau.\n3. Appliquez uniformément et espacez les utilisations en cas d’irritation.\n\nLa version exacte est confirmée par l’emballage fourni. N’improvisez pas de proportions.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -913,7 +1201,7 @@ export const PRODUCTS = [
       "Teint irrégulier",
       "Peau terne"
     ],
-    "price": 18000,
+    "price": null,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -938,14 +1226,26 @@ export const PRODUCTS = [
       "Skincare"
     ],
     "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "priceCurrency": null,
+    "pricingType": null,
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": false
   },
   {
     "id": "medicube-kojic-acid-turmeric-peel-shot-80ml",
-    "name": "MEDICUBE Kojic acid turmeric peel shot 80ML",
+    "name": "MEDICUBE Kojic Acid Turmeric Peel Shot, 80 ml",
     "brand": "MEDICUBE",
     "category": "Soins de la peau",
     "concerns": [
@@ -953,7 +1253,7 @@ export const PRODUCTS = [
       "Teint irrégulier",
       "Peau terne"
     ],
-    "price": 18000,
+    "price": 15000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -971,7 +1271,10 @@ export const PRODUCTS = [
       ]
     },
     "images": [
-      "assets/products-web/Skincare/Medicube%20Kojic%20acid%20turmeric%20peel%20shot%2080ML%20(1)--18cf9616.webp"
+      "images/catalog/medicube-kojic-acid-turmeric-peel-shot-80ml-0.webp",
+      "images/catalog/medicube-kojic-acid-turmeric-peel-shot-80ml-1.webp",
+      "images/catalog/medicube-kojic-acid-turmeric-peel-shot-80ml-2.png",
+      "images/catalog/medicube-kojic-acid-turmeric-peel-shot-80ml-3.png"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Medicube Kojic acid turmeric peel shot 80ML .PNG",
@@ -982,9 +1285,21 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
-    "noGoodHero": true
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A targeted exfoliating-style skincare treatment intended for routines focused on the appearance of uneven texture and visible buildup.\n\nIts peel-shot format makes it a more treatment-oriented step than an ordinary moisturizer.\n\nUse according to the product’s specified application method and frequency.",
+        "howToUse": "1. Follow the supplied product’s exact directions for application and whether rinsing is required.\n2. Avoid irritated skin and sensitive areas around the eyes and lips.\n3. Do not combine with other strong exfoliants or retinoids until compatibility is established. Use sunscreen during the day.\n\nConfirm the exact SKU and usage instructions before publishing definitive details.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un soin de type exfoliant pour les routines ciblant l’apparence d’une texture irrégulière et des dépôts visibles.\n\nSon format Peel Shot est une étape plus ciblée qu’une crème hydratante ordinaire.\n\nUtilisez-le selon le mode d’application et la fréquence indiqués pour le produit.",
+        "howToUse": "1. Suivez les instructions exactes fournies pour l’application et vérifiez si un rinçage est nécessaire.\n2. Évitez les peaux irritées et les zones sensibles du contour des yeux et des lèvres.\n3. N’associez pas à d’autres exfoliants puissants ou rétinoïdes avant d’en confirmer la compatibilité. Utilisez une protection solaire le jour.\n\nConfirmez la référence exacte et le mode d’emploi avant de publier des informations définitives.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
+    "noGoodHero": false
   },
   {
     "id": "medicube-pdrn-collagen-jelly-eye-mask",
@@ -996,7 +1311,7 @@ export const PRODUCTS = [
       "Peau sèche",
       "Peau terne"
     ],
-    "price": 9500,
+    "price": 17500,
     "oldPrice": null,
     "bestSeller": true,
     "isNew": false,
@@ -1010,10 +1325,10 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/Medicube%20PDRN%20collagen%20jelly%20eye%20mask--2913895a.webp",
-      "assets/products-web/Skincare/Medicube%20PDRN%20collagen%20jelly%20eye%20mask(1)--6b09a917.webp",
-      "assets/products-web/Skincare/Medicube%20PDRN%20collagen%20jelly%20eye%20mask(2)--086a56c8.webp",
-      "assets/products-web/Skincare/Medicube%20PDRN%20collagen%20jelly%20eye%20mask(3)--2ed5aa60.webp"
+      "images/catalog/medicube-pdrn-collagen-jelly-eye-mask-0.webp",
+      "images/catalog/medicube-pdrn-collagen-jelly-eye-mask-1.webp",
+      "images/catalog/medicube-pdrn-collagen-jelly-eye-mask-2.webp",
+      "images/catalog/medicube-pdrn-collagen-jelly-eye-mask-3.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Medicube PDRN collagen jelly eye mask.WEBP",
@@ -1026,8 +1341,20 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A targeted eye-area mask designed to add a dedicated treatment step to your skincare routine.,Its ready-to-use format makes application convenient on days when the eye area needs extra attention.,The supplied product packaging confirms a box of 28 pairs.",
+        "howToUse": "1. Place the patches on clean skin in the position shown on the packaging.\n2. Leave them on for the time specified by the manufacturer.\n3. Remove gently and pat in any remaining essence if the instructions permit.\n\nAvoid applying too close to the eyes and stop using the product if irritation develops. The package confirms 28 pairs, not 28 individual patches.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un masque ciblé pour le contour des yeux, pour ajouter une étape dédiée à votre routine.,Son format prêt à l’emploi facilite l’application lorsque le contour des yeux demande une attention particulière.,L’emballage fourni confirme une boîte de 28 paires.",
+        "howToUse": "1. Placez les patchs sur une peau propre, comme indiqué sur l’emballage.\n2. Laissez-les poser pendant la durée précisée par le fabricant.\n3. Retirez-les délicatement et faites pénétrer l’essence restante si les instructions le permettent.\n\nÉvitez de les placer trop près des yeux et arrêtez l’utilisation en cas d’irritation. L’emballage confirme 28 paires, et non 28 patchs individuels.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -1039,7 +1366,7 @@ export const PRODUCTS = [
       "Peau sèche",
       "Peau terne"
     ],
-    "price": 9500,
+    "price": 6000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -1053,9 +1380,9 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/Medicube%20PDRN%20gel%20mask--9ec6949f.webp",
-      "assets/products-web/Skincare/Medicube%20PDRN%20gel%20mask(1)--092fbc45.webp",
-      "assets/products-web/Skincare/Medicube%20PDRN%20gel%20mask(2)--9f9942a2.webp"
+      "images/catalog/medicube-pdrn-gel-mask-0.webp",
+      "images/catalog/medicube-pdrn-gel-mask-1.webp",
+      "images/catalog/medicube-pdrn-gel-mask-2.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Medicube PDRN gel mask.WEBP",
@@ -1067,8 +1394,20 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A single-use mask featuring PDRN, as indicated by the product name.,Its format offers a focused skincare treatment without committing to a multi-mask pack.,A convenient option for adding an occasional mask session to your routine.",
+        "howToUse": "1. Cleanse your face before application.,2. Apply the mask according to the specific product instructions, ensuring it fits comfortably.,3. Leave it on for the duration indicated on the packaging, then remove and follow the directions for any remaining essence.,,Verify the exact mask format and manufacturer instructions before publishing.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un masque à usage unique contenant du PDRN, comme l’indique le nom du produit.,Son format propose un soin ciblé sans nécessiter l’achat d’un coffret de plusieurs masques.,Une option pratique pour ajouter ponctuellement un masque à votre routine.",
+        "howToUse": "1. Nettoyez votre visage avant l’application.\n2. Appliquez le masque selon ses instructions, en vérifiant qu’il est bien positionné.\n3. Laissez poser le temps indiqué sur l’emballage, puis retirez-le et suivez les instructions concernant l’essence restante.\n\nVérifiez le format exact et le mode d’emploi du fabricant avant publication.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -1094,8 +1433,7 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/Medicube%20PDRN%20pink%20capsule%20cream(1)--93fff813.webp",
-      "assets/products-web/Skincare/Medicube%20PDRN%20pink%20capsule%20cream--4f39c2bd.webp"
+      "images/catalog/medicube-pdrn-pink-capsule-cream-0.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Medicube PDRN pink capsule cream.WEBP",
@@ -1106,8 +1444,20 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A capsule-style moisturizing cream from MEDICUBE’s PDRN Pink product range.\n\nIts distinctive texture offers a more customizable moisturizing step within a layered skincare routine.\n\nA finishing cream for customers who want their moisturizing step to feel like a dedicated part of their skincare ritual.",
+        "howToUse": "1. Apply after cleansing and any lighter serums.\n2. Mix or layer the capsules and gel exactly as directed for this specific formula.\n3. Smooth over the face and adjust the amount according to the manufacturer’s guidance.\n\nVerify the exact product version. Do not copy instructions for MEDICUBE’s Kojic Acid Capsule Cream if the formulas use different application methods.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Une crème hydratante en capsules de la gamme PDRN Pink de MEDICUBE.\n\nSa texture particulière propose une étape hydratante modulable au sein d’une routine de soin par couches.\n\nUne crème de finition pour celles et ceux qui souhaitent consacrer une étape à l’hydratation.",
+        "howToUse": "1. Appliquez après le nettoyage et les sérums plus légers.\n2. Mélangez ou superposez capsules et gel exactement comme indiqué pour cette formule.\n3. Étalez sur le visage et adaptez la quantité selon les recommandations du fabricant.\n\nVérifiez la version exacte. Ne reprenez pas le mode d’emploi de la crème Kojic Acid Capsule si la méthode diffère.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -1147,6 +1497,18 @@ export const PRODUCTS = [
     "priceCurrency": "XOF",
     "pricingType": "beta",
     "isBetaPrice": true,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": true
   },
   {
@@ -1186,6 +1548,18 @@ export const PRODUCTS = [
     "priceCurrency": "XOF",
     "pricingType": "beta",
     "isBetaPrice": true,
+    "content": {
+      "en": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      },
+      "fr": {
+        "description": "",
+        "howToUse": "",
+        "ingredients": ""
+      }
+    },
     "noGoodHero": true
   },
   {
@@ -1197,7 +1571,7 @@ export const PRODUCTS = [
       "Taches & hyperpigmentation",
       "Teint irrégulier"
     ],
-    "price": 17000,
+    "price": 15500,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -1211,8 +1585,7 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/Medicube%20TXA%20serum--b3beb8e2.webp",
-      "assets/products-web/Skincare/MEDICUBE%20TXA%20SERUM%20--94120f5e.webp"
+      "images/catalog/medicube-txa-serum-0.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/MEDICUBE TXA SERUM .WEBP",
@@ -1223,8 +1596,20 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A targeted facial serum for customers looking to build a routine focused on uneven-looking skin tone.\n\nIts lightweight format is intended to sit between cleansing and moisturizing.\n\nA concentrated-style skincare step for routines that require a more targeted product than a basic moisturizer.",
+        "howToUse": "1. Apply to clean skin after cleansing and any required toner.\n2. Spread a small amount evenly and follow with moisturizer.\n3. Use sunscreen during the day and follow the actual product’s directions for frequency.\n\nNo active concentrations or clinical results are claimed without verification from the packaging or manufacturer.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un sérum visage ciblé pour les routines axées sur l’apparence d’un teint irrégulier.\n\nSon format léger s’applique entre le nettoyage et l’hydratation.\n\nUne étape de soin ciblée pour les routines qui nécessitent davantage qu’une crème hydratante de base.",
+        "howToUse": "1. Appliquez sur une peau propre après le nettoyage et, si nécessaire, le tonique.\n2. Étalez une petite quantité uniformément, puis appliquez une crème hydratante.\n3. Utilisez une protection solaire le jour et respectez la fréquence indiquée pour ce produit.\n\nAucune concentration d’actif ni aucun résultat clinique ne sont avancés sans confirmation de l’emballage ou du fabricant.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
@@ -1235,7 +1620,7 @@ export const PRODUCTS = [
     "concerns": [
       "Protection solaire"
     ],
-    "price": 14000,
+    "price": 13000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -1249,8 +1634,8 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Sun%20Care/Beauty%20of%20joseon%20mate%20sun%20stick%20--b4b6586c.webp",
-      "assets/products-web/Sun%20Care/Beauty%20of%20joseon%20mate%20sun%20stick--b16e80a1.webp"
+      "images/catalog/beauty-of-joseon-mate-sun-stick-0.webp",
+      "images/catalog/beauty-of-joseon-mate-sun-stick-1.webp"
     ],
     "_sourceFiles": [
       "assets/products/Sun Care/Beauty of joseon mate sun stick .WEBP",
@@ -1261,19 +1646,31 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A convenient sunscreen stick designed for easy application and on-the-go reapplication.\n\nIts soft-matte finish makes it a practical option for customers who prefer a less shiny feel.\n\nCompact and easy to carry, it fits naturally into a daily sun-protection routine.",
+        "howToUse": "1. Apply generously as the final step of your morning skincare routine.\n2. Cover all exposed areas evenly, following the package instructions.\n3. Reapply regularly, especially after sweating, swimming, or wiping the skin.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Un stick solaire pratique, conçu pour une application facile et pour renouveler la protection en déplacement.\n\nSon fini mat convient aux personnes qui préfèrent un toucher moins brillant.\n\nCompact et facile à emporter, il trouve naturellement sa place dans une routine de protection solaire.",
+        "howToUse": "1. Appliquez généreusement en dernière étape de votre routine du matin.\n2. Couvrez uniformément les zones exposées en suivant les instructions de l’emballage.\n3. Renouvelez régulièrement l’application, notamment après avoir transpiré, nagé ou essuyé la peau.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   },
   {
     "id": "medicube-glow-sunscreen",
-    "name": "MEDICUBE Glow Sunscreen",
+    "name": "MEDICUBE Collagen Glow Sunscreen, SPF 50, 50 ml",
     "brand": "MEDICUBE",
     "category": "Soins de la peau",
     "concerns": [
       "Protection solaire"
     ],
-    "price": 14000,
+    "price": 13000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -1287,9 +1684,9 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Sun%20Care/Medicube%20glow%20sunscreen(1)--5c7567cc.webp",
-      "assets/products-web/Sun%20Care/Medicube%20Glow%20Sunscreen--f853ffa4.webp",
-      "assets/products-web/Sun%20Care/Medicube%20glow%20sunscreen--947643e7.webp"
+      "images/catalog/medicube-glow-sunscreen-0.webp",
+      "images/catalog/medicube-glow-sunscreen-1.png",
+      "images/catalog/medicube-glow-sunscreen-2.webp"
     ],
     "_sourceFiles": [
       "assets/products/Sun Care/Medicube Glow Sunscreen.PNG",
@@ -1301,8 +1698,20 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
+    "content": {
+      "en": {
+        "description": "A facial sunscreen designed to be the sun-protection step in a daytime skincare routine.,Its compact 50 ml format makes it practical for everyday use. The supplied packaging confirms broad-spectrum SPF 50.,Apply it consistently as directed to maintain the labeled level of sun protection.",
+        "howToUse": "1. Apply as the final step of your morning skincare routine.\n2. Use the amount and application method specified on the packaging.\n3. Reapply at the interval indicated by the label, particularly after sweating, swimming, or wiping the skin.\n\nThe supplied package confirms SPF 50. No SPF 50+ or PA++++ rating is claimed.",
+        "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
+      },
+      "fr": {
+        "description": "Une protection solaire visage pour l’étape de protection d’une routine de jour.,Son format compact de 50 ml est pratique au quotidien. L’emballage fourni confirme une protection large spectre SPF 50.,Appliquez-la régulièrement selon les instructions pour maintenir le niveau de protection indiqué.",
+        "howToUse": "1. Appliquez en dernière étape de votre routine du matin.\n2. Utilisez la quantité et la méthode d’application indiquées sur l’emballage.\n3. Renouvelez l’application selon l’intervalle indiqué, notamment après avoir transpiré, nagé ou essuyé la peau.\n\nL’emballage fourni confirme SPF 50. Aucune mention SPF 50+ ou PA++++ n’est avancée.",
+        "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
+      }
+    },
     "noGoodHero": false
   }
 ];

@@ -16,6 +16,7 @@ const IMAGE_ROOT = path.join(ROOT, 'assets', 'products');
 const CSV_PATH = path.join(ROOT, 'products-edit.csv');
 const REPORT_PATH = path.join(__dirname, 'import-report.md');
 const IMAGE_CLASSIFICATION_PATH = path.join(ROOT, 'data', 'image-classification.csv');
+const PRODUCT_IMAGE_OVERRIDES_PATH = path.join(ROOT, 'data', 'product-image-overrides.json');
 const DESCRIPTIONS_REPORT_PATH = path.join(ROOT, 'data', 'descriptions-report.csv');
 const IMAGE_EXTENSIONS = new Set([
   '.jpg',
@@ -131,6 +132,12 @@ function writeCsv(rows) {
     'oldPrice',
     'bestSeller',
     'isNew',
+    'about_en',
+    'about_fr',
+    'how_to_use_en',
+    'how_to_use_fr',
+    'ingredients_en',
+    'ingredients_fr',
   ];
   return (
     [
@@ -408,6 +415,16 @@ function orderAndApplyClassifications(products, rows) {
     p.noGoodHero = NO_GOOD_HERO_IDS.has(p.id) || !selected.length || !selected.some((x) => x.hero);
   });
 }
+function applyProductImageOverrides(products) {
+  if (!fs.existsSync(PRODUCT_IMAGE_OVERRIDES_PATH)) return;
+  const overrides = JSON.parse(fs.readFileSync(PRODUCT_IMAGE_OVERRIDES_PATH, 'utf8'));
+  for (const product of products) {
+    const images = overrides[product.id];
+    if (!Array.isArray(images) || images.length === 0) continue;
+    product.images = images;
+    product.noGoodHero = false;
+  }
+}
 function applyEdits(auto, csvRows, toXof) {
   const rowsById = new Map(csvRows.map((r) => [r.id, r]));
   const editRows = [];
@@ -455,6 +472,18 @@ function applyEdits(auto, csvRows, toXof) {
       oldPrice: toXofPrice(sourceOldPrice),
       bestSeller: String(val('bestSeller', p.bestSeller)).toLowerCase() === 'true',
       isNew: String(val('isNew', p.isNew)).toLowerCase() === 'true',
+      content: {
+        en: {
+          description: r.about_en || '',
+          howToUse: r.how_to_use_en || '',
+          ingredients: r.ingredients_en || '',
+        },
+        fr: {
+          description: r.about_fr || '',
+          howToUse: r.how_to_use_fr || '',
+          ingredients: r.ingredients_fr || '',
+        },
+      },
     };
     editRows.push({
       id: p.id,
@@ -470,6 +499,12 @@ function applyEdits(auto, csvRows, toXof) {
       oldPrice: r.oldPrice ?? '',
       bestSeller: r.bestSeller ?? 'false',
       isNew: r.isNew ?? 'false',
+      about_en: r.about_en ?? '',
+      about_fr: r.about_fr ?? '',
+      how_to_use_en: r.how_to_use_en ?? '',
+      how_to_use_fr: r.how_to_use_fr ?? '',
+      ingredients_en: r.ingredients_en ?? '',
+      ingredients_fr: r.ingredients_fr ?? '',
     });
     return applied;
   });
@@ -629,6 +664,7 @@ async function run() {
   const { products, editRows } = applyEdits(auto, csvRows, toXof);
   const imageRows = classificationRows(products);
   orderAndApplyClassifications(products, imageRows);
+  applyProductImageOverrides(products);
   if (!csvExists) fs.writeFileSync(CSV_PATH, writeCsv(editRows));
   else {
     const existing = new Set(csvRows.map((r) => r.id));

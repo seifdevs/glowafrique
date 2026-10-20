@@ -1,35 +1,335 @@
-id,name,brand,category,concerns,price,priceCurrency,pricingType,oldPrice,bestSeller,isNew
-kundal-linen-flower-deodorant,Kundal linen flower deodorant,KUNDAL,Cheveux & corps,Cheveux & corps,10000,XOF,beta,,false,false
-kundal-travel-kit-baby-powder,KUNDAL Travel KIT baby powder,KUNDAL,Cheveux & corps,Cheveux & corps,7000,XOF,beta,,false,false
-medicube-deodorant-vanilla-pistachio,Medicube deodorant vanilla pistachio,MEDICUBE,Cheveux & corps,Cheveux & corps,10000,XOF,beta,,false,false
-medicube-glow-vanilla-hair-body-mist,Medicube glow vanilla hair body mist,MEDICUBE,Cheveux & corps,Cheveux & corps,10000,XOF,beta,,true,false
-kundal-caffeine-scalp-serum,KUNDAL caffeine scalp serum,KUNDAL,Cheveux & corps,Cheveux & corps,10000,XOF,beta,,false,false
-lip-sleeping-mask-medicube,Lip sleeping mask medicube,MEDICUBE,Lèvres,Lèvres,9000,XOF,beta,,false,false
-lip-sleeping-mask,Lip sleeping mask,,Lèvres,Lèvres,9000,XOF,beta,,false,false
-medicube-lip-sleeping-mask,Medicube lip sleeping mask,MEDICUBE,Lèvres,Lèvres,9000,XOF,beta,,false,false
-axis-y-sunday-morning-cleansing-foam,AXIS Y Sunday morning cleansing foam,AXIS-Y,Soins de la peau,Pores dilatés & excès de sébum,9500,XOF,beta,,false,false
-axix-y-unsay-morning-cleanser-foam,AXIX Y unsay morning cleanser foam,AXIS-Y,Soins de la peau,Pores dilatés & excès de sébum,9500,XOF,beta,,false,false
-biodance-bio-collagen-real-deep-mask,BIODANCE bio collagen real deep mask,BIODANCE,Soins de la peau,Peau sèche | Peau terne,9500,XOF,beta,,true,false
-biodance-rejuvenating-caviar-pdrn-mask,BIODANCE rejuvenating caviar PDRN mask,BIODANCE,Soins de la peau,Peau sèche | Peau terne,9500,XOF,beta,,true,false
-celimax-retinal-shot,Celimax retinal shot,Celimax,Soins de la peau,Rides & fermeté,17000,XOF,beta,,false,false
-celimax-the-vita-a-retinal-shot-tightening-booster,Celimax the vita A retinal shot tightening booster,Celimax,Soins de la peau,Rides & fermeté,17000,XOF,beta,,false,false
-cosrx-acne-pimple-master-patch,COSRX Acne Pimple Master Patch,COSRX,Soins de la peau,Acné & imperfections,12000,XOF,beta,,false,false
-cosrx-pimple-patch,COSRX pimple patch,COSRX,Soins de la peau,Acné & imperfections,4000,XOF,beta,,false,false
-dr-althea-147-barrier-cream,Dr Althea 147 barrier cream,Dr. Althea,Soins de la peau,Barrière cutanée | Peau sèche,16000,XOF,beta,,false,false
-dr-althea-345-relief-cream,Dr Althea 345 relief cream,Dr. Althea,Soins de la peau,Barrière cutanée | Peau sèche,16000,XOF,beta,,true,false
-dr-althea-35-relief-mist-webp,DR Althea 35 relief MIST WEBP,Dr. Althea,Soins de la peau,-,16000,XOF,beta,,false,false
-dr-althea-35-relief-mist,DR Althea 35 relief MIST,Dr. Althea,Soins de la peau,-,16000,XOF,beta,,false,false
-dr-althea-35-relief-mistt,DR Althea 35 relief MISTT,Dr. Althea,Soins de la peau,-,16000,XOF,beta,,false,false
-dr-melaxin-black-rice-peel-shot,DR melaxin black rice peel shot,DR. MELAXIN,Soins de la peau,Peau terne,18000,XOF,beta,,false,false
-dr-melaxin-peel-shot-exfoliating-black-rice-ampoule,Dr MElaxin peel shot exfoliating black rice ampoule,DR. MELAXIN,Soins de la peau,Peau terne,18000,XOF,beta,,false,false
-medicube-kojic-acid-capsule-cream,Medicube kojic acid CAPSULE cream,MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier | Barrière cutanée | Peau sèche,16000,XOF,beta,,false,false
-medicube-kojic-acid-peel-shot-80ml,Medicube kojic acid peel shot 80ML,MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier | Peau terne,18000,XOF,beta,,false,false
-medicube-kojic-acid-turmeric-peel-shot-80ml,Medicube Kojic acid turmeric peel shot 80ML,MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier | Peau terne,18000,XOF,beta,,false,false
-medicube-pdrn-collagen-jelly-eye-mask,Medicube PDRN collagen jelly eye mask,MEDICUBE,Soins de la peau,Contour des yeux | Peau sèche | Peau terne,9500,XOF,beta,,true,false
-medicube-pdrn-gel-mask,Medicube PDRN gel mask,MEDICUBE,Soins de la peau,Peau sèche | Peau terne,9500,XOF,beta,,false,false
-medicube-pdrn-pink-capsule-cream,Medicube PDRN pink capsule cream,MEDICUBE,Soins de la peau,Barrière cutanée | Peau sèche,16000,XOF,beta,,true,false
-medicube-pdrn-pink-collagen-gel-mask,MEDICUBE PDRN Pink Collagen Gel Mask,MEDICUBE,Soins de la peau,Peau sèche | Peau terne,9500,XOF,beta,,false,false
-medicube-pink-pdrn-capsule-cream,MEDICUBE pink PDRN capsule cream,MEDICUBE,Soins de la peau,Barrière cutanée | Peau sèche,16000,XOF,beta,,false,false
-medicube-txa-serum,MEDICUBE TXA SERUM,MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier,17000,XOF,beta,,false,false
-beauty-of-joseon-mate-sun-stick,Beauty of joseon mate sun stick,Beauty of Joseon,Soins de la peau,Protection solaire,14000,XOF,beta,,false,false
-medicube-glow-sunscreen,Medicube Glow Sunscreen,MEDICUBE,Soins de la peau,Protection solaire,14000,XOF,beta,,false,false
+id,name,brand,category,concerns,price,priceCurrency,pricingType,oldPrice,bestSeller,isNew,about_en,about_fr,how_to_use_en,how_to_use_fr,ingredients_en,ingredients_fr
+kundal-linen-flower-deodorant,Kundal linen flower deodorant,KUNDAL,Cheveux & corps,Cheveux & corps,11000,XOF,retail,,false,false,"A convenient personal-care deodorant featuring the Linen Flower scent.
+
+Its fragrance-focused format is suited to customers who enjoy a fresh, clean scent in their daily routine.
+
+A straightforward finishing step for everyday personal care.","Un déodorant pratique au parfum Linen Flower.
+
+Son parfum frais et propre s’intègre facilement à la routine quotidienne.
+
+Une étape simple pour compléter les soins personnels de tous les jours.","1. Check whether the supplied version is a stick, cream, or spray.
+2. Apply to clean, dry underarm skin according to the packaging directions.
+3. Allow the product to dry before dressing if instructed.
+
+Avoid applying to irritated or freshly damaged skin.","1. Vérifiez si la version fournie est un stick, une crème ou un spray.
+2. Appliquez sur des aisselles propres et sèches selon les instructions de l’emballage.
+3. Laissez sécher avant de vous habiller si cela est indiqué.
+
+Évitez l’application sur une peau irritée ou récemment abîmée.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+kundal-travel-kit-baby-powder,KUNDAL Honey & Macadamia Travel Set,KUNDAL,Cheveux & corps,Cheveux & corps,,,,,false,false,"A compact KUNDAL Honey & Macadamia travel set. The supplied package images show shampoo, treatment, body wash, and body lotion in a travel pouch.
+
+The listing name and images previously conflicted; this title now follows the visible package.
+
+Price remains unavailable until the exact set and proposed price are confirmed.","Un coffret de voyage compact KUNDAL Honey & Macadamia. Les images de l’emballage fourni montrent du shampooing, un soin, un gel douche et une lotion pour le corps dans une trousse.
+
+L’ancien nom de la fiche ne correspondait pas aux images; ce titre suit maintenant l’emballage visible.
+
+Le prix reste indisponible jusqu’à confirmation du coffret exact et du prix proposé.",The supplied images identify a mixed hair-and-body travel set. Use each item only according to its own packaging directions; confirm the exact contents and sizes before purchase.,Les images fournies identifient un coffret de voyage pour cheveux et corps. Utilisez chaque produit selon ses propres instructions; confirmez le contenu et les formats exacts avant l’achat.,Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+medicube-deodorant-vanilla-pistachio,Medicube deodorant vanilla pistachio,MEDICUBE,Cheveux & corps,Cheveux & corps,15000,XOF,retail,,false,false,"A personal-care deodorant with the warm fragrance combination of vanilla and pistachio.
+
+Its everyday format makes it a convenient addition to a morning or post-shower routine.
+
+A scented personal-care option for customers who prefer something more distinctive than a conventional fragrance.","Un déodorant au parfum chaleureux de vanille et de pistache.
+
+Son format quotidien s’ajoute facilement à une routine du matin ou après la douche.
+
+Une option parfumée pour celles et ceux qui recherchent une senteur plus distinctive.","1. Confirm the exact product format from the supplied packaging.
+2. Apply to clean, dry underarm skin according to the manufacturer’s instructions.
+3. Allow it to dry before dressing if required.
+
+No skin-brightening or other specific result is claimed.","1. Vérifiez le format exact sur l’emballage fourni.
+2. Appliquez sur des aisselles propres et sèches selon les instructions du fabricant.
+3. Laissez sécher avant de vous habiller si nécessaire.
+
+Aucun effet éclaircissant ou autre résultat spécifique n’est promis.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+medicube-glow-vanilla-hair-body-mist,Medicube glow vanilla hair body mist,MEDICUBE,Cheveux & corps,Cheveux & corps,15000,XOF,retail,,true,false,"A vanilla-scented fragrance mist designed to add a soft, warm scent to your personal-care routine.
+
+Its mist format makes application simple and convenient.
+
+A fragrance option for customers who enjoy a comforting vanilla scent throughout the day.","Une brume parfumée à la vanille pour ajouter une note douce et chaleureuse à votre routine de soin.
+
+Son format spray facilite l’application.
+
+Une option parfumée pour les personnes qui apprécient la vanille au quotidien.","1. Check the label for recommended application areas.
+2. Spray lightly from the recommended distance onto the permitted areas.
+3. Avoid the eyes, inhalation, and irritated skin. Allow the product to dry before dressing where appropriate.
+
+The supplied product name identifies it for hair and body; follow the label for permitted use.","1. Vérifiez sur l’étiquette les zones d’application recommandées.
+2. Vaporisez légèrement à la distance indiquée sur les zones autorisées.
+3. Évitez les yeux, l’inhalation et les peaux irritées. Si nécessaire, laissez sécher avant de vous habiller.
+
+Le nom du produit fourni indique un usage cheveux et corps; suivez l’étiquette pour les zones autorisées.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+kundal-caffeine-scalp-serum,KUNDAL caffeine scalp serum,KUNDAL,Cheveux & corps,Cheveux & corps,15000,XOF,retail,,false,false,"A targeted scalp-care serum designed to complement a regular hair-care routine.
+
+Its serum format makes it possible to apply directly to the scalp rather than treating it like a conventional hair-length product.
+
+A focused step for customers who want to give their scalp routine additional attention.","Un sérum ciblé pour le cuir chevelu, conçu pour compléter une routine capillaire régulière.
+
+Son format sérum permet une application directe sur le cuir chevelu, plutôt que sur les longueurs comme un soin capillaire classique.
+
+Une étape dédiée aux personnes souhaitant accorder davantage d’attention au cuir chevelu.","1. Part the hair to expose the areas of the scalp where the product is intended to be applied.
+2. Apply the recommended amount according to the label.
+3. Massage gently and leave in or rinse out exactly as specified by the manufacturer.
+
+No claim is made that the serum prevents hair loss or guarantees hair growth.","1. Séparez les cheveux pour dégager les zones du cuir chevelu visées.
+2. Appliquez la quantité recommandée sur l’étiquette.
+3. Massez doucement, puis laissez agir ou rincez exactement comme l’indique le fabricant.
+
+Aucune promesse de prévention de la chute ou de croissance des cheveux n’est avancée.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+lip-sleeping-mask-medicube,Lip sleeping mask medicube,MEDICUBE,Lèvres,Lèvres,9000,XOF,beta,,false,false,,,,,,
+lip-sleeping-mask,Lip sleeping mask,,Lèvres,Lèvres,9000,XOF,beta,,false,false,,,,,,
+medicube-lip-sleeping-mask,Medicube lip sleeping mask,MEDICUBE,Lèvres,Lèvres,12000,XOF,retail,,false,false,"An overnight lip-care product designed to complement a simple evening routine.
+
+Its leave-on format provides a convenient final step for customers who prefer dedicated nighttime lip care.
+
+A practical bedside essential for keeping lip care part of your daily ritual.","Un soin des lèvres de nuit pour compléter une routine du soir simple.
+
+Son format sans rinçage offre une dernière étape pratique aux personnes qui préfèrent prendre soin de leurs lèvres la nuit.
+
+Un essentiel à garder près du lit pour intégrer le soin des lèvres à votre rituel quotidien.","1. Apply an appropriate layer to clean lips before bed.
+2. Leave on overnight if the packaging confirms this is an overnight product.
+3. Remove or wipe away any remaining product in the morning if directed.
+
+Verify the exact product name and formula from the supplied packaging before making ingredient or specific performance claims.","1. Appliquez une couche adaptée sur des lèvres propres avant le coucher.
+2. Laissez agir toute la nuit uniquement si l’emballage confirme cet usage.
+3. Retirez ou essuyez les résidus le matin si cela est indiqué.
+
+Vérifiez le nom et la formule sur l’emballage fourni avant toute affirmation sur les ingrédients ou les performances.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+axis-y-sunday-morning-cleansing-foam,AXIS-Y Sunday Morning Refreshing Cleansing Foam,AXIS-Y,Soins de la peau,Pores dilatés & excès de sébum,,,,,false,false,"Start your skincare routine with a refreshing facial cleanser that helps lift away daily impurities and excess oil.
+
+Its foaming texture creates a simple, comfortable cleansing step for your morning and evening routine.
+
+A fresh, clean-feeling finish makes it an easy addition to everyday skincare.","Commencez votre routine avec un nettoyant visage rafraîchissant qui aide à éliminer les impuretés du quotidien et l’excès de sébum.
+
+Sa texture moussante offre une étape de nettoyage simple et agréable, le matin comme le soir.
+
+Il laisse une sensation de fraîcheur et de propreté, pour s’intégrer facilement aux soins quotidiens.","1. Wet your face with lukewarm water.
+2. Work a small amount into a gentle lather.
+3. Massage over the face, avoiding the eyes, then rinse thoroughly.","1. Mouillez le visage à l’eau tiède.
+2. Faites mousser une petite quantité entre vos mains.
+3. Massez le visage en évitant les yeux, puis rincez soigneusement.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+axix-y-unsay-morning-cleanser-foam,AXIX Y unsay morning cleanser foam,AXIS-Y,Soins de la peau,Pores dilatés & excès de sébum,,,,,false,false,,,,,,
+biodance-bio-collagen-real-deep-mask,BIODANCE bio collagen real deep mask,BIODANCE,Soins de la peau,Peau sèche | Peau terne,9500,XOF,beta,,true,false,,,,,,
+biodance-rejuvenating-caviar-pdrn-mask,BIODANCE rejuvenating caviar PDRN mask,BIODANCE,Soins de la peau,Peau sèche | Peau terne,18000,XOF,retail,,true,false,"A Biodance mask featuring caviar and PDRN, as identified on the supplied packaging.
+
+Its sheet-mask format offers a dedicated skincare session for a refreshed, comfortable feel.
+
+Use it as part of a relaxing routine, leaving skin feeling refreshed and comfortable.","Un masque Biodance au caviar et au PDRN, comme indiqué sur l’emballage fourni.
+
+Son format masque en tissu propose une séance de soin dédiée pour une sensation de peau fraîche et confortable.
+
+Intégrez-le à un rituel de soin relaxant pour une peau fraîche et confortable.","1. Cleanse your face and prepare your skin according to the package directions.
+2. Apply the mask in the correct position.
+3. Leave it on for the duration specified on the packaging, then remove it and follow the product directions for any remaining essence.
+
+Confirm the exact mask format and instructions from the supplied product packaging.","1. Nettoyez votre visage et préparez la peau selon les instructions de l’emballage.
+2. Positionnez correctement le masque.
+3. Laissez poser pendant la durée indiquée sur l’emballage, puis retirez-le et suivez les instructions concernant l’essence restante.
+
+Confirmez le format exact du masque et son mode d’emploi à partir de l’emballage fourni.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+celimax-retinal-shot,Celimax retinal shot,Celimax,Soins de la peau,Rides & fermeté,17000,XOF,beta,,false,false,,,,,,
+celimax-the-vita-a-retinal-shot-tightening-booster,Celimax the vita A retinal shot tightening booster,Celimax,Soins de la peau,Rides & fermeté,14000,XOF,retail,,false,false,"A targeted retinal skincare booster for customers looking to refine the appearance of uneven texture and visible pores.
+
+Its treatment-focused formula is designed to complement a carefully layered nighttime routine.
+
+Introduce it gradually rather than treating it like an ordinary daily moisturizer.","Un booster ciblé au rétinal, destiné aux personnes souhaitant améliorer l’apparence d’une texture irrégulière et de pores visibles.
+
+Ce soin s’intègre à une routine du soir appliquée avec précaution et par étapes.
+
+Introduisez-le progressivement plutôt que de l’utiliser comme une crème hydratante quotidienne ordinaire.","1. At night, apply a small amount to clean, dry skin as directed on the package.
+2. Beginners should start every other night or less frequently, adjusting according to tolerance and product directions.
+3. Follow with moisturizer and wear sunscreen during the day.
+
+Avoid combining it in the same routine with other strong retinoids or exfoliating treatments until compatibility is established. Patch test first and do not apply to irritated skin. Seek professional advice about retinoid use during pregnancy.","1. Le soir, appliquez une petite quantité sur une peau propre et sèche, selon les instructions de l’emballage.
+2. Si vous débutez, commencez un soir sur deux ou moins fréquemment, puis adaptez selon la tolérance et les consignes du produit.
+3. Appliquez ensuite une crème hydratante et utilisez une protection solaire le jour.
+
+Évitez de l’associer dans la même routine à d’autres rétinoïdes puissants ou soins exfoliants avant d’en confirmer la compatibilité. Faites d’abord un test cutané et n’appliquez pas sur une peau irritée. Demandez conseil à un professionnel de santé concernant les rétinoïdes pendant la grossesse.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+cosrx-acne-pimple-master-patch,COSRX Acne Pimple Master Patch,COSRX,Soins de la peau,Acné & imperfections,3500,XOF,retail,,false,false,"A hydrocolloid patch designed to cover individual blemishes and protect the surrounding area from unnecessary touching.
+
+Its thin, targeted format makes it easy to incorporate into a simple spot-care routine.
+
+A practical option for treating individual spots without applying a product to the entire face.","Un patch hydrocolloïde conçu pour couvrir les imperfections ciblées et éviter de toucher inutilement la zone autour.
+
+Son format fin et précis s’intègre facilement à une routine localisée.
+
+Une option pratique pour traiter une imperfection sans appliquer de produit sur tout le visage.","1. Cleanse the skin and dry the area completely.
+2. Select a patch slightly larger than the blemish and apply it directly.
+3. Leave it in place according to the packaging instructions and replace it when needed.
+
+Do not apply over infected or significantly damaged skin.","1. Nettoyez la peau et séchez complètement la zone.
+2. Choisissez un patch légèrement plus grand que l’imperfection et appliquez-le directement.
+3. Laissez-le en place selon les instructions de l’emballage et remplacez-le si nécessaire.
+
+Ne l’appliquez pas sur une zone infectée ou fortement abîmée.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+cosrx-pimple-patch,COSRX pimple patch,COSRX,Soins de la peau,Acné & imperfections,3500,XOF,retail,,false,false,,,,,,
+dr-althea-147-barrier-cream,Dr Althea 147 barrier cream,Dr. Althea,Soins de la peau,Barrière cutanée | Peau sèche,18000,XOF,retail,,false,false,"A facial cream intended to support a comfortable, moisturized skin barrier.
+
+Its richer moisturizing step complements routines that include cleansing, serums, and other lightweight skincare products.
+
+A useful option for customers seeking a simple final moisturizing layer.","Une crème visage conçue pour contribuer au confort et à l’hydratation de la barrière cutanée.
+
+Cette étape hydratante plus riche complète une routine composée d’un nettoyant, de sérums et d’autres soins légers.
+
+Une option simple pour terminer la routine par une couche hydratante.","1. Apply after cleansing and any lighter serums.
+2. Smooth a suitable amount evenly over the face.
+3. Use morning or evening as directed by the manufacturer.","1. Appliquez après le nettoyage et les sérums plus légers.
+2. Étalez uniformément une quantité adaptée sur le visage.
+3. Utilisez matin ou soir selon les instructions du fabricant.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+dr-althea-345-relief-cream,Dr Althea 345 relief cream,Dr. Althea,Soins de la peau,Barrière cutanée | Peau sèche,17500,XOF,retail,,true,false,"A daily facial moisturizer designed to complement routines focused on comfort and skin-barrier care.
+
+Its cream format helps leave skin feeling moisturized without adding a complicated step to your routine.
+
+Use it as the finishing layer of your skincare routine or after lighter serums and treatments.","Une crème hydratante visage quotidienne pour les routines axées sur le confort et le soin de la barrière cutanée.
+
+Sa texture crème aide à laisser la peau hydratée sans compliquer la routine.
+
+Utilisez-la en dernière étape de votre routine ou après les sérums et soins plus légers.","1. Cleanse and apply any lighter skincare products first.
+2. Smooth an appropriate amount over the face.
+3. Use in the morning or evening as tolerated.","1. Nettoyez la peau et appliquez d’abord les soins plus légers.
+2. Étalez une quantité adaptée sur le visage.
+3. Utilisez matin ou soir selon la tolérance de votre peau.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+dr-althea-35-relief-mist-webp,DR Althea 35 relief MIST WEBP,Dr. Althea,Soins de la peau,-,,,,,false,false,,,,,,
+dr-althea-35-relief-mist,Dr Althea 345 Relief Cream Mist,Dr. Althea,Soins de la peau,-,15500,XOF,retail,,false,false,"A fine facial mist designed to bring a convenient hydration step to your skincare routine.
+
+Its spray format makes it easy to use when your skin needs a refreshing layer of moisture.
+
+Keep it close for quick application throughout the day, following its specific package instructions.","Une brume visage fine conçue pour ajouter une étape d’hydratation pratique à votre routine.
+
+Son format spray facilite l’application lorsque la peau a besoin d’une touche de fraîcheur.
+
+Gardez-la à portée de main pour une application dans la journée, selon les instructions de l’emballage.","1. Shake the bottle if instructed on the label.
+2. Close your eyes and spray from the recommended distance.
+3. Allow the product to settle, or pat gently if directed.
+
+Use before or after makeup only if supported by the product’s instructions.","1. Agitez le flacon si l’étiquette le demande.
+2. Fermez les yeux et vaporisez à la distance recommandée.
+3. Laissez le produit se déposer ou tapotez doucement si cela est indiqué.
+
+Utilisez avant ou après le maquillage uniquement si les instructions du produit le permettent.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+dr-althea-35-relief-mistt,DR Althea 35 relief MISTT,Dr. Althea,Soins de la peau,-,,,,,false,false,,,,,,
+dr-melaxin-black-rice-peel-shot,DR melaxin black rice peel shot,DR. MELAXIN,Soins de la peau,Peau terne,18000,XOF,beta,,false,false,,,,,,
+dr-melaxin-peel-shot-exfoliating-black-rice-ampoule,Dr MElaxin peel shot exfoliating black rice ampoule,DR. MELAXIN,Soins de la peau,Peau terne,18000,XOF,retail,,false,false,"A targeted ampoule from Dr. Melaxin for customers interested in adding a treatment-focused step to their skincare routine.
+
+Its peel-shot format is intended for more specific skin-texture care than an everyday moisturizer.
+
+Use it thoughtfully and follow the product’s own directions rather than increasing application frequency in pursuit of faster results.","Une ampoule ciblée Dr. Melaxin pour ajouter une étape de soin spécifique à votre routine.
+
+Son format Peel Shot s’adresse davantage au soin ciblé de la texture de la peau qu’une crème hydratante quotidienne.
+
+Utilisez-la avec précaution et suivez son mode d’emploi plutôt que d’augmenter la fréquence pour rechercher des résultats plus rapides.","1. Read the package directions and check whether the product is intended for leave-on or rinse-off use.
+2. Apply only as instructed, keeping it away from the eyes and irritated areas.
+3. Do not combine it with other strong exfoliants or retinoids until its compatibility is confirmed, and use sunscreen during the day.
+
+Verify the exact formulation and frequency instructions from the manufacturer before publishing definitive directions.","1. Lisez les instructions de l’emballage et vérifiez si le produit doit rester sur la peau ou être rincé.
+2. Appliquez-le uniquement comme indiqué, en évitant les yeux et les zones irritées.
+3. Ne l’associez pas à d’autres exfoliants puissants ou rétinoïdes avant d’en confirmer la compatibilité; utilisez une protection solaire le jour.
+
+Vérifiez la formule exacte et la fréquence d’utilisation auprès du fabricant avant de publier des instructions définitives.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+medicube-kojic-acid-capsule-cream,MEDICUBE Kojic Acid Turmeric Vita Capsule Cream,MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier | Barrière cutanée | Peau sèche,16000,XOF,retail,,false,false,"A capsule-and-gel cream designed to let customers adjust the texture of their moisturizing step.
+
+Its format supports a more customized application within a routine focused on uneven-looking skin tone.
+
+Use the proportions recommended for the exact product rather than mixing arbitrary amounts. The supplied packaging identifies a 53 g Kojic Acid Turmeric Vita Capsule Cream.","Une crème gel et capsules qui permet d’ajuster la texture de l’étape hydratante.
+
+Son format s’intègre à une routine axée sur l’apparence du teint irrégulier.
+
+Respectez les proportions recommandées pour ce produit précis. L’emballage fourni identifie une Kojic Acid Turmeric Vita Capsule Cream de 53 g.","1. After cleansing and applying any lighter products, prepare the capsule-and-gel combination as directed on the packaging.
+2. Follow the manufacturer’s recommended proportions for your skin type.
+3. Apply evenly and adjust frequency if irritation occurs.
+
+The exact product version is confirmed by the supplied packaging. Do not use arbitrary mixing ratios.","1. Après le nettoyage et les soins plus légers, préparez le mélange capsules-gel comme indiqué sur l’emballage.
+2. Respectez les proportions recommandées par le fabricant pour votre type de peau.
+3. Appliquez uniformément et espacez les utilisations en cas d’irritation.
+
+La version exacte est confirmée par l’emballage fourni. N’improvisez pas de proportions.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+medicube-kojic-acid-peel-shot-80ml,Medicube kojic acid peel shot 80ML,MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier | Peau terne,,,,,false,false,,,,,,
+medicube-kojic-acid-turmeric-peel-shot-80ml,"MEDICUBE Kojic Acid Turmeric Peel Shot, 80 ml",MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier | Peau terne,15000,XOF,retail,,false,false,"A targeted exfoliating-style skincare treatment intended for routines focused on the appearance of uneven texture and visible buildup.
+
+Its peel-shot format makes it a more treatment-oriented step than an ordinary moisturizer.
+
+Use according to the product’s specified application method and frequency.","Un soin de type exfoliant pour les routines ciblant l’apparence d’une texture irrégulière et des dépôts visibles.
+
+Son format Peel Shot est une étape plus ciblée qu’une crème hydratante ordinaire.
+
+Utilisez-le selon le mode d’application et la fréquence indiqués pour le produit.","1. Follow the supplied product’s exact directions for application and whether rinsing is required.
+2. Avoid irritated skin and sensitive areas around the eyes and lips.
+3. Do not combine with other strong exfoliants or retinoids until compatibility is established. Use sunscreen during the day.
+
+Confirm the exact SKU and usage instructions before publishing definitive details.","1. Suivez les instructions exactes fournies pour l’application et vérifiez si un rinçage est nécessaire.
+2. Évitez les peaux irritées et les zones sensibles du contour des yeux et des lèvres.
+3. N’associez pas à d’autres exfoliants puissants ou rétinoïdes avant d’en confirmer la compatibilité. Utilisez une protection solaire le jour.
+
+Confirmez la référence exacte et le mode d’emploi avant de publier des informations définitives.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+medicube-pdrn-collagen-jelly-eye-mask,Medicube PDRN collagen jelly eye mask,MEDICUBE,Soins de la peau,Contour des yeux | Peau sèche | Peau terne,17500,XOF,retail,,true,false,"A targeted eye-area mask designed to add a dedicated treatment step to your skincare routine.,Its ready-to-use format makes application convenient on days when the eye area needs extra attention.,The supplied product packaging confirms a box of 28 pairs.","Un masque ciblé pour le contour des yeux, pour ajouter une étape dédiée à votre routine.,Son format prêt à l’emploi facilite l’application lorsque le contour des yeux demande une attention particulière.,L’emballage fourni confirme une boîte de 28 paires.","1. Place the patches on clean skin in the position shown on the packaging.
+2. Leave them on for the time specified by the manufacturer.
+3. Remove gently and pat in any remaining essence if the instructions permit.
+
+Avoid applying too close to the eyes and stop using the product if irritation develops. The package confirms 28 pairs, not 28 individual patches.","1. Placez les patchs sur une peau propre, comme indiqué sur l’emballage.
+2. Laissez-les poser pendant la durée précisée par le fabricant.
+3. Retirez-les délicatement et faites pénétrer l’essence restante si les instructions le permettent.
+
+Évitez de les placer trop près des yeux et arrêtez l’utilisation en cas d’irritation. L’emballage confirme 28 paires, et non 28 patchs individuels.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+medicube-pdrn-gel-mask,Medicube PDRN gel mask,MEDICUBE,Soins de la peau,Peau sèche | Peau terne,6000,XOF,retail,,false,false,"A single-use mask featuring PDRN, as indicated by the product name.,Its format offers a focused skincare treatment without committing to a multi-mask pack.,A convenient option for adding an occasional mask session to your routine.","Un masque à usage unique contenant du PDRN, comme l’indique le nom du produit.,Son format propose un soin ciblé sans nécessiter l’achat d’un coffret de plusieurs masques.,Une option pratique pour ajouter ponctuellement un masque à votre routine.","1. Cleanse your face before application.,2. Apply the mask according to the specific product instructions, ensuring it fits comfortably.,3. Leave it on for the duration indicated on the packaging, then remove and follow the directions for any remaining essence.,,Verify the exact mask format and manufacturer instructions before publishing.","1. Nettoyez votre visage avant l’application.
+2. Appliquez le masque selon ses instructions, en vérifiant qu’il est bien positionné.
+3. Laissez poser le temps indiqué sur l’emballage, puis retirez-le et suivez les instructions concernant l’essence restante.
+
+Vérifiez le format exact et le mode d’emploi du fabricant avant publication.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+medicube-pdrn-pink-capsule-cream,Medicube PDRN pink capsule cream,MEDICUBE,Soins de la peau,Barrière cutanée | Peau sèche,16000,XOF,retail,,true,false,"A capsule-style moisturizing cream from MEDICUBE’s PDRN Pink product range.
+
+Its distinctive texture offers a more customizable moisturizing step within a layered skincare routine.
+
+A finishing cream for customers who want their moisturizing step to feel like a dedicated part of their skincare ritual.","Une crème hydratante en capsules de la gamme PDRN Pink de MEDICUBE.
+
+Sa texture particulière propose une étape hydratante modulable au sein d’une routine de soin par couches.
+
+Une crème de finition pour celles et ceux qui souhaitent consacrer une étape à l’hydratation.","1. Apply after cleansing and any lighter serums.
+2. Mix or layer the capsules and gel exactly as directed for this specific formula.
+3. Smooth over the face and adjust the amount according to the manufacturer’s guidance.
+
+Verify the exact product version. Do not copy instructions for MEDICUBE’s Kojic Acid Capsule Cream if the formulas use different application methods.","1. Appliquez après le nettoyage et les sérums plus légers.
+2. Mélangez ou superposez capsules et gel exactement comme indiqué pour cette formule.
+3. Étalez sur le visage et adaptez la quantité selon les recommandations du fabricant.
+
+Vérifiez la version exacte. Ne reprenez pas le mode d’emploi de la crème Kojic Acid Capsule si la méthode diffère.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+medicube-pdrn-pink-collagen-gel-mask,MEDICUBE PDRN Pink Collagen Gel Mask,MEDICUBE,Soins de la peau,Peau sèche | Peau terne,9500,XOF,beta,,false,false,,,,,,
+medicube-pink-pdrn-capsule-cream,MEDICUBE pink PDRN capsule cream,MEDICUBE,Soins de la peau,Barrière cutanée | Peau sèche,16000,XOF,beta,,false,false,,,,,,
+medicube-txa-serum,MEDICUBE TXA SERUM,MEDICUBE,Soins de la peau,Taches & hyperpigmentation | Teint irrégulier,15500,XOF,retail,,false,false,"A targeted facial serum for customers looking to build a routine focused on uneven-looking skin tone.
+
+Its lightweight format is intended to sit between cleansing and moisturizing.
+
+A concentrated-style skincare step for routines that require a more targeted product than a basic moisturizer.","Un sérum visage ciblé pour les routines axées sur l’apparence d’un teint irrégulier.
+
+Son format léger s’applique entre le nettoyage et l’hydratation.
+
+Une étape de soin ciblée pour les routines qui nécessitent davantage qu’une crème hydratante de base.","1. Apply to clean skin after cleansing and any required toner.
+2. Spread a small amount evenly and follow with moisturizer.
+3. Use sunscreen during the day and follow the actual product’s directions for frequency.
+
+No active concentrations or clinical results are claimed without verification from the packaging or manufacturer.","1. Appliquez sur une peau propre après le nettoyage et, si nécessaire, le tonique.
+2. Étalez une petite quantité uniformément, puis appliquez une crème hydratante.
+3. Utilisez une protection solaire le jour et respectez la fréquence indiquée pour ce produit.
+
+Aucune concentration d’actif ni aucun résultat clinique ne sont avancés sans confirmation de l’emballage ou du fabricant.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+beauty-of-joseon-mate-sun-stick,Beauty of joseon mate sun stick,Beauty of Joseon,Soins de la peau,Protection solaire,13000,XOF,retail,,false,false,"A convenient sunscreen stick designed for easy application and on-the-go reapplication.
+
+Its soft-matte finish makes it a practical option for customers who prefer a less shiny feel.
+
+Compact and easy to carry, it fits naturally into a daily sun-protection routine.","Un stick solaire pratique, conçu pour une application facile et pour renouveler la protection en déplacement.
+
+Son fini mat convient aux personnes qui préfèrent un toucher moins brillant.
+
+Compact et facile à emporter, il trouve naturellement sa place dans une routine de protection solaire.","1. Apply generously as the final step of your morning skincare routine.
+2. Cover all exposed areas evenly, following the package instructions.
+3. Reapply regularly, especially after sweating, swimming, or wiping the skin.","1. Appliquez généreusement en dernière étape de votre routine du matin.
+2. Couvrez uniformément les zones exposées en suivant les instructions de l’emballage.
+3. Renouvelez régulièrement l’application, notamment après avoir transpiré, nagé ou essuyé la peau.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.
+medicube-glow-sunscreen,"MEDICUBE Collagen Glow Sunscreen, SPF 50, 50 ml",MEDICUBE,Soins de la peau,Protection solaire,13000,XOF,retail,,false,false,"A facial sunscreen designed to be the sun-protection step in a daytime skincare routine.,Its compact 50 ml format makes it practical for everyday use. The supplied packaging confirms broad-spectrum SPF 50.,Apply it consistently as directed to maintain the labeled level of sun protection.","Une protection solaire visage pour l’étape de protection d’une routine de jour.,Son format compact de 50 ml est pratique au quotidien. L’emballage fourni confirme une protection large spectre SPF 50.,Appliquez-la régulièrement selon les instructions pour maintenir le niveau de protection indiqué.","1. Apply as the final step of your morning skincare routine.
+2. Use the amount and application method specified on the packaging.
+3. Reapply at the interval indicated by the label, particularly after sweating, swimming, or wiping the skin.
+
+The supplied package confirms SPF 50. No SPF 50+ or PA++++ rating is claimed.","1. Appliquez en dernière étape de votre routine du matin.
+2. Utilisez la quantité et la méthode d’application indiquées sur l’emballage.
+3. Renouvelez l’application selon l’intervalle indiqué, notamment après avoir transpiré, nagé ou essuyé la peau.
+
+L’emballage fourni confirme SPF 50. Aucune mention SPF 50+ ou PA++++ n’est avancée.",Full ingredient list not yet provided by the supplier. Please refer to the product packaging.,La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.

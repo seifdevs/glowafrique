@@ -53,7 +53,10 @@ const COPY = {
     remove: 'Remove',
     total: 'Estimated Total',
     continue: 'Continue Shopping',
-    noPrice: 'Contact Us For Availability',
+    noPrice: 'Price Pending',
+    pricePending: 'Pricing Will Be Confirmed Before Ordering',
+    clearFilters: 'Clear Filters',
+    filterResults: 'Products',
     loading: 'Loading…',
     send: 'Send Message',
     name: 'Full Name',
@@ -78,7 +81,7 @@ const COPY = {
     newest: 'Newest',
     noProducts: 'No products match these filters.',
     skin: 'Shop trusted skincare, hair and body essentials selected for GlowAfrique.',
-    bestHeading: 'Customer Favorites',
+    bestHeading: 'Best Sellers',
     newHeading: 'Explore The Collection',
     aboutText:
       'GlowAfrique is an independent beauty and care shop serving customers in Côte d’Ivoire. Browse the current product collection, review product information, and contact our team with questions about an item or order.',
@@ -141,7 +144,10 @@ const COPY = {
     remove: 'Retirer',
     total: 'Total Estimé',
     continue: 'Continuer Mes Achats',
-    noPrice: 'Contactez-nous pour connaître la disponibilité',
+    noPrice: 'Prix En Attente',
+    pricePending: 'Prix À Confirmer Avant Toute Commande',
+    clearFilters: 'Effacer Les Filtres',
+    filterResults: 'Produits',
     loading: 'Chargement…',
     send: 'Envoyer Le Message',
     name: 'Nom Complet',
@@ -167,7 +173,7 @@ const COPY = {
     newest: 'Nouveautés',
     noProducts: 'Aucun produit ne correspond à ces filtres.',
     skin: 'Découvrez une sélection de soins pour le visage, les cheveux et le corps proposée par GlowAfrique.',
-    bestHeading: 'Les Préférés',
+    bestHeading: 'Meilleures Ventes',
     newHeading: 'Découvrir La Sélection',
     aboutText:
       'GlowAfrique est une boutique indépendante de produits de beauté et de soin qui propose sa sélection aux clients en Côte d’Ivoire. Parcourez les produits disponibles et contactez notre équipe pour toute question sur un article ou une commande.',
@@ -261,7 +267,7 @@ function ProductCard({ product }) {
           disabled={!productHasVerifiedPrice(product)}
           onClick={() => addItem(product)}
         >
-          {text(locale, 'add')}
+          {productHasVerifiedPrice(product) ? text(locale, 'add') : text(locale, 'noPrice')}
         </button>
       </div>
     </article>
@@ -368,6 +374,7 @@ function HomePage() {
     .filter(Boolean)
     .sort((a, b) => a.localeCompare(b, locale));
   const best = PRODUCTS.filter((p) => p.bestSeller).slice(0, 8);
+  const newProducts = PRODUCTS.filter((p) => p.isNew).slice(0, 8);
   const concernLabel = (category) =>
     locale === 'en'
       ? {
@@ -480,10 +487,12 @@ function HomePage() {
           {text(locale, 'learn')}
         </PageLink>
       </section>
-      <section className="section">
-        <SectionHeading title={text(locale, 'newHeading')} href="/products" />
-        <ProductGrid products={PRODUCTS.filter((p) => p.isNew).slice(0, 8)} />
-      </section>
+      {newProducts.length ? (
+        <section className="section">
+          <SectionHeading title={text(locale, 'newHeading')} href="/products" />
+          <ProductGrid products={newProducts} />
+        </section>
+      ) : null}
     </>
   );
 }
@@ -494,14 +503,23 @@ function ProductsPage() {
   const [brand, setBrand] = useState('');
   const [concern, setConcern] = useState('');
   const [sort, setSort] = useState('name');
-  const brands = [...new Set(PRODUCTS.map((p) => p.brand).filter(Boolean))].sort();
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const clearFilters = () => {
+    setSearch('');
+    setBrand('');
+    setConcern('');
+  };
+  const activeFilters = Number(Boolean(search)) + Number(Boolean(brand)) + Number(Boolean(concern));
+  const brands = [...new Set(PRODUCTS.map((p) => p.brand).filter(Boolean))].sort((a, b) =>
+    a.localeCompare(b, locale, { sensitivity: 'base' }),
+  );
   const concerns = [
     ...new Set(
       PRODUCTS.flatMap((p) => [...(p.concerns || []), ...(p.category ? [p.category] : [])]),
     ),
   ]
     .filter(Boolean)
-    .sort();
+    .sort((a, b) => a.localeCompare(b, locale, { sensitivity: 'base' }));
   const results = PRODUCTS.filter(
     (p) =>
       (!search || `${p.name} ${p.brand}`.toLowerCase().includes(search.toLowerCase())) &&
@@ -526,8 +544,12 @@ function ProductsPage() {
         <p>{text(locale, 'skin')}</p>
       </section>
       <section className="catalog-layout">
-        <aside className="filter-panel">
-          <h2>{text(locale, 'filter')}</h2>
+        {filtersOpen ? <button className="filter-scrim" aria-label={text(locale, 'remove')} onClick={() => setFiltersOpen(false)} /> : null}
+        <aside className={`filter-panel${filtersOpen ? ' filter-open' : ''}`} aria-label={text(locale, 'filter')}>
+          <div className="filter-panel-head">
+            <h2>{text(locale, 'filter')}</h2>
+            <button className="icon-button" type="button" aria-label={text(locale, 'remove')} onClick={() => setFiltersOpen(false)}>×</button>
+          </div>
           <label>
             {text(locale, 'search')}
             <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -550,10 +572,18 @@ function ProductsPage() {
               ))}
             </select>
           </label>
+          <button type="button" className="text-button clear-filters" onClick={clearFilters} disabled={!activeFilters}>
+            {text(locale, 'clearFilters')}
+          </button>
         </aside>
         <div className="catalog-results">
-          <label>
-            {text(locale, 'sort')}{' '}
+          <div className="catalog-toolbar">
+            <button type="button" className="button small mobile-filter-open" onClick={() => setFiltersOpen(true)}>
+              {text(locale, 'filter')}{activeFilters ? ` · ${activeFilters}` : ''}
+            </button>
+            <span className="catalog-result-count">{results.length} {text(locale, 'filterResults')}</span>
+            <label className="catalog-sort-label">
+            {text(locale, 'sort')}
             <select value={sort} onChange={(e) => setSort(e.target.value)}>
               <option value="name">A–Z</option>
               <option value="new">{text(locale, 'newest')}</option>
@@ -561,6 +591,7 @@ function ProductsPage() {
               <option value="price-high">{text(locale, 'priceHigh')}</option>
             </select>
           </label>
+          </div>
           <ProductGrid products={results} />
         </div>
       </section>
@@ -599,7 +630,7 @@ function CollectionPage({ path, search }) {
         : text(locale, 'all');
   return (
     <>
-      <section className="page-intro">
+      <section className="page-intro collection-intro">
         <p className="eyebrow">GlowAfrique</p>
         <h1>{title}</h1>
         <p>
@@ -617,6 +648,7 @@ function ProductPage({ id }) {
   const [reviews, setReviews] = useState([]);
   const [feedback, setFeedback] = useState('');
   const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(0);
   useEffect(() => {
     if (!product) return;
     fetch(`/api/reviews?productId=${encodeURIComponent(product.id)}`)
@@ -634,6 +666,7 @@ function ProductPage({ id }) {
   const similar = PRODUCTS.filter(
     (p) => p.id !== product.id && (p.brand === product.brand || p.category === product.category),
   ).slice(0, 4);
+  const productContent = product.content?.[locale] || null;
   async function submitReview(event) {
     event.preventDefault();
     setLoading(true);
@@ -674,8 +707,27 @@ function ProductPage({ id }) {
       <section className="product-detail">
         <div className="gallery">
           <div className="main-product-image image-fallback">
-            <img src={productImage(product)} alt={`${product.brand} ${product.name}`} />
+            <img
+              src={product.images?.[selectedImage] ? `/${product.images[selectedImage].replace(/^\//, '')}` : productImage(product)}
+              alt={`${product.brand} ${product.name}`}
+            />
           </div>
+          {(product.images || []).length > 1 ? (
+            <div className="thumbs" aria-label={locale === 'en' ? 'Product images' : 'Images du produit'}>
+              {product.images.map((image, index) => (
+                <button
+                  type="button"
+                  className={selectedImage === index ? 'active' : ''}
+                  key={image}
+                  onClick={() => setSelectedImage(index)}
+                  aria-label={`${locale === 'en' ? 'Show image' : 'Afficher l’image'} ${index + 1}`}
+                  aria-pressed={selectedImage === index}
+                >
+                  <img src={`/${image.replace(/^\//, '')}`} alt="" loading="lazy" />
+                </button>
+              ))}
+            </div>
+          ) : null}
         </div>
         <div className="product-buy">
           <p className="eyebrow product-brand">{product.brand}</p>
@@ -695,28 +747,34 @@ function ProductPage({ id }) {
             {text(locale, 'add')}
           </button>
           <p className="muted">{text(locale, 'deliveryNote')}</p>
-          {product.description ? (
-            <section className="product-accordions">
-              <h2>{locale === 'en' ? 'Product Information' : 'Informations Produit'}</h2>
-              <p>{product.description}</p>
-              {product.howToUse?.length ? (
-                <>
-                  <h3>{text(locale, 'howto')}</h3>
-                  <ul>
-                    {product.howToUse.map((x) => (
-                      <li key={x}>{x}</li>
-                    ))}
-                  </ul>
-                </>
-              ) : null}
-              {product.ingredients ? (
-                <>
-                  <h3>{locale === 'en' ? 'Ingredients' : 'Ingrédients'}</h3>
-                  <p>{product.ingredients}</p>
-                </>
-              ) : null}
-            </section>
-          ) : null}
+          <section className="product-accordions">
+            <h2>{locale === 'en' ? 'Product Information' : 'Informations Produit'}</h2>
+            <article className="product-about">
+              <h3>{locale === 'en' ? 'About' : 'À propos'}</h3>
+              <p>{productContent?.description || product.description || (locale === 'en' ? `${product.name} by ${product.brand || 'GlowAfrique'} is part of our ${product.category.toLowerCase()} selection. Supplier product details are being confirmed.` : `${product.name} de ${product.brand || 'GlowAfrique'} fait partie de notre sélection ${product.category.toLowerCase()}. Les détails fournisseur sont en cours de confirmation.`)}</p>
+            </article>
+            <details>
+              <summary>{locale === 'en' ? 'How to Use' : 'Mode d’emploi'}</summary>
+              <p className="product-how-to-use">{productContent?.howToUse || (locale === 'en' ? 'Manufacturer instructions are pending. Follow the directions printed on the product packaging.' : 'Les instructions du fabricant sont en attente. Suivez les indications figurant sur l’emballage.')}</p>
+            </details>
+            <details>
+              <summary>{locale === 'en' ? 'Ingredients' : 'Ingrédients'}</summary>
+              <p>{productContent?.ingredients || (locale === 'en' ? 'Full ingredient list not yet provided by the supplier. Please refer to the product packaging.' : 'La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit.')}</p>
+            </details>
+            <details>
+              <summary>{locale === 'en' ? 'Product Details' : 'Détails du produit'}</summary>
+              <dl>
+                <div><dt>{locale === 'en' ? 'Brand' : 'Marque'}</dt><dd>{product.brand || '—'}</dd></div>
+                <div><dt>{locale === 'en' ? 'Category' : 'Catégorie'}</dt><dd>{product.category}</dd></div>
+                {product.id === 'medicube-kojic-acid-capsule-cream' ? <div><dt>{locale === 'en' ? 'Net weight' : 'Poids net'}</dt><dd>53 g</dd></div> : null}
+                {product.id === 'medicube-glow-sunscreen' ? <><div><dt>{locale === 'en' ? 'Size' : 'Format'}</dt><dd>50 ml</dd></div><div><dt>{locale === 'en' ? 'Sun protection' : 'Protection solaire'}</dt><dd>{locale === 'en' ? 'Broad-spectrum SPF 50' : 'Large spectre SPF 50'}</dd></div></> : null}
+                {product.id === 'dr-althea-35-relief-mist' ? <div><dt>{locale === 'en' ? 'Size' : 'Format'}</dt><dd>100 ml</dd></div> : null}
+                {product.id === 'medicube-kojic-acid-turmeric-peel-shot-80ml' ? <div><dt>{locale === 'en' ? 'Size' : 'Format'}</dt><dd>80 ml</dd></div> : null}
+                {product.id === 'medicube-pdrn-collagen-jelly-eye-mask' ? <div><dt>{locale === 'en' ? 'Pack size' : 'Format'}</dt><dd>28 {locale === 'en' ? 'pairs' : 'paires'}</dd></div> : null}
+                {product.id === 'medicube-pdrn-gel-mask' ? <div><dt>{locale === 'en' ? 'Pack size' : 'Format'}</dt><dd>{locale === 'en' ? 'Single mask' : 'Masque à l’unité'}</dd></div> : null}
+              </dl>
+            </details>
+          </section>
         </div>
       </section>
       <section className="section">
@@ -1613,11 +1671,29 @@ function Newsletter() {
 }
 
 function Header() {
-  const { locale, cart, setCartOpen, user } = useStore();
+  const { locale, cart, setCartOpen, user, setUser } = useStore();
   const [search, setSearch] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [menuOpen]);
+  async function signOut() {
+    await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
+    setUser(null);
+    setMenuOpen(false);
+  }
   function switchLanguage() {
     const path = window.location.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
     const next = locale === 'fr' ? 'en' : 'fr';
@@ -1642,7 +1718,8 @@ function Header() {
           ☰
         </button>
         <PageLink className="logo logo-image" to="/" aria-label="GlowAfrique">
-          <img width="150" height="54" src="/logo.jpeg" alt="GlowAfrique" />
+          <img width="50" height="50" src="/logo.jpeg" alt="" />
+          <span className="logo-wordmark" aria-hidden="true">GlowAfrique</span>
         </PageLink>
         <form
           className="search-wrap"
@@ -1677,20 +1754,42 @@ function Header() {
             aria-label={`${text(locale, 'cart')} (${count})`}
             onClick={() => setCartOpen(true)}
           >
-            ♧<i id="cart-count">{count}</i>
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="cart-icon">
+              <path d="M3 4h2l2.1 11.1a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 1.9-1.4L21 8H6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="9.5" cy="20" r="1.2" fill="currentColor" />
+              <circle cx="18" cy="20" r="1.2" fill="currentColor" />
+            </svg>
+            <i id="cart-count">{count}</i>
           </button>
         </div>
       </header>
+      {menuOpen ? (
+        <button
+          type="button"
+          className="mobile-nav-scrim"
+          aria-label={locale === 'en' ? 'Close navigation' : 'Fermer le menu'}
+          onClick={() => setMenuOpen(false)}
+        />
+      ) : null}
       <nav
         className={`category-nav ${menuOpen ? 'menu-open' : ''}`}
         aria-label={text(locale, 'products')}
+        onClick={(event) => {
+          if (event.target.closest('a')) setMenuOpen(false);
+        }}
       >
+        <div className="mobile-drawer-head">
+          <span>{locale === 'en' ? 'Explore GlowAfrique' : 'Découvrir GlowAfrique'}</span>
+          <button type="button" className="icon-button mobile-close" aria-label={locale === 'en' ? 'Close menu' : 'Fermer le menu'} onClick={() => setMenuOpen(false)}>×</button>
+        </div>
         <PageLink to="/products">{text(locale, 'products')}</PageLink>
         <PageLink to="/collections/best-sellers">{text(locale, 'best')}</PageLink>
         <div className="nav-dropdown">
           <PageLink to="/collections/brands">{text(locale, 'brands')}⌄</PageLink>
           <div className="dropdown-menu">
-            {[...new Set(PRODUCTS.map((p) => p.brand).filter(Boolean))].sort().map((brand) => (
+            {[...new Set(PRODUCTS.map((p) => p.brand).filter(Boolean))]
+              .sort((a, b) => a.localeCompare(b, locale, { sensitivity: 'base' }))
+              .map((brand) => (
               <PageLink key={brand} to={`/collections/brand/${slug(brand)}`}>
                 {brand}
               </PageLink>
@@ -1709,7 +1808,7 @@ function Header() {
               ),
             ]
               .filter(Boolean)
-              .sort()
+              .sort((a, b) => a.localeCompare(b, locale, { sensitivity: 'base' }))
               .map((concern) => (
                 <PageLink key={concern} to={`/collections/concern/${slug(concern)}`}>
                   {concern}
@@ -1719,6 +1818,14 @@ function Header() {
         </div>
         <PageLink to="/policies/how-to-use">{text(locale, 'howto')}</PageLink>
         <PageLink to="/contact">{text(locale, 'contact')}</PageLink>
+        <div className="mobile-nav-utilities">
+          <PageLink to="/account" onClick={() => setMenuOpen(false)}>{text(locale, 'account')}</PageLink>
+          {user ? (
+            <button type="button" onClick={signOut}>{text(locale, 'signOut')}</button>
+          ) : null}
+          <button type="button" onClick={() => { setMenuOpen(false); setCartOpen(true); }}>{text(locale, 'cart')} <span>{count}</span></button>
+          <button type="button" onClick={() => { switchLanguage(); setMenuOpen(false); }}>{locale === 'fr' ? 'FR | EN' : 'EN | FR'}</button>
+        </div>
       </nav>
     </>
   );
@@ -1968,7 +2075,7 @@ function CartAndSocialLinks() {
           }}
         >
           <section
-            className="cart-drawer"
+            className={`cart-drawer open${checkout ? ' checkout-open' : ''}`}
             role="dialog"
             aria-modal="true"
             aria-labelledby="cart-title"
@@ -2021,7 +2128,8 @@ function CartAndSocialLinks() {
                   <p>{text(locale, 'empty')}</p>
                 )}
                 <p>
-                  {text(locale, 'total')}: {total == null ? text(locale, 'loading') : money(total)}
+                  {text(locale, 'total')}:{' '}
+                  {cart.length === 0 ? money(0) : total == null ? text(locale, 'loading') : money(total)}
                 </p>
                 <p className="muted">{text(locale, 'deliveryNote')}</p>
                 <button
@@ -2160,7 +2268,7 @@ function RouteContent() {
       />
     );
   return (
-    <section className="page-intro">
+      <section className="page-intro">
       <h1>404</h1>
       <PageLink to="/">{text(location.pathname.startsWith('/en') ? 'en' : 'fr', 'home')}</PageLink>
     </section>
@@ -2174,6 +2282,9 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [user, setUser] = useState(null);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname, location.search]);
   useEffect(() => {
     fetch('/api/auth/me', { credentials: 'same-origin' })
       .then((response) => (response.ok ? response.json() : null))
