@@ -1,9 +1,8 @@
-import { authHeaders, authenticatedUser, methodNotAllowed, rateLimit } from '../../lib/auth.js';
+import { authHeaders, authenticatedUser, methodNotAllowed } from '../../lib/auth.js';
 
 export default async function me(req, res) {
   authHeaders(res);
   if (methodNotAllowed(req, res, 'GET')) return;
-  if (await rateLimit(req, res, 'auth-me')) return;
   try {
     const user = await authenticatedUser(req);
     if (!user) return res.status(401).json({ error: 'Please sign in.' });

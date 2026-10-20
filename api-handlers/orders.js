@@ -68,6 +68,8 @@ function safeOrder(order) {
     customer: order.customer,
     subtotalXof: order.subtotalXof,
     shippingXof: order.shippingXof,
+    shippingQuotePending: order.shippingQuotePending === true,
+    stockConfirmationPending: order.stockConfirmationPending === true,
     discountXof: order.discountXof,
     totalXof: order.totalXof,
     pointsEarned: order.pointsEarned,
@@ -282,17 +284,37 @@ export default async function ordersApi(req, res) {
       process.env.SHIPPING_FEE_XOF === undefined || process.env.SHIPPING_FEE_XOF === ''
         ? null
         : Number(process.env.SHIPPING_FEE_XOF);
-    if (
+    const shippingQuotePending =
       eligibleSubtotalXof < FREE_DELIVERY_XOF &&
-      (!Number.isSafeInteger(shippingFee) || shippingFee < 0)
-    ) {
-      return res.status(503).json({
-        error:
-          'Delivery fees for orders under 45,000 XOF are not configured yet. Please contact GlowAfrique to confirm your order.',
-      });
+      (!Number.isSafeInteger(shippingFee) || shippingFee < 0);
+    const shippingXof = shippingQuotePending
+      ? null
+      : eligibleSubtotalXof >= FREE_DELIVERY_XOF
+        ? 0
+        : shippingFee;
+    const totalXof = shippingQuotePending ? null : subtotalXof - discountXof + shippingXof;
+    const database = await getDatabase();
+    const inventory = database.collection('glowafrique_inventory');
+    const stockRows = await inventory
+      .find({ productId: { $in: items.map((item) => item.productId) } })
+      .toArray();
+    const availableById = new Map(stockRows.map((row) => [row.productId, row.quantity]));
+    const requestedStockById = new Map();
+    for (const item of items) {
+      requestedStockById.set(
+        item.productId,
+        (requestedStockById.get(item.productId) || 0) + item.quantity,
+      );
     }
-    const shippingXof = eligibleSubtotalXof >= FREE_DELIVERY_XOF ? 0 : shippingFee;
-    const totalXof = subtotalXof - discountXof + shippingXof;
+    const stockConfirmationPending = [...requestedStockById].some(([productId, quantity]) => {
+      const available = availableById.get(productId);
+      return !Number.isSafeInteger(available) || available < quantity;
+    });
+    if ((shippingQuotePending || stockConfirmationPending) && paymentMethod !== 'cash_on_delivery')
+      return res.status(409).json({
+        error:
+          'Product availability and delivery details must be confirmed before prepayment. Choose Cash on Delivery to send an order request.',
+      });
     const document = {
       orderNumber: orderNumber(),
       idempotencyKey,
@@ -302,6 +324,8 @@ export default async function ordersApi(req, res) {
       items,
       subtotalXof,
       shippingXof,
+      shippingQuotePending,
+      stockConfirmationPending,
       discountXof,
       totalXof,
       currency: 'XOF',
@@ -315,7 +339,10 @@ export default async function ordersApi(req, res) {
             : 'due_on_delivery',
       customerLocale: body.language === 'en' ? 'en' : 'fr',
       ...(paymentMethod === 'wave' ? { waveSenderPhone, paymentProofId: waveProof.proofId } : {}),
-      pointsEarned: user ? pointsForXof(eligibleSubtotalXof) : 0,
+      pointsEarned:
+        user && !shippingQuotePending && !stockConfirmationPending
+          ? pointsForXof(eligibleSubtotalXof)
+          : 0,
       pointsAwardedAt: null,
       statusHistory: [
         { status: 'pending', changedAt: new Date(), actorUserId: user ? user._id : null },
@@ -323,14 +350,15 @@ export default async function ordersApi(req, res) {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    const database = await getDatabase();
-    const inventory = database.collection('glowafrique_inventory');
     await inventory.createIndex({ productId: 1 }, { unique: true });
     const session = database.client.startSession();
+    let stockChangedDuringCheckout = false;
     try {
       await session.withTransaction(async () => {
-        await reserveInventory(database, items, { session });
-        document.stockReserved = true;
+        if (!document.stockConfirmationPending) {
+          await reserveInventory(database, items, { session });
+          document.stockReserved = true;
+        } else document.stockReserved = false;
         if (waveProof) {
           await database.collection('glowafrique_payment_proofs').insertOne(
             {
@@ -346,7 +374,9 @@ export default async function ordersApi(req, res) {
         await orders.insertOne(document, { session });
       });
     } catch (error) {
-      if (error.statusCode) return res.status(error.statusCode).json({ error: error.message });
+      if (error.statusCode === 409 && paymentMethod === 'cash_on_delivery') {
+        stockChangedDuringCheckout = true;
+      } else if (error.statusCode) return res.status(error.statusCode).json({ error: error.message });
       if (error && error.code === 11000) {
         const existing = await orders.findOne({ idempotencyKey }, { projection: { _id: 0 } });
         const sameCustomer =
@@ -368,6 +398,35 @@ export default async function ordersApi(req, res) {
       throw error;
     } finally {
       await session.endSession();
+    }
+    if (stockChangedDuringCheckout) {
+      document.stockConfirmationPending = true;
+      document.stockReserved = false;
+      document.pointsEarned = 0;
+      const reviewSession = database.client.startSession();
+      let concurrentOrder = null;
+      try {
+        await reviewSession.withTransaction(async () => {
+          concurrentOrder = await orders.findOne(
+            { idempotencyKey },
+            { session: reviewSession },
+          );
+          if (!concurrentOrder)
+            await orders.insertOne(document, { session: reviewSession });
+        });
+      } finally {
+        await reviewSession.endSession();
+      }
+      if (concurrentOrder) {
+        const sameCustomer =
+          (user && concurrentOrder.customerId && String(user._id) === String(concurrentOrder.customerId)) ||
+          (!user && !concurrentOrder.customerId && concurrentOrder.customer.email === customer.email);
+        if (!sameCustomer)
+          return res.status(409).json({
+            error: 'This order was already submitted. Refresh the checkout to start another order.',
+          });
+        return res.status(200).json({ order: safeOrder(concurrentOrder), duplicate: true });
+      }
     }
     if (paymentMethod === 'paystack') {
       try {

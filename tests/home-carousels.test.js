@@ -57,7 +57,9 @@ test('both homepage carousels support horizontal scroll, snap, and reduced motio
     styles,
     /prefers-reduced-motion:reduce\)\{\.concern-carousel,\.featured-brand-grid\{scroll-behavior:auto/,
   );
-  assert.match(app, /scrollBy\(/);
-  assert.match(app, /prefers-reduced-motion/);
-  assert.match(app, /variant === 'brand'/);
+  assert.match(app, /className={`infinite-carousel \$\{variant\}-marquee`}/);
+  assert.match(app, /className="infinite-carousel-track"/);
+  assert.match(app, /aria-hidden="true" inert/);
+  assert.match(styles, /animation:infinite-home-marquee[^}]*infinite/);
+  assert.match(styles, /prefers-reduced-motion:reduce\)\{\.infinite-carousel-track\{animation:none/);
 });

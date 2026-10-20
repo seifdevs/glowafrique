@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { PRODUCTS } from '../data/catalog.js';
 import STORE_INFO from '../content/store-info.json';
@@ -885,10 +885,24 @@ function OrderConfirmationPage() {
   const query = new URLSearchParams(location.search);
   const orderNumber = query.get('order') || '';
   const payment = query.get('payment') || '';
+  const shippingPending = query.get('shipping') === 'pending';
+  const stockPending = query.get('stock') === 'pending';
   const english = locale === 'en';
-  let message = english
-    ? 'Thanks, we received your order. Our team will be in touch with any updates.'
-    : 'Merci, nous avons bien reçu votre commande. Notre équipe vous contactera en cas de mise à jour.';
+  let message = shippingPending && stockPending
+    ? english
+      ? 'Thanks, we received your order request. Our team will confirm product availability, the delivery fee, and your final total before dispatch.'
+      : 'Merci, nous avons bien reçu votre demande. Notre équipe confirmera la disponibilité des produits, les frais de livraison et le total avant l’expédition.'
+    : shippingPending
+      ? english
+        ? 'Thanks, we received your order. Our team will confirm the delivery fee and final total before dispatch.'
+        : 'Merci, nous avons bien reçu votre commande. Notre équipe confirmera les frais de livraison et le total avant l’expédition.'
+      : stockPending
+        ? english
+          ? 'Thanks, we received your order request. Our team will confirm product availability before dispatch.'
+          : 'Merci, nous avons bien reçu votre demande. Notre équipe confirmera la disponibilité des produits avant l’expédition.'
+        : english
+          ? 'Thanks, we received your order. Our team will be in touch with any updates.'
+          : 'Merci, nous avons bien reçu votre commande. Notre équipe vous contactera en cas de mise à jour.';
   if (payment === 'wave')
     message = english
       ? 'Thanks, we received your order. Your Wave payment will be reviewed by GlowAfrique.'
@@ -1070,9 +1084,26 @@ function PoliciesPage({ type }) {
   );
 }
 
+function AccountIcon({ name }) {
+  const icons = {
+    points: <><path d="m12 3 2.2 5.4L20 10.5l-5.8 2.1L12 18l-2.2-5.4L4 10.5l5.8-2.1L12 3Z" /><path d="m19 16 .8 1.7 1.7.8-1.7.8L19 21l-.8-1.7-1.7-.8 1.7-.8L19 16Z" /></>,
+    orders: <><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z" /><path d="m4.5 7.7 7.5 4.2 7.5-4.2M12 12v8.5M8 5.3l8 4.5" /></>,
+    shop: <><path d="M5 8h14l-1 13H6L5 8Z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></>,
+    account: <><circle cx="12" cy="8" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" /></>,
+    arrow: <><path d="M4 12h15m-6-6 6 6-6 6" /></>,
+    empty: <><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z" /><path d="M8 12h8m-4-4v8" /></>,
+  };
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+      {icons[name] || icons.account}
+    </svg>
+  );
+}
+
 function AccountPage() {
   const { locale, user, setUser } = useStore();
   const location = useLocation();
+  const navigate = useNavigate();
   const [mode, setMode] = useState('register');
   const [feedback, setFeedback] = useState('');
   const [busy, setBusy] = useState(false);
@@ -1085,6 +1116,21 @@ function AccountPage() {
       setMode('reset');
     }
   }, []);
+  useEffect(() => {
+    const returnTo = new URLSearchParams(location.search).get('returnTo');
+    const hasResetToken = new URLSearchParams(location.search).has('resetToken');
+    if (
+      (returnTo === '/control' || returnTo === '/en/control') &&
+      !resetToken &&
+      !hasResetToken
+    )
+      setMode('login');
+  }, [location.search, resetToken]);
+  useEffect(() => {
+    const returnTo = new URLSearchParams(location.search).get('returnTo');
+    if (user?.role === 'admin' && (returnTo === '/control' || returnTo === '/en/control'))
+      navigate(localePath('/control', locale), { replace: true });
+  }, [locale, location.search, navigate, user]);
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     const payment = query.get('payment');
@@ -1143,6 +1189,11 @@ function AccountPage() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || text(locale, 'unavailable'));
       setUser(result.user);
+      const returnTo = new URLSearchParams(location.search).get('returnTo');
+      if (
+        result.user?.role === 'admin' &&
+        (returnTo === '/control' || returnTo === '/en/control')
+      ) return;
       setFeedback(text(locale, 'success'));
     } catch (error) {
       setFeedback(error.message);
@@ -1157,30 +1208,99 @@ function AccountPage() {
   }
   if (user)
     return (
-      <section className="section account-shell">
-        <h1>{text(locale, 'account')}</h1>
-        <p>
-          {user.firstName} {user.lastName} · {user.email}
-        </p>
-        <p>
-          {Number(user.points || 0)} {text(locale, 'pointsCount')}
-        </p>
-        <button className="button secondary" onClick={signOut}>
-          {text(locale, 'signOut')}
-        </button>
-        <h2>{text(locale, 'orders')}</h2>
-        {orders.length ? (
-          orders.map((order) => (
-            <article className="order-card" key={order.orderNumber}>
-              <b>{order.orderNumber}</b>
-              <p>
-                {order.status} · {money(order.totalXof)}
-              </p>
-            </article>
-          ))
-        ) : (
-          <p>{text(locale, 'noOrders')}</p>
-        )}
+      <section className="section account-dashboard" aria-labelledby="account-dashboard-title">
+        <header className="account-welcome">
+          <div className="account-welcome-copy">
+            <p className="eyebrow">{text(locale, 'account')}</p>
+            <h1 id="account-dashboard-title">
+              {locale === 'en' ? 'Welcome back' : 'Bienvenue'}, {user.firstName || user.username}
+            </h1>
+            <p className="account-welcome-email">{user.email}</p>
+          </div>
+          <div className="account-welcome-actions">
+            <span className="account-member-badge">
+              <AccountIcon name="account" />
+              {locale === 'en' ? 'Your account' : 'Votre compte'}
+            </span>
+            <button className="button account-signout" onClick={signOut}>
+              {text(locale, 'signOut')}
+            </button>
+          </div>
+          <span className="account-welcome-orbit" aria-hidden="true" />
+        </header>
+
+        <div className="account-overview-cards">
+          <article className="account-overview-card account-points-card">
+            <span className="account-overview-icon"><AccountIcon name="points" /></span>
+            <div>
+              <p>{text(locale, 'points')}</p>
+              <strong>{Number(user.points || 0)}</strong>
+              <small>{text(locale, 'pointsCount')}</small>
+            </div>
+          </article>
+          <article className="account-overview-card account-orders-count-card">
+            <span className="account-overview-icon"><AccountIcon name="orders" /></span>
+            <div>
+              <p>{text(locale, 'orders')}</p>
+              <strong>{orders.length}</strong>
+              <small>{locale === 'en' ? 'Orders on your account' : 'Commandes sur votre compte'}</small>
+            </div>
+          </article>
+          <PageLink className="account-overview-card account-shop-card" to="/products">
+            <span className="account-overview-icon"><AccountIcon name="shop" /></span>
+            <div>
+              <p>{locale === 'en' ? 'Discover the collection' : 'Découvrir la sélection'}</p>
+              <small>{locale === 'en' ? 'Find your next essentials' : 'Trouvez vos prochains essentiels'}</small>
+            </div>
+            <AccountIcon name="arrow" />
+          </PageLink>
+        </div>
+
+        <section className="account-orders-panel" aria-labelledby="account-orders-title">
+          <div className="account-orders-heading">
+            <div>
+              <p className="eyebrow">{locale === 'en' ? 'YOUR PURCHASES' : 'VOS ACHATS'}</p>
+              <h2 id="account-orders-title">{text(locale, 'orders')}</h2>
+            </div>
+            <span className="account-order-count">
+              {orders.length} {locale === 'en' ? (orders.length === 1 ? 'order' : 'orders') : 'commande(s)'}
+            </span>
+          </div>
+          {orders.length ? (
+            <div className="account-order-list">
+              {orders.map((order) => (
+                <article className="account-order-row" key={order.orderNumber}>
+                  <span className="account-order-row-icon"><AccountIcon name="orders" /></span>
+                  <div className="account-order-row-info">
+                    <strong>{order.orderNumber}</strong>
+                    <small>
+                      {order.status}
+                      {order.stockConfirmationPending
+                        ? ` · ${locale === 'en' ? 'Availability to confirm' : 'Disponibilité à confirmer'}`
+                        : ''}
+                    </small>
+                  </div>
+                  <strong className="account-order-total">
+                    {order.totalXof == null
+                      ? locale === 'en' ? 'Fee to confirm' : 'Frais à confirmer'
+                      : money(order.totalXof)}
+                  </strong>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="account-empty-orders">
+              <span className="account-empty-icon"><AccountIcon name="empty" /></span>
+              <div>
+                <h3>{locale === 'en' ? 'Your next order starts here' : 'Votre prochaine commande commence ici'}</h3>
+                <p>{text(locale, 'noOrders')}</p>
+                <PageLink className="account-explore-link" to="/products">
+                  {locale === 'en' ? 'Explore products' : 'Découvrir les produits'} <AccountIcon name="arrow" />
+                </PageLink>
+              </div>
+            </div>
+          )}
+        </section>
       </section>
     );
   return (
@@ -1260,7 +1380,7 @@ function AccountPage() {
 }
 
 function AdminPage() {
-  const { locale, user } = useStore();
+  const { locale, user, authLoading } = useStore();
   const [orders, setOrders] = useState([]);
   const [inventory, setInventory] = useState([]);
   const [status, setStatus] = useState('pending');
@@ -1346,12 +1466,18 @@ function AdminPage() {
     processing: ['shipped', 'cancelled'],
     shipped: ['delivered'],
   };
+  if (authLoading)
+    return (
+      <section className="section account-shell" role="status" aria-live="polite">
+        <h1>{locale === 'en' ? 'Checking administrator session…' : 'Vérification de la session…'}</h1>
+      </section>
+    );
   if (!user)
     return (
       <section className="section account-shell">
         <h1>Administrator sign-in required</h1>
         <p>Sign in with an administrator account to manage orders and inventory.</p>
-        <PageLink to="/account">Go to sign in</PageLink>
+        <PageLink to="/account?returnTo=%2Fcontrol">Go to sign in</PageLink>
       </section>
     );
   if (user.role !== 'admin')
@@ -1464,7 +1590,13 @@ function AdminPage() {
             <article className="order-card" key={order.orderNumber}>
               <h2>{order.orderNumber}</h2>
               <p>
-                {order.status} · {order.paymentStatus} · {money(order.totalXof)}
+                {order.status} · {order.paymentStatus}
+                {order.stockConfirmationPending
+                  ? ` · ${locale === 'en' ? 'Availability to confirm' : 'Disponibilité à confirmer'}`
+                  : ''}{' '}
+                {order.totalXof == null
+                  ? locale === 'en' ? 'Delivery fee to confirm' : 'Frais à confirmer'
+                  : money(order.totalXof)}
               </p>
               <p>
                 {order.customer?.fullName} · {order.customer?.email}
@@ -2014,26 +2146,56 @@ function CartAndSocialLinks() {
   const [checkout, setCheckout] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [busy, setBusy] = useState(false);
-  const [total, setTotal] = useState(null);
+  const [quote, setQuote] = useState(null);
+  const [quoteEmail, setQuoteEmail] = useState('');
+  const [paymentSelection, setPaymentSelection] = useState('cash_on_delivery');
   const [proofPreview, setProofPreview] = useState('');
+  const idempotencyKey = useRef(null);
   useEffect(() => {
-    if (!open || !cart.length) return;
-    fetch('/api/order-quote', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: cart.map((x) => ({ productId: x.id, quantity: x.quantity })) }),
-    })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => setTotal(data?.totalXof ?? null))
-      .catch(() => setTotal(null));
-  }, [open, cart]);
+    if (!open || !cart.length || !checkout || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(quoteEmail)) {
+      setQuote(null);
+      return;
+    }
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => {
+      fetch('/api/order-quote', {
+        method: 'POST',
+        credentials: 'same-origin',
+        signal: controller.signal,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: cart.map((x) => ({ productId: x.id, quantity: x.quantity })),
+          email: quoteEmail,
+        }),
+      })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          setQuote(data);
+          if (data?.quoteStatus !== 'ready') setPaymentSelection('cash_on_delivery');
+        })
+        .catch((error) => {
+          if (error.name !== 'AbortError') setQuote(null);
+        });
+    }, 500);
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [open, cart, checkout, quoteEmail]);
   function change(id, quantity) {
+    idempotencyKey.current = null;
     setCart((items) =>
       items
         .map((item) => (item.id === id ? { ...item, quantity } : item))
         .filter((item) => item.quantity > 0),
     );
+  }
+  function closeCart() {
+    setOpen(false);
+    setCheckout(false);
+    setQuote(null);
+    setQuoteEmail('');
+    setPaymentSelection('cash_on_delivery');
   }
   async function placeOrder(e) {
     e.preventDefault();
@@ -2064,7 +2226,7 @@ function CartAndSocialLinks() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           language: locale,
-          idempotencyKey: crypto.randomUUID(),
+          idempotencyKey: (idempotencyKey.current ||= crypto.randomUUID()),
           paymentMethod,
           waveSenderPhone: data.waveSenderPhone,
           waveProof,
@@ -2094,11 +2256,15 @@ function CartAndSocialLinks() {
         return;
       }
       setCart([]);
+      idempotencyKey.current = null;
       setCheckout(false);
       setOpen(false);
+      setQuote(null);
+      setQuoteEmail('');
+      setPaymentSelection('cash_on_delivery');
       const confirmationPath = localePath('/order-confirmation', locale);
       navigate(
-        `${confirmationPath}?order=${encodeURIComponent(result.order.orderNumber)}&payment=${encodeURIComponent(paymentMethod)}`,
+        `${confirmationPath}?order=${encodeURIComponent(result.order.orderNumber)}&payment=${encodeURIComponent(paymentMethod)}${result.order.shippingQuotePending ? '&shipping=pending' : ''}${result.order.stockConfirmationPending ? '&stock=pending' : ''}`,
       );
     } catch (error) {
       setFeedback(error.message);
@@ -2156,8 +2322,7 @@ function CartAndSocialLinks() {
           role="presentation"
           onClick={(e) => {
             if (e.target === e.currentTarget) {
-              setOpen(false);
-              setCheckout(false);
+              closeCart();
             }
           }}
         >
@@ -2169,10 +2334,7 @@ function CartAndSocialLinks() {
           >
             <button
               className="icon-button"
-              onClick={() => {
-                setOpen(false);
-                setCheckout(false);
-              }}
+              onClick={closeCart}
               aria-label={text(locale, 'remove')}
             >
               ×
@@ -2216,7 +2378,13 @@ function CartAndSocialLinks() {
                 )}
                 <p>
                   {text(locale, 'total')}:{' '}
-                  {cart.length === 0 ? money(0) : total == null ? text(locale, 'loading') : money(total)}
+                  {cart.length === 0
+                    ? money(0)
+                    : quote?.quoteStatus === 'ready' && quote.totalXof != null
+                      ? money(quote.totalXof)
+                      : locale === 'en'
+                        ? 'Confirmed at checkout'
+                        : 'Confirmé à la commande'}
                 </p>
                 <p className="muted">{text(locale, 'deliveryNote')}</p>
                 <button
@@ -2225,6 +2393,9 @@ function CartAndSocialLinks() {
                   onClick={() => {
                     setCheckout(true);
                     setFeedback('');
+                    setPaymentSelection('cash_on_delivery');
+                    setQuoteEmail('');
+                    setQuote(null);
                   }}
                 >
                   {text(locale, 'checkout')}
@@ -2242,7 +2413,17 @@ function CartAndSocialLinks() {
                 </label>
                 <label>
                   {text(locale, 'email')}
-                  <input name="email" type="email" required maxLength="254" />
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    maxLength="254"
+                    onChange={(event) => {
+                      setQuoteEmail(event.target.value);
+                      setQuote(null);
+                      setPaymentSelection('cash_on_delivery');
+                    }}
+                  />
                 </label>
                 <label>
                   {locale === 'en' ? 'Phone Number' : 'Téléphone'}
@@ -2274,48 +2455,90 @@ function CartAndSocialLinks() {
                       type="radio"
                       value="cash_on_delivery"
                       defaultChecked
+                      onChange={() => setPaymentSelection('cash_on_delivery')}
                     />{' '}
                     Cash on Delivery
                   </label>
                   <label>
-                    <input name="paymentMethod" type="radio" value="wave" /> Wave
+                    <input
+                      name="paymentMethod"
+                      type="radio"
+                      value="wave"
+                      disabled={quote?.quoteStatus !== 'ready'}
+                      onChange={() => setPaymentSelection('wave')}
+                    />{' '}
+                    Wave
                   </label>
                   {import.meta.env.VITE_PAYSTACK_ENABLED === 'true' ? (
                     <label>
-                      <input name="paymentMethod" type="radio" value="paystack" />
+                      <input
+                        name="paymentMethod"
+                        type="radio"
+                        value="paystack"
+                        disabled={quote?.quoteStatus !== 'ready'}
+                        onChange={() => setPaymentSelection('paystack')}
+                      />
                       {locale === 'en'
                         ? 'Pay Online (Card Or Mobile Money)'
                         : 'Payer En Ligne (Carte Ou Mobile Money)'}
                     </label>
                   ) : null}
                 </fieldset>
-                <label>
-                  Wave Sender Phone
-                  <input name="waveSenderPhone" type="tel" placeholder="+225…" />
-                </label>
-                <label>
-                  Wave Payment Screenshot
-                  <input
-                    name="waveProofFile"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      setProofPreview(file ? URL.createObjectURL(file) : '');
-                    }}
-                  />
-                </label>
-                {proofPreview ? (
-                  <img
-                    className="wave-proof-preview"
-                    src={proofPreview}
-                    alt="Payment screenshot preview"
-                  />
+                {quote?.quoteStatus !== 'ready' ? (
+                  <p className="checkout-delivery-note" role="status">
+                    {quote?.stockConfirmationPending && quote?.shippingQuotePending
+                      ? locale === 'en'
+                        ? 'Cash on Delivery is available. We will confirm product availability, the delivery fee, and your final total before dispatch.'
+                        : 'Le paiement à la livraison est disponible. Nous confirmerons la disponibilité des produits, les frais de livraison et le total avant l’expédition.'
+                      : quote?.stockConfirmationPending
+                        ? locale === 'en'
+                          ? 'Cash on Delivery is available. We will confirm product availability before dispatch.'
+                          : 'Le paiement à la livraison est disponible. Nous confirmerons la disponibilité des produits avant l’expédition.'
+                        : locale === 'en'
+                          ? 'Cash on Delivery is available. We will confirm your delivery fee and final total before dispatch.'
+                          : 'Le paiement à la livraison est disponible. Nous confirmerons les frais de livraison et le total avant l’expédition.'}
+                  </p>
+                ) : null}
+                {paymentSelection === 'wave' ? (
+                  <>
+                    <label>
+                      Wave Sender Phone
+                      <input name="waveSenderPhone" type="tel" placeholder="+225…" />
+                    </label>
+                    <label>
+                      Wave Payment Screenshot
+                      <input
+                        name="waveProofFile"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          setProofPreview(file ? URL.createObjectURL(file) : '');
+                        }}
+                      />
+                    </label>
+                    {proofPreview ? (
+                      <img
+                        className="wave-proof-preview"
+                        src={proofPreview}
+                        alt="Payment screenshot preview"
+                      />
+                    ) : null}
+                  </>
                 ) : null}
                 <button className="button" disabled={busy}>
                   {busy ? text(locale, 'loading') : text(locale, 'checkout')}
                 </button>
-                <button type="button" className="text-button" onClick={() => setCheckout(false)}>
+                <button
+                  type="button"
+                  className="text-button"
+                  onClick={() => {
+                    setCheckout(false);
+                    setPaymentSelection('cash_on_delivery');
+                    setQuoteEmail('');
+                    setQuote(null);
+                  }}
+                >
                   {text(locale, 'continue')}
                 </button>
               </form>
@@ -2371,6 +2594,13 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const authStateResolved = useRef(false);
+  const updateUser = useCallback((nextUser) => {
+    authStateResolved.current = true;
+    setUser(nextUser);
+    setAuthLoading(false);
+  }, []);
   const [maintenanceEnabled, setMaintenanceEnabled] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -2378,8 +2608,19 @@ export default function App() {
   useEffect(() => {
     fetch('/api/auth/me', { credentials: 'same-origin' })
       .then((response) => (response.ok ? response.json() : null))
-      .then((data) => setUser(data?.user || null))
-      .catch(() => {});
+      .then((data) => {
+        if (!authStateResolved.current) {
+          authStateResolved.current = true;
+          setUser(data?.user || null);
+        }
+      })
+      .catch(() => {
+        if (!authStateResolved.current) {
+          authStateResolved.current = true;
+          setUser(null);
+        }
+      })
+      .finally(() => setAuthLoading(false));
   }, []);
   useEffect(() => {
     let active = true;
@@ -2426,8 +2667,8 @@ export default function App() {
         : [...items, { id: product.id, quantity: 1 }];
     });
   const value = useMemo(
-    () => ({ locale, cart, setCart, cartOpen, setCartOpen, addItem, user, setUser }),
-    [locale, cart, cartOpen, user],
+    () => ({ locale, cart, setCart, cartOpen, setCartOpen, addItem, user, setUser: updateUser, authLoading }),
+    [locale, cart, cartOpen, user, authLoading, updateUser],
   );
   return (
     <StoreContext.Provider value={value}>

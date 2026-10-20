@@ -605,3 +605,50 @@ button:disabled,.button:disabled{box-shadow:0 3px 9px #3a211c12!important}
 .infinite-carousel .brand-logo{max-width:calc(100% - 16px);max-height:38px}
 .infinite-carousel .brand-wordmark-text{font-size:clamp(13px,1vw,16px)}
 @media(prefers-reduced-motion:reduce){.infinite-carousel-track{animation:none}.infinite-carousel-group[aria-hidden="true"]{display:none}}
+
+/* Signed-in account dashboard */
+.account-dashboard{display:grid;gap:clamp(22px,3vw,34px);width:min(1440px,100%);margin:0 auto;padding:clamp(34px,5vw,76px) clamp(20px,5vw,76px) 90px}
+.account-welcome{display:flex;align-items:center;justify-content:space-between;gap:28px;min-height:250px;padding:clamp(28px,5vw,60px);border:1px solid #855746;border-radius:28px;background:linear-gradient(118deg,#39221e 0%,#704335 56%,#a65a45 100%);box-shadow:0 24px 64px #3a211c24}
+.account-welcome-copy,.account-welcome-actions{position:relative;z-index:1}
+.account-welcome .eyebrow{margin:0 0 10px;color:#f3bd9d;font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+.account-welcome h1{max-width:720px;margin:0;font-family:Georgia,serif;font-size:clamp(36px,5vw,62px);font-weight:400;line-height:1.1;letter-spacing:-.035em}
+.account-welcome .account-welcome-email{margin:14px 0 0;color:#f4ded0;font-size:15px}
+.account-welcome-actions{display:flex;flex:0 0 auto;align-items:center;gap:12px}
+.account-member-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid #ffffff50;border-radius:999px;background:#ffffff12;color:#fff8ee;font-size:13px}
+.account-member-badge svg{width:18px;height:18px;color:#f3bd9d}
+.account-welcome .account-signout{min-height:42px;padding:9px 17px;border:1px solid #ffffff70;border-radius:999px;background:#fffaf4;color:#56372f;font-size:13px}
+.account-welcome-orbit{position:absolute;z-index:0;right:clamp(30px,10vw,150px);top:50%;width:270px;height:270px;margin-top:-135px;border:1px solid #ffffff20;border-radius:50%;background:radial-gradient(circle at 38% 35%,#f4b58b45,transparent 55%);box-shadow:0 0 0 32px #ffffff08,0 0 0 68px #ffffff05;pointer-events:none}
+.account-overview-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px)}
+.account-overview-card{display:flex;align-items:center;gap:17px;min-width:0;min-height:150px;padding:clamp(18px,2.4vw,28px);border:1px solid #efdfd3;border-radius:22px;background:linear-gradient(145deg,#fffdf9,#fff7f0 66%,#f7e9df);box-shadow:0 12px 34px #3a211c10}
+.account-overview-card>div{display:grid;min-width:0;gap:3px}
+.account-overview-card p{margin:0;color:#755f54;font-size:13px;font-weight:600}
+.account-overview-card strong{font-family:Georgia,serif;font-size:32px;font-weight:400;line-height:1.2;color:#402821}
+.account-overview-card small{color:#806a62;font-size:12px;line-height:1.5}
+.account-overview-icon{display:grid;flex:0 0 54px;place-items:center;width:54px;height:54px;border:1px solid #eed9ca;border-radius:17px;background:linear-gradient(145deg,#fff,#f5e1d3);color:#b76243;box-shadow:0 8px 20px #3a211c10}
+.account-overview-icon svg{width:26px;height:26px}
+.account-shop-card{position:relative;padding-right:52px;color:inherit;transition:transform .25s,box-shadow .25s}
+.account-shop-card:hover{transform:translateY(-3px);box-shadow:0 18px 38px #3a211c18;color:inherit}
+.account-shop-card>svg{position:absolute;right:22px;width:20px;height:20px;color:#a4593e}
+.account-shop-card p{color:#402821;font-size:15px}
+.account-orders-panel{min-width:0;padding:clamp(22px,3.5vw,40px);border:1px solid #efdfd3;border-radius:24px;background:linear-gradient(155deg,#fffefd,#fffaf5 70%,#fbf0e9);box-shadow:0 18px 48px #3a211c12}
+.account-orders-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid #efe2d8}
+.account-orders-heading .eyebrow{margin:0 0 5px;font-size:10px;letter-spacing:.18em}
+.account-orders-heading h2{margin:0;font-family:Georgia,serif;font-size:clamp(27px,3vw,36px);font-weight:400}
+.account-order-count{padding:8px 13px;border:1px solid #ead9cc;border-radius:999px;background:#fff;color:#755f54;font-size:12px;white-space:nowrap}
+.account-order-list{display:grid;gap:12px}
+.account-order-row{display:flex;align-items:center;gap:16px;min-width:0;padding:16px;border:1px solid #efe2d8;border-radius:16px;background:#fff;box-shadow:0 6px 18px #3a211c08}
+.account-order-row-icon{display:grid;flex:0 0 44px;place-items:center;width:44px;height:44px;border-radius:14px;background:linear-gradient(145deg,#fff5ed,#f4dfd3);color:#ad6146}
+.account-order-row-icon svg{width:22px;height:22px}
+.account-order-row-info{display:grid;flex:1;min-width:0;gap:4px}
+.account-order-row-info strong{overflow-wrap:anywhere;font-size:14px}
+.account-order-row-info small{color:#806a62;font-size:12px;text-transform:capitalize}
+.account-order-total{flex:0 0 auto;font-size:14px;white-space:nowrap}
+.account-empty-orders{display:flex;align-items:center;gap:20px;min-height:185px;padding:clamp(20px,4vw,34px);border:1px dashed #dfc8b9;border-radius:18px;background:linear-gradient(135deg,#fffaf5,#f9eee6)}
+.account-empty-icon{display:grid;flex:0 0 64px;place-items:center;width:64px;height:64px;border:1px solid #edd9ca;border-radius:20px;background:linear-gradient(145deg,#fff,#f5e3d7);color:#ac6248;box-shadow:0 9px 23px #3a211c10}
+.account-empty-icon svg{width:30px;height:30px}
+.account-empty-orders h3{margin:0 0 4px;font-family:Georgia,serif;font-size:22px;font-weight:400}
+.account-empty-orders p{margin:0 0 12px;color:#806a62;font-size:14px}
+.account-explore-link{display:inline-flex;align-items:center;gap:8px;color:#9b5239;font-size:13px;font-weight:700}
+.account-explore-link svg{width:16px;height:16px}
+@media(max-width:800px){.account-welcome{align-items:flex-start;flex-direction:column}.account-welcome-actions{flex-wrap:wrap}.account-overview-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.account-shop-card{grid-column:1/-1}}
+@media(max-width:520px){.account-dashboard{gap:17px;padding:26px 14px 54px}.account-welcome{min-height:0;padding:26px 21px;border-radius:22px}.account-welcome h1{font-size:36px}.account-welcome-orbit{right:-120px;opacity:.65}.account-member-badge{font-size:12px}.account-overview-cards{grid-template-columns:1fr;gap:11px}.account-overview-card{min-height:112px;padding:18px;border-radius:18px}.account-shop-card{grid-column:auto}.account-orders-panel{padding:20px 15px;border-radius:20px}.account-orders-heading{align-items:flex-start}.account-order-row{gap:11px;padding:12px}.account-order-row-icon{flex-basis:38px;width:38px;height:38px}.account-order-total{font-size:12px}.account-empty-orders{align-items:flex-start;gap:13px;min-height:0;padding:18px 14px}.account-empty-icon{flex-basis:48px;width:48px;height:48px;border-radius:15px}.account-empty-icon svg{width:24px;height:24px}.account-empty-orders h3{font-size:19px}.account-empty-orders p{font-size:13px}}

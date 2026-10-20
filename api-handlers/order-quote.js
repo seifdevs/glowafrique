@@ -49,18 +49,10 @@ export default async function orderQuote(req, res) {
       .find({ productId: { $in: [...requestedQuantities.keys()] } })
       .toArray();
     const stockById = new Map(inventoryRows.map((item) => [item.productId, item.quantity]));
-    for (const [productId, quantity] of requestedQuantities) {
-      const product = PRODUCTS.find((item) => item.id === productId);
+    const stockConfirmationPending = [...requestedQuantities].some(([productId, quantity]) => {
       const stock = stockById.get(productId);
-      if (!Number.isSafeInteger(stock)) {
-        return res.status(409).json({
-          error: `${product.name} is not available for ordering yet.`,
-        });
-      }
-      if (stock < quantity) {
-        return res.status(409).json({ error: `${product.name} does not have enough stock.` });
-      }
-    }
+      return !Number.isSafeInteger(stock) || stock < quantity;
+    });
     const user = await authenticatedUser(req);
     const email = user ? user.email : normalizeEmail(body.email);
     if (!validEmail(email))
@@ -71,6 +63,7 @@ export default async function orderQuote(req, res) {
         totalXof: null,
         currency: 'XOF',
         quoteStatus: 'enter-email',
+        stockConfirmationPending,
       });
     const orders = (await getDatabase()).collection('glowafrique_orders');
     const previousPurchase = await orders.findOne(
@@ -83,19 +76,21 @@ export default async function orderQuote(req, res) {
       process.env.SHIPPING_FEE_XOF === undefined || process.env.SHIPPING_FEE_XOF === ''
         ? null
         : Number(process.env.SHIPPING_FEE_XOF);
-    if (
-      eligibleSubtotal < FREE_DELIVERY_XOF &&
-      (!Number.isSafeInteger(configuredFee) || configuredFee < 0)
-    )
+    const feeConfigured = Number.isSafeInteger(configuredFee) && configuredFee >= 0;
+    const shippingXof =
+      eligibleSubtotal >= FREE_DELIVERY_XOF ? 0 : feeConfigured ? configuredFee : null;
+    const shippingQuotePending = shippingXof == null;
+    if (stockConfirmationPending || shippingQuotePending)
       return res.status(200).json({
         subtotalXof,
         discountXof,
-        shippingXof: null,
+        shippingXof,
         totalXof: null,
         currency: 'XOF',
-        quoteStatus: 'delivery-fee-unconfigured',
+        quoteStatus: 'confirmation-pending',
+        stockConfirmationPending,
+        shippingQuotePending,
       });
-    const shippingXof = eligibleSubtotal >= FREE_DELIVERY_XOF ? 0 : configuredFee;
     return res.status(200).json({
       subtotalXof,
       discountXof,
@@ -103,6 +98,8 @@ export default async function orderQuote(req, res) {
       totalXof: eligibleSubtotal + shippingXof,
       currency: 'XOF',
       quoteStatus: 'ready',
+      stockConfirmationPending: false,
+      shippingQuotePending: false,
     });
   } catch (error) {
     console.error('[order-quote] quote failed:', error && error.name, (error && error.code) || '');

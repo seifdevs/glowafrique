@@ -9,7 +9,10 @@ import {
   updatedDocument,
 } from '../../lib/auth.js';
 import { notifyOrder } from '../../lib/order-notifications.js';
+import { reserveInventory } from '../../lib/inventory.js';
+import { pointsForXof } from '../../lib/currency.js';
 
+const FREE_DELIVERY_XOF = 45000;
 const TRANSITIONS = {
   pending: ['confirmed', 'cancelled'],
   confirmed: ['processing', 'cancelled'],
@@ -28,6 +31,8 @@ function outputOrder(order) {
     items: order.items,
     subtotalXof: order.subtotalXof,
     shippingXof: order.shippingXof,
+    shippingQuotePending: order.shippingQuotePending === true,
+    stockConfirmationPending: order.stockConfirmationPending === true,
     discountXof: order.discountXof,
     totalXof: order.totalXof,
     currency: order.currency,
@@ -240,6 +245,37 @@ export default async function adminOrders(req, res) {
           $set: { status: nextStatus, updatedAt: now },
           $push: { statusHistory: { status: nextStatus, changedAt: now, actorUserId: user._id } },
         };
+        if (nextStatus === 'confirmed') {
+          const eligibleSubtotal = Number(order.subtotalXof || 0) - Number(order.discountXof || 0);
+          if (order.shippingQuotePending) {
+            const shippingFee =
+              process.env.SHIPPING_FEE_XOF === undefined || process.env.SHIPPING_FEE_XOF === ''
+                ? null
+                : Number(process.env.SHIPPING_FEE_XOF);
+            if (
+              eligibleSubtotal < FREE_DELIVERY_XOF &&
+              (!Number.isSafeInteger(shippingFee) || shippingFee < 0)
+            )
+              throw Object.assign(new Error('SHIPPING_FEE_NOT_CONFIGURED'), { statusCode: 409 });
+            const shippingXof = eligibleSubtotal >= FREE_DELIVERY_XOF ? 0 : shippingFee;
+            patch.$set.shippingXof = shippingXof;
+            patch.$set.shippingQuotePending = false;
+            patch.$set.totalXof = eligibleSubtotal + shippingXof;
+          }
+          if (order.stockConfirmationPending) {
+            try {
+              await reserveInventory(database, order.items || [], { session });
+            } catch (error) {
+              throw Object.assign(new Error('STOCK_NOT_AVAILABLE'), {
+                statusCode: error.statusCode || 409,
+              });
+            }
+            patch.$set.stockConfirmationPending = false;
+            patch.$set.stockReserved = true;
+          }
+          if (order.shippingQuotePending || order.stockConfirmationPending)
+            patch.$set.pointsEarned = order.customerId ? pointsForXof(eligibleSubtotal) : 0;
+        }
         if (nextStatus === 'delivered' && !order.pointsAwardedAt) {
           patch.$set.pointsAwardedAt = now;
           if (
@@ -298,6 +334,10 @@ export default async function adminOrders(req, res) {
             ? 'Order not found.'
             : error.message === 'PAYMENT_NOT_VERIFIED'
               ? 'Verify the payment before confirming this order.'
+              : error.message === 'SHIPPING_FEE_NOT_CONFIGURED'
+                ? 'Set the delivery fee before confirming this order.'
+                : error.message === 'STOCK_NOT_AVAILABLE'
+                  ? 'Update inventory before confirming this order.'
               : 'That order status change is not allowed.',
       });
     console.error(
