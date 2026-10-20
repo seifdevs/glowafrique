@@ -4,6 +4,8 @@ import { cpSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const apiRoutes = {
+  '/kackenlacken': '/api-handlers/admin/emergency.js',
+  '/en/kackenlacken': '/api-handlers/admin/emergency.js',
   '/api/orders': '/api-handlers/orders.js',
   '/api/order-quote': '/api-handlers/order-quote.js',
   '/api/locations': '/api-handlers/locations.js',
@@ -11,7 +13,7 @@ const apiRoutes = {
   '/api/reviews': '/api-handlers/reviews.js',
   '/api/admin/orders': '/api-handlers/admin/orders.js',
   '/api/admin/inventory': '/api-handlers/admin/inventory.js',
-  '/api/admin/maintenance': '/api-handlers/admin/maintenance.js',
+  '/api/admin/emergency': '/api-handlers/admin/emergency.js',
   '/api/maintenance': '/api-handlers/maintenance.js',
   '/api/contact': '/api-handlers/contact.js',
   '/api/newsletter': '/api-handlers/newsletter.js',
@@ -76,13 +78,20 @@ export default defineConfig(({ mode }) => {
                 chunks.push(chunk);
               }
               if (size) {
-                try {
-                  req.body = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-                } catch (_) {
-                  return res.status(400).json({ error: 'Invalid JSON request body.' });
+                const rawBody = Buffer.concat(chunks).toString('utf8');
+                if (String(req.headers['content-type'] || '').includes('application/x-www-form-urlencoded')) {
+                  req.body = Object.fromEntries(new URLSearchParams(rawBody));
+                } else {
+                  try {
+                    req.body = JSON.parse(rawBody);
+                  } catch (_) {
+                    return res.status(400).json({ error: 'Invalid JSON request body.' });
+                  }
                 }
               } else req.body = {};
 
+              if (pathname === '/kackenlacken' || pathname === '/en/kackenlacken')
+                req.url = '/api/router?route=admin/emergency';
               const route = await server.ssrLoadModule('/api/router.js');
               await route.default(req, res);
             } catch (error) {

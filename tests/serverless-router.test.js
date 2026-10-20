@@ -33,7 +33,7 @@ test('rewrites preserve all API paths and dispatch nested routes and query strin
     '/api/router?route=reviews&productId=abc': 'reviews',
     '/api/router?route=admin%2Forders&status=pending': 'admin/orders',
     '/api/router?route=admin%2Finventory': 'admin/inventory',
-    '/api/router?route=admin%2Fmaintenance': 'admin/maintenance',
+    '/api/router?route=admin%2Femergency': 'admin/emergency',
     '/api/router?route=maintenance': 'maintenance',
     '/api/router?route=auth%2Flogin': 'auth/login',
     '/api/router?route=auth%2Flogout': 'auth/logout',
@@ -53,7 +53,7 @@ test('maintenance blocks public commerce APIs and keeps admin controls available
     assert.equal(isBlockedDuringMaintenance(route), true, `${route} should be blocked`);
   for (const route of [
     'maintenance',
-    'admin/maintenance',
+    'admin/emergency',
     'admin/orders',
     'admin/inventory',
     'auth/login',

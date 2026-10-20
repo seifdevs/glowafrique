@@ -1,7 +1,7 @@
 {
   "rewrites": [
-    { "source": "/kackenlacken", "destination": "/" },
-    { "source": "/en/kackenlacken", "destination": "/" },
+    { "source": "/kackenlacken", "destination": "/api/router?route=admin/emergency" },
+    { "source": "/en/kackenlacken", "destination": "/api/router?route=admin/emergency" },
     { "source": "/api/orders", "destination": "/api/router?route=orders" },
     { "source": "/api/order-quote", "destination": "/api/router?route=order-quote" },
     { "source": "/api/locations", "destination": "/api/router?route=locations" },
@@ -9,7 +9,7 @@
     { "source": "/api/reviews", "destination": "/api/router?route=reviews" },
     { "source": "/api/admin/orders", "destination": "/api/router?route=admin/orders" },
     { "source": "/api/admin/inventory", "destination": "/api/router?route=admin/inventory" },
-    { "source": "/api/admin/maintenance", "destination": "/api/router?route=admin/maintenance" },
+    { "source": "/api/admin/emergency", "destination": "/api/router?route=admin/emergency" },
     { "source": "/api/maintenance", "destination": "/api/router?route=maintenance" },
     { "source": "/api/contact", "destination": "/api/router?route=contact" },
     { "source": "/api/newsletter", "destination": "/api/router?route=newsletter" },

@@ -15,14 +15,14 @@ import passwordReset from '../api-handlers/auth/password-reset.js';
 import register from '../api-handlers/auth/register.js';
 import paystackCallback from '../api-handlers/payments/paystack-callback.js';
 import maintenance from '../api-handlers/maintenance.js';
-import adminMaintenance from '../api-handlers/admin/maintenance.js';
+import emergencyControl from '../api-handlers/admin/emergency.js';
 import { getMaintenanceSetting } from '../lib/maintenance.js';
 import { authenticatedUser } from '../lib/auth.js';
 
 export const maintenanceAvailableRoutes = new Set([
   'admin/orders',
   'admin/inventory',
-  'admin/maintenance',
+  'admin/emergency',
   'auth/login',
   'auth/logout',
   'auth/me',
@@ -44,7 +44,7 @@ export const routeHandlers = Object.freeze({
   reviews,
   'admin/orders': adminOrders,
   'admin/inventory': adminInventory,
-  'admin/maintenance': adminMaintenance,
+  'admin/emergency': emergencyControl,
   maintenance,
   'auth/login': login,
   'auth/logout': logout,
