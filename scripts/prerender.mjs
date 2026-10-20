@@ -25,6 +25,7 @@ const paths = new Set([
   '/about',
   '/contact',
   '/account',
+  '/order-confirmation',
   '/admin',
   '/control',
   ...['returns', 'shipping', 'privacy', 'terms', 'cookies', 'how-to-use', 'how-to-order'].map(
@@ -95,6 +96,12 @@ function metadata(route) {
     title = `${locale === 'en' ? 'About GlowAfrique' : 'À propos de GlowAfrique'} — GlowAfrique`;
   } else if (pathName === '/contact') {
     title = `${locale === 'en' ? 'Contact GlowAfrique' : 'Contacter GlowAfrique'} — GlowAfrique`;
+  } else if (pathName === '/order-confirmation') {
+    title = `${locale === 'en' ? 'Order Confirmation' : 'Confirmation de commande'} — GlowAfrique`;
+    description =
+      locale === 'en'
+        ? 'Your GlowAfrique order has been received.'
+        : 'Votre commande GlowAfrique a bien été reçue.';
   } else if (pathName.startsWith('/policies/')) {
     title = `${pathName.split('/').pop().replaceAll('-', ' ')} — GlowAfrique`;
     description =
@@ -124,7 +131,10 @@ function injectHead(html, route) {
     `<link rel="alternate" hreflang="fr-CI" href="${escapeAttribute(siteOrigin + alternate)}">`,
     `<link rel="alternate" hreflang="en" href="${escapeAttribute(siteOrigin + englishPath(alternate))}">`,
     `<link rel="alternate" hreflang="x-default" href="${escapeAttribute(siteOrigin + alternate)}">`,
-    data.pathName === '/account' || data.pathName === '/admin' || data.pathName === '/control'
+    data.pathName === '/account' ||
+    data.pathName === '/order-confirmation' ||
+    data.pathName === '/admin' ||
+    data.pathName === '/control'
       ? '<meta name="robots" content="noindex,nofollow">'
       : '',
   ]
@@ -199,7 +209,7 @@ try {
       (route) =>
         !route.startsWith('/en/') &&
         route !== '/en' &&
-        !['/account', '/admin', '/control'].includes(route),
+        !['/account', '/order-confirmation', '/admin', '/control'].includes(route),
     )
     .map((route) => {
       const frenchUrl = `${siteOrigin}${route}`;
@@ -213,7 +223,7 @@ try {
   );
   await writeFile(
     path.join(outputDir, 'robots.txt'),
-    `User-agent: *\nAllow: /\nDisallow: /account\nDisallow: /admin\nDisallow: /control\nSitemap: ${siteOrigin}/sitemap.xml\n`,
+    `User-agent: *\nAllow: /\nDisallow: /account\nDisallow: /order-confirmation\nDisallow: /admin\nDisallow: /control\nSitemap: ${siteOrigin}/sitemap.xml\n`,
   );
   console.log(`Pre-rendered ${renderedPaths.length} localized routes to real HTML.`);
 } finally {

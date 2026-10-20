@@ -45,13 +45,13 @@ export default async function paystackCallback(req, res) {
     if (!order) return redirectTo('/account?payment=not-found');
     if (order.paymentStatus !== 'awaiting_provider') {
       return redirectTo(
-        `/${order.customerLocale === 'en' ? 'en/' : ''}account?payment=${order.paymentStatus === 'verified' ? 'verified' : 'pending'}&order=${encodeURIComponent(order.orderNumber)}`,
+        `/${order.customerLocale === 'en' ? 'en/' : ''}order-confirmation?payment=${order.paymentStatus === 'verified' ? 'verified' : 'pending'}&order=${encodeURIComponent(order.orderNumber)}`,
       );
     }
     const transaction = await verifyPaystackTransaction(reference);
     if (!paystackTransactionMatches(transaction, order)) {
       return redirectTo(
-        `/${order.customerLocale === 'en' ? 'en/' : ''}account?payment=pending&order=${encodeURIComponent(order.orderNumber)}`,
+        `/${order.customerLocale === 'en' ? 'en/' : ''}order-confirmation?payment=pending&order=${encodeURIComponent(order.orderNumber)}`,
       );
     }
     const now = new Date();
@@ -76,7 +76,7 @@ export default async function paystackCallback(req, res) {
       }
     }
     return redirectTo(
-      `/${order.customerLocale === 'en' ? 'en/' : ''}account?payment=${payment}&order=${encodeURIComponent(order.orderNumber)}`,
+      `/${order.customerLocale === 'en' ? 'en/' : ''}order-confirmation?payment=${payment}&order=${encodeURIComponent(order.orderNumber)}`,
     );
   } catch (error) {
     console.error('[paystack/callback] verification failed:', error && error.name);

@@ -879,6 +879,49 @@ function StoreMaintenancePage() {
   );
 }
 
+function OrderConfirmationPage() {
+  const { locale } = useStore();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const orderNumber = query.get('order') || '';
+  const payment = query.get('payment') || '';
+  const english = locale === 'en';
+  let message = english
+    ? 'Thanks, we received your order. Our team will be in touch with any updates.'
+    : 'Merci, nous avons bien reçu votre commande. Notre équipe vous contactera en cas de mise à jour.';
+  if (payment === 'wave')
+    message = english
+      ? 'Thanks, we received your order. Your Wave payment will be reviewed by GlowAfrique.'
+      : 'Merci, nous avons bien reçu votre commande. Votre paiement Wave sera vérifié par GlowAfrique.';
+  else if (payment === 'pending')
+    message = english
+      ? 'Thanks, we received your order. Your payment is still being confirmed; keep your order reference.'
+      : 'Merci, nous avons bien reçu votre commande. Votre paiement est en cours de confirmation ; conservez votre référence.';
+  else if (payment === 'verified')
+    message = english
+      ? 'Thanks, we received your order and your payment has been confirmed.'
+      : 'Merci, nous avons bien reçu votre commande et votre paiement a été confirmé.';
+
+  return (
+    <section className="order-confirmation section" aria-labelledby="order-confirmation-title">
+      <div className="confirmation-check" aria-hidden="true">✓</div>
+      <p className="eyebrow">GLOWAFRIQUE</p>
+      <h1 id="order-confirmation-title">
+        {english ? 'Thank you!' : 'Merci !'}
+      </h1>
+      <p className="confirmation-message">{message}</p>
+      {orderNumber ? (
+        <p className="confirmation-reference">
+          {english ? 'Order reference' : 'Référence de commande'}: <strong>{orderNumber}</strong>
+        </p>
+      ) : null}
+      <PageLink className="button" to="/products">
+        {english ? 'Continue shopping' : 'Continuer les achats'}
+      </PageLink>
+    </section>
+  );
+}
+
 function ContactPage() {
   const { locale } = useStore();
   const [feedback, setFeedback] = useState('');
@@ -1948,6 +1991,7 @@ function Footer() {
 
 function CartAndSocialLinks() {
   const { locale, cart, setCart, cartOpen: open, setCartOpen: setOpen } = useStore();
+  const navigate = useNavigate();
   const [checkout, setCheckout] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [busy, setBusy] = useState(false);
@@ -2030,13 +2074,13 @@ function CartAndSocialLinks() {
         window.location.assign(result.authorizationUrl);
         return;
       }
-      setFeedback(
-        paymentMethod === 'wave'
-          ? `Thanks, we received your order. Your Wave payment will be reviewed by GlowAfrique. Order ${result.order.orderNumber}.`
-          : `Thanks, we received your order. Order ${result.order.orderNumber}.`,
-      );
       setCart([]);
       setCheckout(false);
+      setOpen(false);
+      const confirmationPath = localePath('/order-confirmation', locale);
+      navigate(
+        `${confirmationPath}?order=${encodeURIComponent(result.order.orderNumber)}&payment=${encodeURIComponent(paymentMethod)}`,
+      );
     } catch (error) {
       setFeedback(error.message);
     } finally {
@@ -2284,6 +2328,7 @@ function RouteContent() {
   if (normalized === '/about') return <AboutPage />;
   if (normalized === '/contact') return <ContactPage />;
   if (normalized === '/account') return <AccountPage />;
+  if (normalized === '/order-confirmation') return <OrderConfirmationPage />;
   if (normalized === '/control' || normalized === '/admin') return <AdminPage />;
   if (normalized === '/policies' || normalized.startsWith('/policies/'))
     return (

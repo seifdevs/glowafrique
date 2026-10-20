@@ -118,7 +118,7 @@ test('Paystack callback verifies the provider result before marking an order pai
     assert.equal(mock.response.statusCode, 303);
     assert.match(
       mock.response.headers.Location,
-      /account\?payment=verified&order=GA-20261019-1234ABCD$/,
+      /order-confirmation\?payment=verified&order=GA-20261019-1234ABCD$/,
     );
   } finally {
     mock.restore();
@@ -136,7 +136,7 @@ test('Paystack callback does not mark an order paid when the amount differs', as
   try {
     await paystackCallback(mock.request, mock.response);
     assert.equal(mock.order.paymentStatus, 'awaiting_provider');
-    assert.match(mock.response.headers.Location, /account\?payment=pending/);
+    assert.match(mock.response.headers.Location, /order-confirmation\?payment=pending/);
   } finally {
     mock.restore();
   }
