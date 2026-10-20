@@ -1917,15 +1917,34 @@ function Footer() {
     <>
       <section className="benefit-bar">
         <article>
-          <span>◉</span>
+          <span className="benefit-bar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M12 3 19 6v5c0 4.5-2.9 8-7 10-4.1-2-7-5.5-7-10V6l7-3Z" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+          </span>
           <p>{text(locale, 'authentic')}</p>
         </article>
         <article>
-          <span>☏</span>
+          <span className="benefit-bar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M4 13v-1a8 8 0 0 1 16 0v1" />
+              <rect x="3.5" y="12" width="4" height="7" rx="2" />
+              <rect x="16.5" y="12" width="4" height="7" rx="2" />
+              <path d="M20.5 18a3 3 0 0 1-3 3H14" />
+            </svg>
+          </span>
           <p>{text(locale, 'service')}</p>
         </article>
         <article>
-          <span>▣</span>
+          <span className="benefit-bar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M3 6h11v11H3zM14 10h4l3 3v4h-7z" />
+              <circle cx="7.5" cy="18" r="2" />
+              <circle cx="17.5" cy="18" r="2" />
+              <path d="M17 10v4h4" />
+            </svg>
+          </span>
           <p>{text(locale, 'delivery')}</p>
         </article>
       </section>

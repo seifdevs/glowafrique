@@ -582,3 +582,10 @@ button:disabled,.button:disabled{box-shadow:0 3px 9px #3a211c12!important}
 .confirmation-reference{margin:18px 0 26px;padding:12px 16px;border:1px solid #eadbc8;border-radius:12px;background:#fff;font-size:14px;box-shadow:0 5px 14px #3a211c0c}
 .order-confirmation .button{margin-top:8px}
 @media(max-width:700px){.order-confirmation{width:min(760px,calc(100% - 28px));max-width:100%;margin:28px auto;padding:28px 18px}.order-confirmation .confirmation-message,.order-confirmation .confirmation-reference{width:100%;min-width:0;overflow-wrap:anywhere}}
+
+/* Keep text-only actions clean and give the shared service strip room before the footer. */
+.text-button,.text-button:hover{box-shadow:none!important}
+.benefit-bar{margin-bottom:clamp(36px,4vw,56px)}
+.benefit-bar article>span.benefit-bar-icon{display:grid;place-items:center;width:46px;height:46px;border:1px solid #efdfd3;border-radius:50%;background:linear-gradient(145deg,#fffdf9,#f5e3d8);box-shadow:0 7px 18px #3a211c0d}
+.benefit-bar-icon svg{display:block;width:22px;height:22px;fill:none;stroke:#b96744;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:700px){.benefit-bar{margin-bottom:32px}}
