@@ -468,6 +468,16 @@ html,body,#root{max-width:100%;overflow-x:clip}
 .benefit-bar article{background:linear-gradient(145deg,#fffdf9,#f8ebe1);border:1px solid #efdfd3;border-radius:16px;padding:18px;box-shadow:0 8px 24px #3a211c0a}
 .benefit-bar article span{color:#c66b3d}
 .instagram-float{z-index:23}
+.store-maintenance{min-height:70vh;display:grid;place-content:center;justify-items:center;padding:40px 24px;text-align:center;background:linear-gradient(145deg,#fffaf4,#f6e6dc)}
+.store-maintenance h1{margin:8px 0;font-family:Georgia,serif;font-size:clamp(34px,6vw,62px);font-weight:400;line-height:1.1}
+.store-maintenance>p:last-child{max-width:500px;color:#705c51}
+.emergency-control-wrap{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 0%,#f6e4d8,#fffaf4 68%)}
+.emergency-control-card{width:min(620px,100%);padding:clamp(24px,5vw,48px);border:1px solid var(--line);border-radius:20px;background:#fffdf9;box-shadow:0 20px 70px #3a211c17}
+.emergency-control-card h1{font-size:clamp(30px,5vw,46px);font-weight:400;line-height:1.15;margin:10px 0 22px}
+.emergency-control-card>p{color:#705c51}
+.emergency-state{padding:12px 15px;border-radius:10px;font-weight:600}
+.emergency-state.online{background:#eaf6ee;color:#286746}
+.emergency-state.offline{background:#fff0ed;color:#a43e31}
 /* Shared navigation, page gutters, and card alignment. */
 .site-header{height:82px;display:grid;grid-template-columns:minmax(205px,245px) minmax(220px,1fr) auto;gap:clamp(18px,2.5vw,36px);padding-inline:clamp(22px,5vw,76px);background:#fffaf4ed;backdrop-filter:blur(16px);border-bottom:1px solid #ead9cc;box-shadow:0 7px 24px #3a211c0a}
 .logo-image{display:flex;align-items:center;gap:10px;width:max-content;max-width:100%;min-width:0;flex:0 0 auto;overflow:visible}

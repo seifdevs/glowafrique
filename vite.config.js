@@ -11,6 +11,8 @@ const apiRoutes = {
   '/api/reviews': '/api-handlers/reviews.js',
   '/api/admin/orders': '/api-handlers/admin/orders.js',
   '/api/admin/inventory': '/api-handlers/admin/inventory.js',
+  '/api/admin/maintenance': '/api-handlers/admin/maintenance.js',
+  '/api/maintenance': '/api-handlers/maintenance.js',
   '/api/contact': '/api-handlers/contact.js',
   '/api/newsletter': '/api-handlers/newsletter.js',
   '/api/auth/register': '/api-handlers/auth/register.js',
@@ -81,7 +83,7 @@ export default defineConfig(({ mode }) => {
                 }
               } else req.body = {};
 
-              const route = await server.ssrLoadModule(modulePath);
+              const route = await server.ssrLoadModule('/api/router.js');
               await route.default(req, res);
             } catch (error) {
               server.config.logger.error(

@@ -869,6 +869,141 @@ function AboutPage() {
   );
 }
 
+function StoreMaintenancePage() {
+  const locale = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
+  return (
+    <section className="store-maintenance" role="status">
+      <p className="eyebrow">GLOWAFRIQUE</p>
+      <h1>{locale === 'en' ? 'We’ll be back soon' : 'Nous serons bientôt de retour'}</h1>
+      <p>
+        {locale === 'en'
+          ? 'The store is temporarily unavailable. Please check back soon.'
+          : 'La boutique est temporairement indisponible. Veuillez revenir bientôt.'}
+      </p>
+    </section>
+  );
+}
+
+function EmergencyControlPage() {
+  const locale = window.location.pathname.startsWith('/en') ? 'en' : 'fr';
+  const [authorized, setAuthorized] = useState(null);
+  const [enabled, setEnabled] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [feedback, setFeedback] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/admin/maintenance', { credentials: 'same-origin' })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) {
+          if (response.status === 401 || response.status === 403) {
+            if (active) setAuthorized(false);
+            return;
+          }
+          throw new Error(data.error || 'Store controls are unavailable.');
+        }
+        if (active) {
+          setAuthorized(true);
+          setEnabled(data.enabled === true);
+        }
+      })
+      .catch((error) => {
+        if (active) {
+          setAuthorized(false);
+          setFeedback(error.message);
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  async function toggleMaintenance() {
+    const nextEnabled = !enabled;
+    const confirmed = window.confirm(
+      locale === 'en'
+        ? nextEnabled
+          ? 'Take the public storefront offline now?'
+          : 'Bring the public storefront back online now?'
+        : nextEnabled
+          ? 'Mettre la boutique hors ligne maintenant ?'
+          : 'Remettre la boutique en ligne maintenant ?',
+    );
+    if (!confirmed) return;
+    setBusy(true);
+    setFeedback('');
+    try {
+      const response = await fetch('/api/admin/maintenance', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enabled: nextEnabled }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Store controls are unavailable.');
+      setEnabled(data.enabled === true);
+      setFeedback(
+        locale === 'en'
+          ? data.enabled
+            ? 'The public storefront is offline.'
+            : 'The public storefront is back online.'
+          : data.enabled
+            ? 'La boutique est hors ligne.'
+            : 'La boutique est de nouveau en ligne.',
+      );
+    } catch (error) {
+      setFeedback(error.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <section className="emergency-control-wrap">
+      <div className="emergency-control-card">
+        {authorized ? (
+          <>
+            <p className="eyebrow">GLOWAFRIQUE / PRIVATE STORE CONTROL</p>
+            <h1>{locale === 'en' ? 'Store emergency control' : 'Contrôle D’urgence De La Boutique'}</h1>
+            <p className={enabled ? 'emergency-state offline' : 'emergency-state online'}>
+              {locale === 'en'
+                ? `Public storefront: ${enabled ? 'offline' : 'online'}`
+                : `Boutique publique : ${enabled ? 'hors ligne' : 'en ligne'}`}
+            </p>
+            <p>
+              {locale === 'en'
+                ? 'This switch blocks customer pages and store APIs. Administrator controls, payment reviews, and provider callbacks remain available.'
+                : 'Cette commande bloque les pages clients et les services de la boutique. Les contrôles administrateur, les paiements et les confirmations du prestataire restent disponibles.'}
+            </p>
+            <button className="button" type="button" onClick={toggleMaintenance} disabled={busy}>
+              {busy
+                ? locale === 'en'
+                  ? 'Saving…'
+                  : 'Enregistrement…'
+                : locale === 'en'
+                  ? enabled
+                    ? 'Bring store online'
+                    : 'Take store offline'
+                  : enabled
+                    ? 'Remettre En Ligne'
+                    : 'Mettre Hors Ligne'}
+            </button>
+            <p role="status">{feedback}</p>
+          </>
+        ) : (
+          <>
+            <h1>404</h1>
+            <PageLink className="button" to="/">
+              {locale === 'en' ? 'Return to store' : 'Retour À La Boutique'}
+            </PageLink>
+          </>
+        )}
+      </div>
+    </section>
+  );
+}
+
 function ContactPage() {
   const { locale } = useStore();
   const [feedback, setFeedback] = useState('');
@@ -2248,6 +2383,7 @@ function RouteContent() {
     normalized.match(/^\/product\/([^/]+)/)?.[1] ||
     (normalized === '/product' ? new URLSearchParams(location.search).get('id') : null);
   if (normalized === '/' || normalized === '/index') return <HomePage />;
+  if (normalized === '/kackenlacken') return <EmergencyControlPage />;
   if (normalized === '/products') return <ProductsPage />;
   if (normalized === '/collection' || normalized.startsWith('/collections/'))
     return (
@@ -2277,11 +2413,13 @@ function RouteContent() {
 
 export default function App() {
   const location = useLocation();
-  const isAdminRoute = /\/(control|admin)\/?$/.test(location.pathname);
+  const normalizedPath = location.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+  const isAdminRoute = /^\/(control|admin|kackenlacken)\/?$/.test(normalizedPath);
   const locale = location.pathname.startsWith('/en') ? 'en' : 'fr';
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [maintenanceEnabled, setMaintenanceEnabled] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname, location.search]);
@@ -2290,6 +2428,23 @@ export default function App() {
       .then((response) => (response.ok ? response.json() : null))
       .then((data) => setUser(data?.user || null))
       .catch(() => {});
+  }, []);
+  useEffect(() => {
+    let active = true;
+    const checkMaintenance = () => {
+      fetch('/api/maintenance', { credentials: 'same-origin', cache: 'no-store' })
+        .then((response) => (response.ok ? response.json() : null))
+        .then((data) => {
+          if (active && data) setMaintenanceEnabled(data.enabled === true);
+        })
+        .catch(() => {});
+    };
+    checkMaintenance();
+    const interval = window.setInterval(checkMaintenance, 10000);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+    };
   }, []);
   useEffect(() => {
     try {
@@ -2324,12 +2479,12 @@ export default function App() {
   );
   return (
     <StoreContext.Provider value={value}>
-      {!isAdminRoute ? <Header /> : null}
+      {!isAdminRoute && !maintenanceEnabled ? <Header /> : null}
       <main id="page-content" className={isAdminRoute ? 'admin-shell' : undefined}>
-        <RouteContent />
+        {maintenanceEnabled && !isAdminRoute ? <StoreMaintenancePage /> : <RouteContent />}
       </main>
-      {!isAdminRoute ? <Footer /> : null}
-      {!isAdminRoute ? <CartAndSocialLinks /> : null}
+      {!isAdminRoute && !maintenanceEnabled ? <Footer /> : null}
+      {!isAdminRoute && !maintenanceEnabled ? <CartAndSocialLinks /> : null}
     </StoreContext.Provider>
   );
 }

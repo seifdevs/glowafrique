@@ -14,6 +14,25 @@ import profile from '../api-handlers/auth/profile.js';
 import passwordReset from '../api-handlers/auth/password-reset.js';
 import register from '../api-handlers/auth/register.js';
 import paystackCallback from '../api-handlers/payments/paystack-callback.js';
+import maintenance from '../api-handlers/maintenance.js';
+import adminMaintenance from '../api-handlers/admin/maintenance.js';
+import { getMaintenanceSetting } from '../lib/maintenance.js';
+import { authenticatedUser } from '../lib/auth.js';
+
+export const maintenanceAvailableRoutes = new Set([
+  'admin/orders',
+  'admin/inventory',
+  'admin/maintenance',
+  'auth/login',
+  'auth/logout',
+  'auth/me',
+  'maintenance',
+  'payments/paystack/callback',
+]);
+
+export function isBlockedDuringMaintenance(routeKey) {
+  return !maintenanceAvailableRoutes.has(routeKey);
+}
 
 export const routeHandlers = Object.freeze({
   contact,
@@ -25,6 +44,8 @@ export const routeHandlers = Object.freeze({
   reviews,
   'admin/orders': adminOrders,
   'admin/inventory': adminInventory,
+  'admin/maintenance': adminMaintenance,
+  maintenance,
   'auth/login': login,
   'auth/logout': logout,
   'auth/me': me,
@@ -46,5 +67,18 @@ export default async function apiRouter(req, res) {
   const routeKey = routeKeyFromUrl(req.url);
   const handler = routeKey && routeHandlers[routeKey];
   if (!handler) return res.status(404).json({ error: 'not_found' });
+  if (isBlockedDuringMaintenance(routeKey)) {
+    try {
+      if ((await getMaintenanceSetting()).enabled) {
+        if (routeKey === 'payment-proof' && (await authenticatedUser(req))?.role === 'admin')
+          return handler(req, res);
+        res.setHeader('Cache-Control', 'no-store');
+        return res.status(503).json({ error: 'The storefront is temporarily unavailable.' });
+      }
+    } catch (error) {
+      console.error('[api/router] maintenance lookup failed:', error && error.name);
+      return res.status(503).json({ error: 'Store services are temporarily unavailable.' });
+    }
+  }
   return handler(req, res);
 }

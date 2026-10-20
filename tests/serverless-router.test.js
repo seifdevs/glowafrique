@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
-import { routeHandlers, routeKeyFromUrl } from '../api/router.js';
+import { isBlockedDuringMaintenance, routeHandlers, routeKeyFromUrl } from '../api/router.js';
 const vercelConfig = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
 
 test('Vercel exposes one API function for the existing endpoints', () => {
@@ -9,7 +9,7 @@ test('Vercel exposes one API function for the existing endpoints', () => {
     .filter((entry) => entry.isFile() && entry.name.endsWith('.js'))
     .map((entry) => entry.name);
   assert.deepEqual(functionFiles, ['router.js']);
-  assert.equal(Object.keys(routeHandlers).length, 16);
+  assert.equal(Object.keys(routeHandlers).length, 18);
 });
 
 test('rewrites preserve all API paths and dispatch nested routes and query strings', () => {
@@ -33,6 +33,8 @@ test('rewrites preserve all API paths and dispatch nested routes and query strin
     '/api/router?route=reviews&productId=abc': 'reviews',
     '/api/router?route=admin%2Forders&status=pending': 'admin/orders',
     '/api/router?route=admin%2Finventory': 'admin/inventory',
+    '/api/router?route=admin%2Fmaintenance': 'admin/maintenance',
+    '/api/router?route=maintenance': 'maintenance',
     '/api/router?route=auth%2Flogin': 'auth/login',
     '/api/router?route=auth%2Flogout': 'auth/logout',
     '/api/router?route=auth%2Fme': 'auth/me',
@@ -44,4 +46,18 @@ test('rewrites preserve all API paths and dispatch nested routes and query strin
   for (const [url, expected] of Object.entries(routes))
     assert.equal(routeKeyFromUrl(url), expected, url);
   assert.equal(routeKeyFromUrl('/api/missing'), null);
+});
+
+test('maintenance blocks public commerce APIs and keeps admin controls available', () => {
+  for (const route of ['orders', 'order-quote', 'reviews', 'contact', 'newsletter'])
+    assert.equal(isBlockedDuringMaintenance(route), true, `${route} should be blocked`);
+  for (const route of [
+    'maintenance',
+    'admin/maintenance',
+    'admin/orders',
+    'admin/inventory',
+    'auth/login',
+    'payments/paystack/callback',
+  ])
+    assert.equal(isBlockedDuringMaintenance(route), false, `${route} should remain available`);
 });
