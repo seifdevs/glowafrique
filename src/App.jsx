@@ -83,15 +83,6 @@ const COPY = {
     skin: 'Shop trusted skincare, hair and body essentials selected for GlowAfrique.',
     bestHeading: 'Best Sellers',
     newHeading: 'Explore The Collection',
-    routineEyebrow: 'A THOUGHTFUL PLACE TO START',
-    routineHeading: 'Build a routine that feels like you',
-    routineIntro: 'Find a few care essentials that fit your needs and your everyday rhythm.',
-    routineStepOne: 'Start with what matters',
-    routineStepOneText: 'Explore the concerns you would like your routine to focus on.',
-    routineStepTwo: 'Discover trusted brands',
-    routineStepTwoText: 'Browse considered beauty and care from our featured brands.',
-    routineStepThree: 'Choose your essentials',
-    routineStepThreeText: 'Find products to make everyday care feel simple.',
     aboutText:
       'GlowAfrique is an independent beauty and care shop serving customers in Côte d’Ivoire. Browse the current product collection, review product information, and contact our team with questions about an item or order.',
     legalNotice:
@@ -184,15 +175,6 @@ const COPY = {
     skin: 'Découvrez une sélection de soins pour le visage, les cheveux et le corps proposée par GlowAfrique.',
     bestHeading: 'Meilleures Ventes',
     newHeading: 'Découvrir La Sélection',
-    routineEyebrow: 'UN BON POINT DE DÉPART',
-    routineHeading: 'Une routine qui vous ressemble',
-    routineIntro: 'Choisissez quelques soins adaptés à vos besoins et à votre quotidien.',
-    routineStepOne: 'Commencez par vos besoins',
-    routineStepOneText: 'Parcourez les besoins que vous souhaitez prendre en compte.',
-    routineStepTwo: 'Découvrez des marques de confiance',
-    routineStepTwoText: 'Explorez notre sélection de marques beauté et soin.',
-    routineStepThree: 'Choisissez vos essentiels',
-    routineStepThreeText: 'Trouvez des produits pour simplifier votre routine quotidienne.',
     aboutText:
       'GlowAfrique est une boutique indépendante de produits de beauté et de soin qui propose sa sélection aux clients en Côte d’Ivoire. Parcourez les produits disponibles et contactez notre équipe pour toute question sur un article ou une commande.',
     legalNotice:
@@ -394,7 +376,7 @@ function HomePage() {
     .filter(Boolean)
     .sort((a, b) => a.localeCompare(b, locale));
   const best = PRODUCTS.filter((p) => p.bestSeller).slice(0, 8);
-  const newProducts = PRODUCTS.filter((p) => p.isNew).slice(0, 8);
+  const discovery = PRODUCTS.filter((p) => !p.bestSeller).slice(0, 8);
   const concernLabel = (category) =>
     locale === 'en'
       ? {
@@ -471,21 +453,9 @@ function HomePage() {
           }}
         />
       </section>
-      <section className="section routine-guide">
-        <div className="routine-guide-heading">
-          <p className="eyebrow">{text(locale, 'routineEyebrow')}</p>
-          <h2>{text(locale, 'routineHeading')}</h2>
-          <p>{text(locale, 'routineIntro')}</p>
-        </div>
-        <div className="routine-guide-steps">
-          {[1, 2, 3].map((step) => (
-            <article key={step}>
-              <span aria-hidden="true">0{step}</span>
-              <h3>{text(locale, `routineStep${['One', 'Two', 'Three'][step - 1]}`)}</h3>
-              <p>{text(locale, `routineStep${['One', 'Two', 'Three'][step - 1]}Text`)}</p>
-            </article>
-          ))}
-        </div>
+      <section className="section discovery-section">
+        <SectionHeading title={text(locale, 'newHeading')} href="/products" />
+        <ProductGrid products={discovery} />
       </section>
       <section className="section featured-brand-section">
         <SectionHeading title={text(locale, 'brands')} href="/collections/brands" />
@@ -523,12 +493,6 @@ function HomePage() {
           {text(locale, 'learn')}
         </PageLink>
       </section>
-      {newProducts.length ? (
-        <section className="section">
-          <SectionHeading title={text(locale, 'newHeading')} href="/products" />
-          <ProductGrid products={newProducts} />
-        </section>
-      ) : null}
     </>
   );
 }
