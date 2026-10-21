@@ -270,11 +270,12 @@ function ProductCard({ product }) {
 
 function AddToBagButton({ product, className = 'button', showQuantity = false }) {
   const { locale, addItem } = useStore();
+  const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const resetTimer = useRef(null);
   useEffect(() => () => window.clearTimeout(resetTimer.current), []);
-  function add() {
-    addItem(product);
+  function add(amount = quantity) {
+    addItem(product, amount);
     setAdded(true);
     window.clearTimeout(resetTimer.current);
     resetTimer.current = window.setTimeout(() => setAdded(false), 3200);
@@ -296,7 +297,7 @@ function AddToBagButton({ product, className = 'button', showQuantity = false })
         <button
           type="button"
           className="add-another-button"
-          onClick={add}
+          onClick={() => add(1)}
           aria-label={locale === 'en' ? `Add another ${product.name}` : `Ajouter encore ${product.name}`}
         >
           + {locale === 'en' ? 'Add one more' : 'Ajouter un autre'}
@@ -2934,14 +2935,15 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = locale;
   }, [locale]);
-  const addItem = (product) =>
+  const addItem = (product, quantity = 1) =>
     setCart((items) => {
+      const amount = Math.min(99, Math.max(1, Number(quantity) || 1));
       const existing = items.find((item) => item.id === product.id);
       return existing
         ? items.map((item) =>
-            item.id === product.id ? { ...item, quantity: Math.min(99, item.quantity + 1) } : item,
+            item.id === product.id ? { ...item, quantity: Math.min(99, item.quantity + amount) } : item,
           )
-        : [...items, { id: product.id, quantity: 1 }];
+        : [...items, { id: product.id, quantity: amount }];
     });
   const value = useMemo(
     () => ({ locale, cart, setCart, cartOpen, setCartOpen, addItem, user, setUser: updateUser, authLoading }),
