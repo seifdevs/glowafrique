@@ -277,7 +277,7 @@ function ProductCard({ product }) {
   );
 }
 
-function AddToBagButton({ product, className = 'button' }) {
+function AddToBagButton({ product, className = 'button', showQuantity = false }) {
   const { locale, addItem } = useStore();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -292,13 +292,15 @@ function AddToBagButton({ product, className = 'button' }) {
   const canAdd = productHasVerifiedPrice(product);
   return (
     <div className={`add-to-bag-action${added ? ' is-added' : ''}`}>
-      <div className="product-quantity-control" role="group" aria-label={locale === 'en' ? 'Choose quantity' : 'Choisir la quantité'}>
-        <button type="button" aria-label={locale === 'en' ? 'Decrease quantity' : 'Diminuer la quantité'} disabled={!canAdd || quantity <= 1} onClick={() => setQuantity((value) => Math.max(1, value - 1))}>−</button>
-        <span aria-live="polite">{quantity}</span>
-        <button type="button" aria-label={locale === 'en' ? 'Increase quantity' : 'Augmenter la quantité'} disabled={!canAdd || quantity >= 99} onClick={() => setQuantity((value) => Math.min(99, value + 1))}>+</button>
-      </div>
+      {showQuantity ? (
+        <div className="product-quantity-control" role="group" aria-label={locale === 'en' ? 'Choose quantity' : 'Choisir la quantité'}>
+          <button type="button" aria-label={locale === 'en' ? 'Decrease quantity' : 'Diminuer la quantité'} disabled={!canAdd || quantity <= 1} onClick={() => setQuantity((value) => Math.max(1, value - 1))}>−</button>
+          <span aria-live="polite">{quantity}</span>
+          <button type="button" aria-label={locale === 'en' ? 'Increase quantity' : 'Augmenter la quantité'} disabled={!canAdd || quantity >= 99} onClick={() => setQuantity((value) => Math.min(99, value + 1))}>+</button>
+        </div>
+      ) : null}
       <button type="button" className={`${className}${added ? ' added' : ''}`} disabled={!canAdd} onClick={add}>
-        {canAdd ? (added ? `✓ ${locale === 'en' ? `Added ${quantity} successfully` : `${quantity} ajouté(s) avec succès`}` : `${text(locale, 'add')} · ${quantity}`) : text(locale, 'noPrice')}
+        {canAdd ? (added ? `✓ ${locale === 'en' ? `Added ${quantity} successfully` : `${quantity} ajouté(s) avec succès`}` : `${text(locale, 'add')}${showQuantity ? ` · ${quantity}` : ''}`) : text(locale, 'noPrice')}
       </button>
       {added ? (
         <button
@@ -784,7 +786,7 @@ function ProductPage({ id }) {
               : money(product.price, product.priceCurrency)}
           </p>
           <p className="muted">{product.category}</p>
-          <AddToBagButton product={product} className="button product-add" />
+          <AddToBagButton product={product} className="button product-add" showQuantity />
           <p className="muted">{text(locale, 'deliveryNote')}</p>
           <section className="product-accordions">
             <h2>{locale === 'en' ? 'Product Information' : 'Informations Produit'}</h2>

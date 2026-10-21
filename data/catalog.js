@@ -54,7 +54,7 @@ export const PRODUCTS = [
     "concerns": [
       "Cheveux & corps"
     ],
-    "price": null,
+    "price": 20000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -81,17 +81,17 @@ export const PRODUCTS = [
     ],
     "_unmappedFolders": [],
     "_keywordMatches": [],
-    "priceCurrency": null,
-    "pricingType": null,
+    "priceCurrency": "XOF",
+    "pricingType": "retail",
     "isBetaPrice": false,
     "content": {
       "en": {
-        "description": "A compact KUNDAL Honey & Macadamia travel set. The supplied package images show shampoo, treatment, body wash, and body lotion in a travel pouch.\n\nThe listing name and images previously conflicted; this title now follows the visible package.\n\nPrice remains unavailable until the exact set and proposed price are confirmed.",
+        "description": "A compact KUNDAL Honey & Macadamia travel set. The supplied package images show shampoo, treatment, body wash, and body lotion in a travel pouch.\n\nThe listing name and images previously conflicted; this title now follows the visible package.",
         "howToUse": "The supplied images identify a mixed hair-and-body travel set. Use each item only according to its own packaging directions; confirm the exact contents and sizes before purchase.",
         "ingredients": "Full ingredient list not yet provided by the supplier. Please refer to the product packaging."
       },
       "fr": {
-        "description": "Un coffret de voyage compact KUNDAL Honey & Macadamia. Les images de l’emballage fourni montrent du shampooing, un soin, un gel douche et une lotion pour le corps dans une trousse.\n\nL’ancien nom de la fiche ne correspondait pas aux images; ce titre suit maintenant l’emballage visible.\n\nLe prix reste indisponible jusqu’à confirmation du coffret exact et du prix proposé.",
+        "description": "Un coffret de voyage compact KUNDAL Honey & Macadamia. Les images de l’emballage fourni montrent du shampooing, un soin, un gel douche et une lotion pour le corps dans une trousse.\n\nL’ancien nom de la fiche ne correspondait pas aux images; ce titre suit maintenant l’emballage visible.",
         "howToUse": "Les images fournies identifient un coffret de voyage pour cheveux et corps. Utilisez chaque produit selon ses propres instructions; confirmez le contenu et les formats exacts avant l’achat.",
         "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
       }
