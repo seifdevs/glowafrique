@@ -80,7 +80,7 @@ export default async function orderQuote(req, res) {
     const shippingXof =
       eligibleSubtotal >= FREE_DELIVERY_XOF ? 0 : feeConfigured ? configuredFee : null;
     const shippingQuotePending = shippingXof == null;
-    if (stockConfirmationPending || shippingQuotePending)
+    if (shippingQuotePending)
       return res.status(200).json({
         subtotalXof,
         discountXof,
@@ -98,7 +98,7 @@ export default async function orderQuote(req, res) {
       totalXof: eligibleSubtotal + shippingXof,
       currency: 'XOF',
       quoteStatus: 'ready',
-      stockConfirmationPending: false,
+      stockConfirmationPending,
       shippingQuotePending: false,
     });
   } catch (error) {

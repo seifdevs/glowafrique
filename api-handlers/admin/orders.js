@@ -95,7 +95,7 @@ export default async function adminOrders(req, res) {
       const [items, total] = await Promise.all([
         orders
           .find(query)
-          .sort({ createdAt: 1 })
+          .sort({ createdAt: -1 })
           .skip((page - 1) * limit)
           .limit(limit)
           .toArray(),
