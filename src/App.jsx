@@ -270,11 +270,12 @@ function ProductCard({ product }) {
 
 function AddToBagButton({ product, className = 'button' }) {
   const { locale, addItem } = useStore();
+  const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const resetTimer = useRef(null);
   useEffect(() => () => window.clearTimeout(resetTimer.current), []);
   function add() {
-    addItem(product);
+    addItem(product, quantity);
     setAdded(true);
     window.clearTimeout(resetTimer.current);
     resetTimer.current = window.setTimeout(() => setAdded(false), 3200);
@@ -282,17 +283,22 @@ function AddToBagButton({ product, className = 'button' }) {
   const canAdd = productHasVerifiedPrice(product);
   return (
     <div className={`add-to-bag-action${added ? ' is-added' : ''}`}>
+      <div className="product-quantity-control" role="group" aria-label={locale === 'en' ? 'Choose quantity' : 'Choisir la quantité'}>
+        <button type="button" aria-label={locale === 'en' ? 'Decrease quantity' : 'Diminuer la quantité'} disabled={!canAdd || quantity <= 1} onClick={() => setQuantity((value) => Math.max(1, value - 1))}>−</button>
+        <span aria-live="polite">{quantity}</span>
+        <button type="button" aria-label={locale === 'en' ? 'Increase quantity' : 'Augmenter la quantité'} disabled={!canAdd || quantity >= 99} onClick={() => setQuantity((value) => Math.min(99, value + 1))}>+</button>
+      </div>
       <button type="button" className={`${className}${added ? ' added' : ''}`} disabled={!canAdd} onClick={add}>
-        {canAdd ? (added ? `✓ ${locale === 'en' ? 'Added successfully' : 'Ajouté avec succès'}` : text(locale, 'add')) : text(locale, 'noPrice')}
+        {canAdd ? (added ? `✓ ${locale === 'en' ? `Added ${quantity} successfully` : `${quantity} ajouté(s) avec succès`}` : `${text(locale, 'add')} · ${quantity}`) : text(locale, 'noPrice')}
       </button>
       {added ? (
         <button
           type="button"
           className="add-another-button"
-          onClick={add}
+          onClick={() => { addItem(product, 5); setAdded(true); window.clearTimeout(resetTimer.current); resetTimer.current = window.setTimeout(() => setAdded(false), 3200); }}
           aria-label={locale === 'en' ? `Add another ${product.name}` : `Ajouter encore ${product.name}`}
         >
-          + {locale === 'en' ? 'Add one more' : 'Ajouter un autre'}
+          + {locale === 'en' ? 'Add 5 more' : 'Ajouter 5 de plus'}
         </button>
       ) : null}
     </div>
@@ -2887,14 +2893,15 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = locale;
   }, [locale]);
-  const addItem = (product) =>
+  const addItem = (product, requestedQuantity = 1) =>
     setCart((items) => {
+      const quantity = Math.max(1, Math.min(99, Number(requestedQuantity) || 1));
       const existing = items.find((item) => item.id === product.id);
       return existing
         ? items.map((item) =>
-            item.id === product.id ? { ...item, quantity: Math.min(99, item.quantity + 1) } : item,
+            item.id === product.id ? { ...item, quantity: Math.min(99, item.quantity + quantity) } : item,
           )
-        : [...items, { id: product.id, quantity: 1 }];
+        : [...items, { id: product.id, quantity }];
     });
   const value = useMemo(
     () => ({ locale, cart, setCart, cartOpen, setCartOpen, addItem, user, setUser: updateUser, authLoading }),
