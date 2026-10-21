@@ -262,7 +262,7 @@ function ProductCard({ product }) {
             ? text(locale, 'noPrice')
             : money(product.price, product.priceCurrency)}
         </p>
-        <AddToBagButton product={product} className="button small" />
+        <AddToBagButton product={product} className="button small" showQuantity={false} />
       </div>
     </article>
   );
