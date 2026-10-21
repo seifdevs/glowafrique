@@ -903,7 +903,11 @@ function OrderConfirmationPage() {
         : english
           ? 'Thanks, we received your order. Our team will be in touch with any updates.'
           : 'Merci, nous avons bien reçu votre commande. Notre équipe vous contactera en cas de mise à jour.';
-  if (payment === 'wave')
+  if (payment === 'wave' && stockPending)
+    message = english
+      ? 'Thanks, we received your order and Wave screenshot. Payment will be reviewed, and our team will confirm product availability before dispatch.'
+      : 'Merci, nous avons reçu votre commande et votre capture Wave. Le paiement sera vérifié et notre équipe confirmera la disponibilité avant l’expédition.';
+  else if (payment === 'wave')
     message = english
       ? 'Thanks, we received your order. Your Wave payment will be reviewed by GlowAfrique.'
       : 'Merci, nous avons bien reçu votre commande. Votre paiement Wave sera vérifié par GlowAfrique.';
@@ -1393,26 +1397,40 @@ function AdminPage() {
   const [rejectionReasons, setRejectionReasons] = useState({});
   const [loginBusy, setLoginBusy] = useState(false);
   const [loginFeedback, setLoginFeedback] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
   useEffect(() => {
     if (user?.role !== 'admin') return;
-    if (section === 'inventory') {
-      fetch('/api/admin/inventory', { credentials: 'same-origin' })
-        .then(async (response) => {
+    let active = true;
+    async function refreshControlData() {
+      try {
+        if (section === 'inventory') {
+          const response = await fetch('/api/admin/inventory', { credentials: 'same-origin' });
           const data = await response.json();
           if (!response.ok) throw new Error(data.error || text(locale, 'unavailable'));
-          setInventory(data.inventory || []);
-        })
-        .catch((error) => setFeedback(error.message));
-      return;
+          if (active) {
+            setInventory(Array.isArray(data.inventory) ? data.inventory : []);
+            setFeedback('');
+          }
+          return;
+        }
+        const response = await fetch(`/api/admin/orders?status=${encodeURIComponent(status)}`, { credentials: 'same-origin' });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || text(locale, 'unavailable'));
+        if (active) {
+          setOrders(Array.isArray(data.orders) ? data.orders : []);
+          setFeedback('');
+        }
+      } catch (error) {
+        if (active) setFeedback(error.message || 'Could not refresh the control page.');
+      }
     }
-    fetch(`/api/admin/orders?status=${encodeURIComponent(status)}`, { credentials: 'same-origin' })
-      .then(async (r) => {
-        const data = await r.json();
-        if (!r.ok) throw new Error(data.error || text(locale, 'unavailable'));
-        setOrders(data.orders || []);
-      })
-      .catch((error) => setFeedback(error.message));
-  }, [locale, status, section, user]);
+    refreshControlData();
+    const interval = window.setInterval(refreshControlData, 15000);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+    };
+  }, [locale, status, section, user, refreshKey]);
   async function saveStock(event, item) {
     event.preventDefault();
     const quantity = Number(new FormData(event.currentTarget).get('quantity'));
@@ -1548,6 +1566,7 @@ function AdminPage() {
           {locale === 'en' ? 'Store Admin' : 'Administration'}
         </span>
         <button className="button secondary" type="button" onClick={signOut}>Log Out</button>
+        <button className="button secondary" type="button" onClick={() => setRefreshKey((key) => key + 1)}>Refresh</button>
       </div>
       <nav
         className="control-tabs"
@@ -2194,6 +2213,9 @@ function CartAndSocialLinks() {
   const [paymentSelection, setPaymentSelection] = useState('cash_on_delivery');
   const [proofPreview, setProofPreview] = useState('');
   const idempotencyKey = useRef(null);
+  useEffect(() => () => {
+    if (proofPreview.startsWith('blob:')) URL.revokeObjectURL(proofPreview);
+  }, [proofPreview]);
   useEffect(() => {
     if (!open || !cart.length || !checkout || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(quoteEmail)) {
       setQuote(null);
@@ -2239,30 +2261,35 @@ function CartAndSocialLinks() {
     setQuote(null);
     setQuoteEmail('');
     setPaymentSelection('cash_on_delivery');
+    setProofPreview('');
   }
   async function placeOrder(e) {
     e.preventDefault();
     setBusy(true);
     setFeedback('');
-    const data = Object.fromEntries(new FormData(e.currentTarget));
-    const paymentMethod = data.paymentMethod;
-    let waveProof;
-    if (paymentMethod === 'wave') {
-      const file = e.currentTarget.elements.waveProofFile.files?.[0];
-      if (!file || file.size > 2 * 1024 * 1024) {
-        setFeedback('Select a payment screenshot under 2 MB.');
-        setBusy(false);
-        return;
-      }
-      const dataUrl = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-      waveProof = { mimeType: file.type, data: String(dataUrl).split(',')[1] };
-    }
     try {
+      const form = e.currentTarget;
+      const data = Object.fromEntries(new FormData(form));
+      const paymentMethod = String(data.paymentMethod || 'cash_on_delivery');
+      let waveProof;
+      if (paymentMethod === 'wave') {
+        const file = form.elements.waveProofFile?.files?.[0];
+        if (!file || file.size > 2 * 1024 * 1024) {
+          throw new Error('Select a payment screenshot under 2 MB.');
+        }
+        if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+          throw new Error('Upload a JPEG, PNG, or WebP payment screenshot.');
+        }
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error('The payment screenshot could not be read.'));
+          reader.readAsDataURL(file);
+        });
+        const encodedImage = typeof dataUrl === 'string' ? dataUrl.split(',')[1] : '';
+        if (!encodedImage) throw new Error('The payment screenshot could not be read.');
+        waveProof = { mimeType: file.type, data: encodedImage };
+      }
       const response = await fetch('/api/orders', {
         method: 'POST',
         credentials: 'same-origin',
@@ -2298,6 +2325,9 @@ function CartAndSocialLinks() {
         window.location.assign(result.authorizationUrl);
         return;
       }
+      if (!result.order || typeof result.order.orderNumber !== 'string') {
+        throw new Error('We could not confirm the order response. Please contact GlowAfrique before submitting again.');
+      }
       setCart([]);
       idempotencyKey.current = null;
       setCheckout(false);
@@ -2305,6 +2335,7 @@ function CartAndSocialLinks() {
       setQuote(null);
       setQuoteEmail('');
       setPaymentSelection('cash_on_delivery');
+      setProofPreview('');
       const confirmationPath = localePath('/order-confirmation', locale);
       navigate(
         `${confirmationPath}?order=${encodeURIComponent(result.order.orderNumber)}&payment=${encodeURIComponent(paymentMethod)}${result.order.shippingQuotePending ? '&shipping=pending' : ''}${result.order.stockConfirmationPending ? '&stock=pending' : ''}`,
@@ -2439,6 +2470,7 @@ function CartAndSocialLinks() {
                     setPaymentSelection('cash_on_delivery');
                     setQuoteEmail('');
                     setQuote(null);
+                    setProofPreview('');
                   }}
                 >
                   {text(locale, 'checkout')}
@@ -2498,7 +2530,10 @@ function CartAndSocialLinks() {
                       type="radio"
                       value="cash_on_delivery"
                       defaultChecked
-                      onChange={() => setPaymentSelection('cash_on_delivery')}
+                      onChange={() => {
+                        setPaymentSelection('cash_on_delivery');
+                        setProofPreview('');
+                      }}
                     />{' '}
                     Cash on Delivery
                   </label>
@@ -2542,17 +2577,25 @@ function CartAndSocialLinks() {
                           : 'Le paiement à la livraison est disponible. Nous confirmerons les frais de livraison et le total avant l’expédition.'}
                   </p>
                 ) : null}
+                {quote?.quoteStatus === 'ready' && quote.stockConfirmationPending ? (
+                  <p className="checkout-delivery-note" role="status">
+                    {locale === 'en'
+                      ? 'We will confirm product availability before dispatch. Wave orders can include a screenshot and will remain pending review.'
+                      : 'Nous confirmerons la disponibilité avant l’expédition. Les paiements Wave avec capture resteront en attente de vérification.'}
+                  </p>
+                ) : null}
                 {paymentSelection === 'wave' ? (
                   <>
                     <label>
                       Wave Sender Phone
-                      <input name="waveSenderPhone" type="tel" placeholder="+225…" />
+                      <input name="waveSenderPhone" type="tel" placeholder="+225…" required />
                     </label>
                     <label>
                       Wave Payment Screenshot
                       <input
                         name="waveProofFile"
                         type="file"
+                        required
                         accept="image/jpeg,image/png,image/webp"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
@@ -2580,6 +2623,7 @@ function CartAndSocialLinks() {
                     setPaymentSelection('cash_on_delivery');
                     setQuoteEmail('');
                     setQuote(null);
+                    setProofPreview('');
                   }}
                 >
                   {text(locale, 'continue')}

@@ -199,7 +199,7 @@ test('register, login, session lookup, logout, duplicate registration, and CSRF 
     const logoutResponse = makeResponse();
     await logout(request('POST', {}, loginCookie), logoutResponse);
     assert.equal(logoutResponse.statusCode, 200);
-    assert.match(logoutResponse.headers['Set-Cookie'], /Max-Age=0/);
+    assert.match([].concat(logoutResponse.headers['Set-Cookie']).join('; '), /Max-Age=0/);
     assert.equal(database.sessions.length, 1);
     const expiredSession = makeResponse();
     await me(request('GET', {}, loginCookie), expiredSession);

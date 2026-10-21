@@ -96,7 +96,7 @@ function validCustomer(body, user) {
   const postalCode = String(customer.postalCode || '').trim();
   const country = 'Côte d’Ivoire';
   const deliveryInstructions = String(customer.deliveryInstructions || '').trim();
-  const email = user ? user.email : normalizeEmail(customer.email);
+  const email = normalizeEmail((user && user.email) || customer.email);
   if (fullName.length < 2 || fullName.length > 120) throw new Error('Enter your full name.');
   if (!firstName || firstName.length > 80 || lastName.length > 80 || (!lastName && !legacyFullName))
     throw new Error('Enter a valid first and last name.');
@@ -310,10 +310,10 @@ export default async function ordersApi(req, res) {
       const available = availableById.get(productId);
       return !Number.isSafeInteger(available) || available < quantity;
     });
-    if ((shippingQuotePending || stockConfirmationPending) && paymentMethod !== 'cash_on_delivery')
+    if (shippingQuotePending && paymentMethod !== 'cash_on_delivery')
       return res.status(409).json({
         error:
-          'Product availability and delivery details must be confirmed before prepayment. Choose Cash on Delivery to send an order request.',
+          'The delivery fee must be confirmed before prepayment. Choose Cash on Delivery to send an order request.',
       });
     const document = {
       orderNumber: orderNumber(),
