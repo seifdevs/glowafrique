@@ -2237,6 +2237,22 @@ function CartAndSocialLinks() {
   const [paymentSelection, setPaymentSelection] = useState('cash_on_delivery');
   const [proofPreview, setProofPreview] = useState('');
   const selectedDeliveryZone = DELIVERY_ZONES.find((zone) => zone.id === selectedShippingZone);
+  const cartProductSubtotalXof = cart.reduce((subtotal, item) => {
+    const product = PRODUCTS.find((entry) => entry.id === item.id);
+    if (subtotal == null || !product || !productHasVerifiedPrice(product)) return null;
+    return subtotal + toXof(product.price, product.priceCurrency) * item.quantity;
+  }, 0);
+  const checkoutProductsXof = quote?.quoteStatus === 'ready' ? quote.subtotalXof : cartProductSubtotalXof;
+  const estimatedDeliveryXof = quote?.quoteStatus === 'ready'
+    ? quote.shippingXof
+    : selectedDeliveryZone && cartProductSubtotalXof != null
+      ? cartProductSubtotalXof >= 50000 ? 0 : selectedDeliveryZone.rateXof
+      : null;
+  const estimatedCheckoutTotalXof = quote?.quoteStatus === 'ready'
+    ? quote.totalXof
+    : checkoutProductsXof != null && estimatedDeliveryXof != null
+      ? checkoutProductsXof + estimatedDeliveryXof
+      : null;
   const idempotencyKey = useRef(null);
   useEffect(() => () => {
     if (proofPreview.startsWith('blob:')) URL.revokeObjectURL(proofPreview);
@@ -2470,6 +2486,11 @@ function CartAndSocialLinks() {
                               ? text(locale, 'noPrice')
                               : money(product.price, product.priceCurrency)}
                           </p>
+                          {productHasVerifiedPrice(product) ? (
+                            <p className="cart-line-subtotal">
+                              {locale === 'en' ? 'Line total' : 'Sous-total'} · {money(toXof(product.price, product.priceCurrency) * item.quantity)}
+                            </p>
+                          ) : null}
                           <div className="cart-line-actions">
                             <div className="cart-quantity-control" role="group" aria-label={locale === 'en' ? 'Quantity' : 'Quantité'}>
                               <button type="button" disabled={item.quantity <= 1} onClick={() => change(item.id, item.quantity - 1)} aria-label={locale === 'en' ? 'Decrease quantity' : 'Diminuer la quantité'}>−</button>
@@ -2495,11 +2516,14 @@ function CartAndSocialLinks() {
                 )}
                 {cart.length ? (
                   <div className="cart-summary-card">
-                    <p className="cart-total-row"><span>{text(locale, 'total')}</span><strong>
-                      {quote?.quoteStatus === 'ready' && quote.totalXof != null
-                        ? money(quote.totalXof)
-                        : locale === 'en' ? 'Confirmed at checkout' : 'Confirmé à la commande'}
-                    </strong></p>
+                    <p className="cart-total-row">
+                      <span>{locale === 'en' ? 'Products subtotal' : 'Sous-total des produits'}</span>
+                      <strong>{cartProductSubtotalXof == null ? text(locale, 'noPrice') : money(cartProductSubtotalXof)}</strong>
+                    </p>
+                    <p className="cart-total-row cart-delivery-row">
+                      <span>{locale === 'en' ? 'Delivery' : 'Livraison'}</span>
+                      <strong>{locale === 'en' ? 'To be determined at checkout' : 'À déterminer à la commande'}</strong>
+                    </p>
                     <p className="cart-delivery-note">{text(locale, 'deliveryNote')}</p>
                 <button
                   className="button cart-checkout-button"
@@ -2591,16 +2615,30 @@ function CartAndSocialLinks() {
                 ) : null}
                 <section className="checkout-order-cost" aria-live="polite">
                   <h3>{locale === 'en' ? 'Order Cost' : 'Coût de la commande'}</h3>
-                  {quote?.quoteStatus === 'ready' ? (
-                    <>
-                      <p><span>{locale === 'en' ? 'Products' : 'Produits'}</span><strong>{money(quote.subtotalXof)}</strong></p>
-                      {quote.discountXof > 0 ? (
-                        <p className="checkout-discount-row"><span>{locale === 'en' ? 'First-order discount' : 'Remise première commande'}</span><strong>−{money(quote.discountXof)}</strong></p>
-                      ) : null}
-                      <p><span>{locale === 'en' ? 'Delivery' : 'Livraison'} · {selectedDeliveryZone?.label}</span><strong>{quote.shippingXof === 0 ? (locale === 'en' ? 'Free' : 'Offerte') : money(quote.shippingXof)}</strong></p>
-                      <p className="checkout-grand-total"><span>{locale === 'en' ? 'Total to pay' : 'Total à payer'}</span><strong>{money(quote.totalXof)}</strong></p>
-                    </>
-                  ) : (
+                  <p>
+                    <span>{locale === 'en' ? 'Products' : 'Produits'}</span>
+                    <strong>{checkoutProductsXof == null ? text(locale, 'noPrice') : money(checkoutProductsXof)}</strong>
+                  </p>
+                  {quote?.quoteStatus === 'ready' && quote.discountXof > 0 ? (
+                    <p className="checkout-discount-row"><span>{locale === 'en' ? 'First-order discount' : 'Remise première commande'}</span><strong>−{money(quote.discountXof)}</strong></p>
+                  ) : null}
+                  <p>
+                    <span>{locale === 'en' ? 'Delivery' : 'Livraison'}{selectedDeliveryZone ? ` · ${selectedDeliveryZone.label}` : ''}</span>
+                    <strong>{estimatedDeliveryXof == null
+                      ? (locale === 'en' ? 'To be determined' : 'À déterminer')
+                      : estimatedDeliveryXof === 0
+                        ? (locale === 'en' ? 'Free' : 'Offerte')
+                        : money(estimatedDeliveryXof)}</strong>
+                  </p>
+                  <p className="checkout-grand-total">
+                    <span>{quote?.quoteStatus === 'ready'
+                      ? locale === 'en' ? 'Total to pay' : 'Total à payer'
+                      : locale === 'en' ? 'Estimated total' : 'Total estimé'}</span>
+                    <strong>{estimatedCheckoutTotalXof == null
+                      ? (locale === 'en' ? 'Choose a region' : 'Choisissez une zone')
+                      : money(estimatedCheckoutTotalXof)}</strong>
+                  </p>
+                  {quote?.quoteStatus !== 'ready' ? (
                     <p className="checkout-cost-hint">
                       {!selectedDeliveryZone
                         ? locale === 'en'
@@ -2611,10 +2649,10 @@ function CartAndSocialLinks() {
                             ? 'Enter your email to calculate your order total and any first-order discount.'
                             : 'Saisissez votre adresse e-mail pour calculer le total et votre éventuelle remise de première commande.'
                           : locale === 'en'
-                            ? 'Calculating your delivery and order total…'
-                            : 'Calcul du tarif de livraison et du total…'}
+                            ? 'This estimate includes the selected delivery rate. Enter your email for the exact total and any first-order discount.'
+                            : 'Cette estimation inclut le tarif de livraison sélectionné. Saisissez votre e-mail pour obtenir le total exact et toute remise de première commande.'}
                     </p>
-                  )}
+                  ) : null}
                 </section>
                 <fieldset className="payment-methods">
                   <legend>{locale === 'en' ? 'Payment Method' : 'Mode De Paiement'}</legend>
