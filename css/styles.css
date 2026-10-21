@@ -723,3 +723,123 @@ button:disabled,.button:disabled{box-shadow:0 3px 9px #3a211c12!important}
 .account-explore-link svg{width:16px;height:16px}
 @media(max-width:800px){.account-welcome{align-items:flex-start;flex-direction:column}.account-welcome-actions{flex-wrap:wrap}.account-overview-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.account-shop-card{grid-column:1/-1}}
 @media(max-width:520px){.account-dashboard{gap:17px;padding:26px 14px 54px}.account-welcome{min-height:0;padding:26px 21px;border-radius:22px}.account-welcome h1{font-size:36px}.account-welcome-orbit{right:-120px;opacity:.65}.account-member-badge{font-size:12px}.account-overview-cards{grid-template-columns:1fr;gap:11px}.account-overview-card{min-height:112px;padding:18px;border-radius:18px}.account-shop-card{grid-column:auto}.account-orders-panel{padding:20px 15px;border-radius:20px}.account-orders-heading{align-items:flex-start}.account-order-row{gap:11px;padding:12px}.account-order-row-icon{flex-basis:38px;width:38px;height:38px}.account-order-total{font-size:12px}.account-empty-orders{align-items:flex-start;gap:13px;min-height:0;padding:18px 14px}.account-empty-icon{flex-basis:48px;width:48px;height:48px;border-radius:15px}.account-empty-icon svg{width:24px;height:24px}.account-empty-orders h3{font-size:19px}.account-empty-orders p{font-size:13px}}
+
+.loyalty-banner{position:relative;overflow:hidden;min-height:112px;padding:20px 24px;border-color:#f0d9d1;background:radial-gradient(ellipse at 8% 0%,#fff 0,transparent 46%),linear-gradient(110deg,#fffaf4,#f8e9e4 65%,#f7e3df);box-shadow:0 14px 36px #8f514016}
+.loyalty-banner>span{display:grid;place-items:center;flex:0 0 52px;width:52px;height:52px;border-radius:18px;background:linear-gradient(145deg,#fff,#fbe8e3);box-shadow:0 8px 18px #b75e4820}
+.loyalty-banner>div{min-width:0}
+.loyalty-banner>div p{max-width:660px}
+.loyalty-banner>.button{flex:0 0 auto;margin-left:auto;min-width:148px}
+.account-points-hint{display:block;max-width:190px;margin-top:7px;color:#817066;font-size:11px;line-height:1.45}
+.admin-order-details{margin:14px 0 18px;border:1px solid #ead9cc;border-radius:14px;background:linear-gradient(145deg,#fffdfa,#fff7f0);overflow:hidden}
+.admin-order-details>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;cursor:pointer;color:#704635;font-weight:600;list-style:none}
+.admin-order-details>summary::-webkit-details-marker{display:none}
+.admin-order-details>summary::after{content:'⌄';font-size:18px;transition:transform .2s ease}
+.admin-order-details[open]>summary::after{transform:rotate(180deg)}
+.admin-order-details>summary span{margin-left:auto;color:#8b756a;font-size:12px;font-weight:400}
+.admin-order-details-content{padding:0 16px 15px;border-top:1px solid #efe3d9}
+.admin-order-item-list{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.admin-order-item-list li,.admin-order-item-total{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:12px 0;border-bottom:1px solid #f0e5dc}
+.admin-order-item-list li>span{display:grid;gap:3px}
+.admin-order-item-list li small{color:#817066;font-size:12px}
+.admin-order-item-list li>strong,.admin-order-item-total>strong{flex:0 0 auto;color:#704635}
+.admin-order-note{padding:11px 13px;border-radius:10px;background:#f8eee6;color:#705c51;font-size:13px;line-height:1.6}
+.admin-order-item-total{margin:0;border-bottom:0;font-size:13px;font-weight:600}
+@media(max-width:700px){.loyalty-banner{align-items:center;flex-wrap:wrap}.loyalty-banner>span{flex-basis:42px;width:42px;height:42px}.loyalty-banner>div{flex:1 1 calc(100% - 60px)}.loyalty-banner>.button{margin-left:auto}.account-points-hint{max-width:240px}}
+@media(max-width:430px){.loyalty-banner>.button{width:100%;margin-left:52px}.admin-order-details-content{padding-inline:12px}.admin-order-details>summary{padding:12px}}
+.confirmation-order-items{max-width:560px;margin:24px auto 28px;padding:20px;border:1px solid #efdfd3;border-radius:18px;background:linear-gradient(145deg,#fff,#fff8f2);text-align:left;box-shadow:0 10px 26px #3a211c0b}
+.confirmation-order-items h2{margin:0 0 8px;font-size:21px;font-weight:500}
+.confirmation-order-items ul{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.confirmation-order-items li{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid #efe4dc}
+.confirmation-order-items li>span{display:grid;gap:3px;min-width:0}
+.confirmation-order-items li small{color:#817066;font-size:12px;overflow-wrap:anywhere}
+.confirmation-order-items li>strong,.confirmation-order-total strong{flex:0 0 auto;color:#704635}
+.confirmation-order-total{display:flex;justify-content:space-between;gap:16px;margin:13px 0 0;font-weight:600}
+.admin-order-number-label{display:block;margin-bottom:3px;color:#897970;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+
+/* Final product card overrides keep the quantity picker and hover zoom consistent. */
+.product-card .product-image img{object-fit:cover!important;padding:0!important;mix-blend-mode:normal;transform:scale(1);transition:opacity .3s ease,transform .45s ease}
+.product-card:hover .product-image img{transform:scale(1.055)}
+.product-card:focus-within .product-image img{transform:scale(1)}
+.add-to-bag-action{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px}
+.add-to-bag-action>.button{min-width:0;padding-inline:10px;white-space:normal;line-height:1.25}
+.product-quantity-control{display:inline-flex;align-items:center;justify-content:space-between;min-height:38px;border:1px solid #e5cfc0;border-radius:999px;background:#fffaf5;box-shadow:inset 0 1px 2px #3a211c08;overflow:hidden}
+.product-quantity-control button{width:32px;height:36px;border:0;background:transparent;color:#704635;font-size:19px;line-height:1;transition:background .18s,color .18s}
+.product-quantity-control button:hover:not(:disabled){background:#f7e7dc;color:#b04e36}
+.product-quantity-control button:disabled{opacity:.35;cursor:not-allowed}
+.product-quantity-control span{min-width:23px;text-align:center;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.add-to-bag-action.is-added .add-another-button{grid-column:1/-1}
+@media(max-width:580px){.add-to-bag-action{gap:5px}.product-quantity-control button{width:28px}.product-quantity-control span{min-width:19px}.add-to-bag-action>.button{font-size:10px!important;padding-inline:6px!important}}
+
+/* Product cards stay focused on discovery; quantity selection belongs on the detail page. */
+.product-card .add-to-bag-action{grid-template-columns:minmax(0,1fr)}
+.product-card .product-quantity-control{display:none}
+.product-buy .add-to-bag-action{grid-template-columns:auto minmax(0,1fr);max-width:480px;gap:12px}
+.product-buy .product-quantity-control{min-height:48px;background:#fff;border-color:#e7d5c8}
+.product-buy .product-quantity-control button{width:44px;height:46px;font-size:22px}
+.product-buy .product-quantity-control span{min-width:30px;font-size:15px}
+
+/* Storefront refinement across narrow screens. */
+@media(max-width:700px){
+  body{font-size:15px;line-height:1.6}
+  .announcement{min-height:36px;padding-inline:34px;font-size:10px;letter-spacing:.015em}
+  .site-header{min-height:116px;grid-template-rows:48px 44px;gap:8px 10px;padding:8px 14px 11px;box-shadow:0 7px 20px #3a211c0e}
+  .menu-toggle,.header-actions .icon-button{width:46px;min-width:46px;min-height:46px;border-color:#e8d7ca;background:#fff;box-shadow:0 3px 10px #3a211c0a}
+  .logo-image{gap:8px}
+  .logo-image img{width:40px;height:40px}
+  .logo-wordmark{font-family:Georgia,serif;font-size:19px;letter-spacing:-.45px}
+  .search-wrap{height:44px}
+  .search-wrap input{border-color:#e8d7ca;background:#fff;padding-left:16px;font-size:14px}
+  .search-wrap button{width:42px;height:40px;flex-basis:42px;border-radius:50%;background:var(--accent-gradient);color:white}
+  .category-nav{width:min(390px,88vw);padding-inline:23px;border-radius:0 22px 22px 0}
+  .mobile-drawer-head{font-size:22px}
+  .category-nav>a,.category-nav .nav-dropdown>a{padding:15px 4px;font-size:15px}
+  .mobile-nav-utilities{gap:5px;margin-top:20px;padding-top:15px}
+  .mobile-nav-utilities>a,.mobile-nav-utilities>button{min-height:50px;padding-inline:8px;font-size:15px}
+  .section{padding:48px 16px}
+  .section-heading{align-items:flex-end;margin-bottom:19px}
+  .section-heading h2{font-size:clamp(25px,7vw,31px);letter-spacing:-.5px}
+  .section-heading>a{font-size:12px}
+  .loyalty-banner{display:grid;grid-template-columns:48px minmax(0,1fr);align-items:start;gap:10px 13px;margin:16px;padding:19px;border:1px solid #efd9d1;border-radius:22px;background:radial-gradient(ellipse at 100% 0%,#fff 0,transparent 47%),linear-gradient(135deg,#fffaf5,#f8e9e3 70%,#f3e1db);box-shadow:0 13px 30px #8f514015}
+  .loyalty-banner::after{position:absolute;right:-34px;bottom:-66px;width:140px;height:140px;border:1px solid #e9b8a74d;border-radius:50%;content:"";pointer-events:none}
+  .loyalty-banner>span{z-index:1;flex-basis:48px;width:48px;height:48px;border-radius:16px;color:#ce6652;font-size:25px}
+  .loyalty-banner>div{z-index:1;flex:none}
+  .loyalty-banner h2{font-family:Georgia,serif;font-size:21px;line-height:1.2}
+  .loyalty-banner p{margin-top:6px;font-size:13px;line-height:1.55}
+  .loyalty-banner>.button{z-index:1;grid-column:1/-1;width:100%;min-height:46px;margin:4px 0 0;border-radius:15px}
+  .product-grid,.catalog-results .product-grid{gap:12px}
+  .product-card{border-radius:16px}
+  .product-card .product-image{aspect-ratio:1/1}
+  .product-card .product-info{display:flex;flex:1;flex-direction:column;padding:12px 12px 14px}
+  .product-info .eyebrow{margin:0 0 4px;font-size:9px;letter-spacing:1.5px}
+  .product-info h3{font-size:13px;line-height:1.45}
+  .product-info .rating{margin:5px 0 0;min-height:16px}
+  .product-info .price{margin:7px 0 11px;font-size:13px}
+  .product-card .add-to-bag-action{margin-top:auto}
+  .product-card .add-to-bag-action>.button{min-height:42px;padding:8px 9px;font-size:12px!important;line-height:1.2}
+  .product-card .add-another-button{font-size:11px}
+  .product-detail{gap:20px;padding:0 14px}
+  .product-buy{padding:20px 17px 23px;border-radius:21px}
+  .product-buy h1{font-size:clamp(26px,7vw,34px);line-height:1.2;letter-spacing:-.6px}
+  .product-buy .price.large{font-size:23px}
+  .product-buy .add-to-bag-action{grid-template-columns:minmax(112px,auto) minmax(0,1fr);gap:9px}
+  .product-buy .add-to-bag-action>.button{min-height:48px;font-size:13px!important;padding:10px 12px!important}
+  .product-buy .product-quantity-control button{width:38px}
+  .product-buy .product-quantity-control span{min-width:25px}
+  .form-card,.auth-card,.contact-details,.checkout-summary,.account-orders-panel{width:100%;max-width:100%;min-width:0}
+  input,select,textarea{max-width:100%}
+  .button{min-height:46px}
+  .breadcrumbs{padding:13px 16px;font-size:12px;line-height:1.5}
+  .site-footer{padding:38px 18px calc(20px + env(safe-area-inset-bottom))}
+  .benefit-bar article{min-height:64px}
+}
+@media(max-width:380px){
+  .site-header{min-height:112px;grid-template-rows:44px 42px;padding-inline:11px}
+  .logo-image img{width:35px;height:35px}
+  .logo-wordmark{font-size:17px}
+  .menu-toggle,.header-actions .icon-button{width:42px;min-width:42px;min-height:42px}
+  .product-grid,.catalog-results .product-grid{gap:9px}
+  .product-card .product-info{padding:10px}
+  .product-card .add-to-bag-action>.button{font-size:11px!important}
+  .loyalty-banner{margin:12px;padding:16px}
+}
+@media(prefers-reduced-motion:reduce){.product-card .product-image img{transition:none}}
