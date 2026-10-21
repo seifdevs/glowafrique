@@ -394,7 +394,7 @@ export const PRODUCTS = [
     "concerns": [
       "Pores dilatés & excès de sébum"
     ],
-    "price": null,
+    "price": 14000,
     "oldPrice": null,
     "bestSeller": false,
     "isNew": false,
@@ -417,8 +417,8 @@ export const PRODUCTS = [
       "Skincare"
     ],
     "_keywordMatches": [],
-    "priceCurrency": null,
-    "pricingType": null,
+    "priceCurrency": "XOF",
+    "pricingType": "retail",
     "isBetaPrice": false,
     "content": {
       "en": {
