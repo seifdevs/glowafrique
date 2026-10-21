@@ -357,7 +357,7 @@ export const PRODUCTS = [
       "Peau sèche",
       "Peau terne"
     ],
-    "price": 9500,
+    "price": 6000,
     "oldPrice": null,
     "bestSeller": true,
     "isNew": false,
@@ -387,8 +387,8 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
     "content": {
       "en": {
         "description": "",
@@ -412,7 +412,7 @@ export const PRODUCTS = [
       "Peau sèche",
       "Peau terne"
     ],
-    "price": 18000,
+    "price": 6000,
     "oldPrice": null,
     "bestSeller": true,
     "isNew": false,
@@ -901,7 +901,7 @@ export const PRODUCTS = [
       "Peau sèche",
       "Peau terne"
     ],
-    "price": 17500,
+    "price": 1000,
     "oldPrice": null,
     "bestSeller": true,
     "isNew": false,
