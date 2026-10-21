@@ -2102,10 +2102,9 @@ function Header() {
   return (
     <>
       <div className="announcement">
-        10%{' '}
         {locale === 'en'
-          ? 'Off Your First Purchase · Free Delivery Over 45,000 CFA'
-          : 'De Réduction Sur Votre Première Commande · Livraison Offerte Dès 45 000 CFA'}
+          ? 'Free Delivery Over 45,000 CFA'
+          : 'Livraison Offerte Dès 45 000 CFA'}
       </div>
       <header className="site-header">
         <button
@@ -2731,9 +2730,6 @@ function CartAndSocialLinks() {
                     <span>{locale === 'en' ? 'Products' : 'Produits'}</span>
                     <strong>{checkoutProductsXof == null ? text(locale, 'noPrice') : money(checkoutProductsXof)}</strong>
                   </p>
-                  {quote?.quoteStatus === 'ready' && quote.discountXof > 0 ? (
-                    <p className="checkout-discount-row"><span>{locale === 'en' ? 'First-order discount' : 'Remise première commande'}</span><strong>−{money(quote.discountXof)}</strong></p>
-                  ) : null}
                   <p>
                     <span>{locale === 'en' ? 'Delivery' : 'Livraison'}{selectedDeliveryZone ? ` · ${selectedDeliveryZone.label}` : ''}</span>
                     <strong>{estimatedDeliveryXof == null
@@ -2758,11 +2754,11 @@ function CartAndSocialLinks() {
                           : 'Choisissez votre zone de livraison pour calculer les frais.'
                         : !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(quoteEmail)
                           ? locale === 'en'
-                            ? 'Enter your email to calculate your order total and any first-order discount.'
-                            : 'Saisissez votre adresse e-mail pour calculer le total et votre éventuelle remise de première commande.'
+                            ? 'Enter your email to calculate your order total.'
+                            : 'Saisissez votre adresse e-mail pour calculer le total de votre commande.'
                           : locale === 'en'
-                            ? 'This estimate includes the selected delivery rate. Enter your email for the exact total and any first-order discount.'
-                            : 'Cette estimation inclut le tarif de livraison sélectionné. Saisissez votre e-mail pour obtenir le total exact et toute remise de première commande.'}
+                            ? 'This estimate includes the selected delivery rate. Enter your email for the exact total.'
+                            : 'Cette estimation inclut le tarif de livraison sélectionné. Saisissez votre e-mail pour obtenir le total exact.'}
                     </p>
                   ) : null}
                 </section>

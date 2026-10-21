@@ -69,13 +69,8 @@ export default async function orderQuote(req, res) {
         deliveryZoneId: deliveryZone?.id || null,
         deliveryZoneLabel: deliveryZone?.label || null,
       });
-    const orders = (await getDatabase()).collection('glowafrique_orders');
-    const previousPurchase = await orders.findOne(
-      { $or: [{ firstPurchaseKey: email }, { 'customer.email': email }] },
-      { projection: { _id: 1 } },
-    );
-    const discountXof = previousPurchase ? 0 : Math.floor(subtotalXof / 10);
-    const eligibleSubtotal = subtotalXof - discountXof;
+    const discountXof = 0;
+    const eligibleSubtotal = subtotalXof;
     const configuredFee = configuredFallbackShippingXof();
     const shippingXof =
       eligibleSubtotal >= FREE_DELIVERY_XOF

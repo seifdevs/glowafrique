@@ -279,13 +279,8 @@ export default async function ordersApi(req, res) {
           : {}),
       });
     }
-    const firstPurchaseKey = customer.email;
-    const previousPurchase = await orders.findOne(
-      { $or: [{ firstPurchaseKey }, { 'customer.email': customer.email }] },
-      { projection: { _id: 1 } },
-    );
-    const discountXof = previousPurchase ? 0 : Math.floor(subtotalXof / 10);
-    const eligibleSubtotalXof = subtotalXof - discountXof;
+    const discountXof = 0;
+    const eligibleSubtotalXof = subtotalXof;
     const shippingZone = findDeliveryZone(customer.deliveryZoneId);
     const shippingFee = shippingZone?.rateXof ?? configuredFallbackShippingXof();
     const shippingQuotePending =
@@ -323,7 +318,6 @@ export default async function ordersApi(req, res) {
       orderNumber: orderNumber(),
       idempotencyKey,
       customerId: user ? user._id : null,
-      ...(previousPurchase ? {} : { firstPurchaseKey }),
       customer,
       items,
       subtotalXof,

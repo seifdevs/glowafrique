@@ -137,6 +137,8 @@ test('Wave checkout can receive a total while inventory awaits confirmation', as
     assert.equal(res.statusCode, 200);
     assert.equal(res.body.quoteStatus, 'ready');
     assert.equal(res.body.stockConfirmationPending, true);
+    assert.equal(res.body.discountXof, 0);
+    assert.equal(res.body.totalXof, res.body.subtotalXof + res.body.shippingXof);
     assert.equal(Number.isFinite(res.body.totalXof), true);
   } finally {
     if (previous.mongoUri === undefined) delete process.env.MONGODB_URI;
@@ -167,6 +169,12 @@ test('Cash on Delivery submits and returns a complete order response', async () 
     assert.equal(res.statusCode, 201);
     assert.equal(res.body.order.paymentMethod, 'cash_on_delivery');
     assert.equal(typeof res.body.order.orderNumber, 'string');
+    assert.equal(res.body.order.discountXof, 0);
+    if (!res.body.order.shippingQuotePending)
+      assert.equal(
+        res.body.order.totalXof,
+        res.body.order.subtotalXof + res.body.order.shippingXof,
+      );
     assert.equal(database.savedOrders.length, 1);
   } finally {
     if (previous.mongoUri === undefined) delete process.env.MONGODB_URI;
