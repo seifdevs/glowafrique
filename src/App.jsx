@@ -409,11 +409,19 @@ function Carousel({ items, label, renderItem, variant = 'concern' }) {
       tabIndex={0}
       role="region"
       aria-label={label}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      onPointerEnter={(event) => {
+        if (event.pointerType === 'mouse') setPaused(true);
+      }}
+      onPointerLeave={(event) => {
+        if (event.pointerType === 'mouse') setPaused(false);
+      }}
       onPointerDown={() => setPaused(true)}
-      onPointerUp={() => setPaused(false)}
-      onPointerCancel={() => setPaused(false)}
+      onPointerUp={(event) => {
+        if (event.pointerType !== 'mouse') setPaused(false);
+      }}
+      onPointerCancel={(event) => {
+        if (event.pointerType !== 'mouse') setPaused(false);
+      }}
       onFocus={() => setPaused(true)}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false);
