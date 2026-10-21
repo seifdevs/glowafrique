@@ -290,7 +290,7 @@ function AddToBagButton({ product, className = 'button', showQuantity = false })
           <button type="button" aria-label={locale === 'en' ? 'Increase quantity' : 'Augmenter la quantité'} disabled={!canAdd || quantity >= 99} onClick={() => setQuantity((value) => Math.min(99, value + 1))}>+</button>
         </div>
       ) : null}
-      <button type="button" className={`${className}${added ? ' added' : ''}`} disabled={!canAdd} onClick={add}>
+      <button type="button" className={`${className}${added ? ' added' : ''}`} disabled={!canAdd} onClick={() => add(quantity)}>
         {canAdd ? (added ? `✓ ${locale === 'en' ? `Added ${quantity} successfully` : `${quantity} ajouté(s) avec succès`}` : `${text(locale, 'add')}${showQuantity ? ` · ${quantity}` : ''}`) : text(locale, 'noPrice')}
       </button>
       {added ? (
