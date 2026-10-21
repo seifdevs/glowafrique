@@ -36,9 +36,9 @@
   - Fichiers : `assets/products/Skincare/COSRX Acne Pimple Master Patch (dup).JPG`, `assets/products/Skincare/COSRX Acne Pimple Master Patch.JPG`, `assets/products/Skincare/COSRX Acne Pimple Master Patch(1).JPG`, `assets/products/Skincare/COSRX pimple patch.WEBP`
 - **Dr. Althea 147 barrier cream** — Dr. Althea — Catégorie : Soins de la peau — Préoccupations : Barrière cutanée, Peau sèche — 2 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/Dr Althea 147 barrier cream.WEBP`, `assets/products/Skincare/Dr Althea 147 barrier cream(1).WEBP`
-- **Dr. Althea 345 relief cream** — Dr. Althea — Catégorie : Soins de la peau — Préoccupations : Barrière cutanée, Peau sèche — 3 image(s) — ⚠ Plusieurs catégories
+- **Dr. Althea 345 relief cream** — Dr. Althea — Catégorie : Soins de la peau — Préoccupations : Barrière cutanée, Peau sèche — 4 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/Dr Althea 345 relief cream  .WEBP`, `assets/products/Skincare/Dr Althea 345 relief cream .WEBP`, `assets/products/Skincare/Dr Althea 345 relief cream (1).WEBP`, `assets/products/Skincare/Dr Althea 345 relief cream (2).WEBP`
-- **Dr. Althea 345 Relief Cream Mist** — Dr. Althea — Catégorie : Soins de la peau — Préoccupations : aucune règle reconnue — 5 image(s)
+- **Dr. Althea 345 Relief Cream Mist** — Dr. Althea — Catégorie : Soins de la peau — Préoccupations : aucune règle reconnue — 4 image(s)
   - Fichiers : `assets/products/Skincare/DR Althea 35 relief MIST.WEBP`, `assets/products/Skincare/DR Althea 35 relief MIST(1).WEBP`, `assets/products/Skincare/DR Althea 35 relief MIST WEBP.webp`, `assets/products/Skincare/DR Althea 35 relief MISTT.WEBP`
 - **DR. MELAXIN peel shot exfoliating black rice ampoule** — DR. MELAXIN — Catégorie : Soins de la peau — Préoccupations : Peau terne — 3 image(s)
   - Fichiers : `assets/products/Skincare/Dr MElaxin peel shot exfoliating black rice ampoule.PNG`, `assets/products/Skincare/DR melaxin black rice peel shot.WEBP`, `assets/products/Skincare/DR MELAXIN black rice peel shot(1).WEBP`
@@ -50,9 +50,9 @@
   - Fichiers : `assets/products/Skincare/Medicube PDRN collagen jelly eye mask.WEBP`, `assets/products/Skincare/Medicube PDRN collagen jelly eye mask(1).WEBP`, `assets/products/Skincare/Medicube PDRN collagen jelly eye mask(2).WEBP`, `assets/products/Skincare/Medicube PDRN collagen jelly eye mask(3).WEBP`
 - **MEDICUBE PDRN gel mask** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Peau sèche, Peau terne — 4 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/Medicube PDRN gel mask.WEBP`, `assets/products/Skincare/Medicube PDRN gel mask(1).WEBP`, `assets/products/Skincare/Medicube PDRN gel mask(2).WEBP`, `assets/products/Skincare/MEDICUBE PDRN Pink Collagen Gel Mask.PNG`
-- **MEDICUBE PDRN pink capsule cream** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Barrière cutanée, Peau sèche — 2 image(s) — ⚠ Plusieurs catégories
+- **MEDICUBE PDRN pink capsule cream** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Barrière cutanée, Peau sèche — 3 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/Medicube PDRN pink capsule cream.WEBP`, `assets/products/Skincare/Medicube PDRN pink capsule cream(1).WEBP`, `assets/products/Skincare/MEDICUBE pink PDRN capsule cream.PNG`
-- **MEDICUBE TXA SERUM** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Taches & hyperpigmentation, Teint irrégulier — 1 image(s) — ⚠ Plusieurs catégories
+- **MEDICUBE TXA SERUM** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Taches & hyperpigmentation, Teint irrégulier — 2 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/MEDICUBE TXA SERUM .WEBP`, `assets/products/Skincare/Medicube TXA serum.WEBP`
 - **Beauty of Joseon mate sun stick** — Beauty of Joseon — Catégorie : Soins de la peau — Préoccupations : Protection solaire — 2 image(s)
   - Fichiers : `assets/products/Sun Care/Beauty of joseon mate sun stick .WEBP`, `assets/products/Sun Care/Beauty of joseon mate sun stick.WEBP`

@@ -464,6 +464,7 @@ html,body,#root{max-width:100%;overflow-x:clip}
 .product-info{display:flex;flex:1;flex-direction:column;align-items:flex-start;padding:16px 18px 18px}
 .product-info .eyebrow{margin:0 0 5px;font-size:10px;letter-spacing:.14em}
 .product-info h3{font-size:clamp(14px,1.05vw,17px);line-height:1.45;font-weight:500}
+.product-sale-note{margin:8px 0 4px;padding:7px 10px;border-left:3px solid var(--orange);border-radius:0 8px 8px 0;background:#fff0e5;color:#713e2c;font-size:12px;font-weight:600;line-height:1.45}
 .product-info .rating{margin:7px 0 0;min-height:0}
 .product-info .price{margin:10px 0 14px;font-size:14px;line-height:1.45;color:#704635}
 .product-info .button{width:100%;margin-top:auto}

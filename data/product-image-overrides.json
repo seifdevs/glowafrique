@@ -17,8 +17,8 @@
     "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-4.webp"
   ],
   "celimax-the-vita-a-retinal-shot-tightening-booster": [
-    "images/catalog/celimax-the-vita-a-retinal-shot-tightening-booster-0.png",
     "assets/products-web/Skincare/Celimax%20retinal%20shot(1)--09b409aa.webp",
+    "images/catalog/celimax-the-vita-a-retinal-shot-tightening-booster-0.png",
     "assets/products-web/Skincare/Celimax%20retinal%20shot--fa55873a.webp"
   ],
   "cosrx-acne-pimple-master-patch": [
@@ -28,14 +28,15 @@
     "assets/products-web/Skincare/COSRX%20pimple%20patch--be090b23.webp"
   ],
   "dr-melaxin-peel-shot-exfoliating-black-rice-ampoule": [
+    "assets/products-web/Skincare/DR%20MELAXIN%20black%20rice%20peel%20shot(1)--72d827f8.webp",
     "images/catalog/dr-melaxin-peel-shot-exfoliating-black-rice-ampoule-0.png",
-    "assets/products-web/Skincare/DR%20melaxin%20black%20rice%20peel%20shot--cb8743cd.webp",
-    "assets/products-web/Skincare/DR%20MELAXIN%20black%20rice%20peel%20shot(1)--72d827f8.webp"
+    "assets/products-web/Skincare/DR%20melaxin%20black%20rice%20peel%20shot--cb8743cd.webp"
   ],
   "dr-althea-345-relief-cream": [
-    "images/catalog/dr-althea-345-relief-cream-0.webp",
-    "images/catalog/dr-althea-345-relief-cream-1.webp",
-    "images/catalog/dr-althea-345-relief-cream-2.webp"
+    "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20%20--ed148ce2.webp",
+    "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20--8a8ebb40.webp",
+    "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20(1)--9a09c048.webp",
+    "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20(2)--8cc3cd9c.webp"
   ],
   "dr-althea-147-barrier-cream": [
     "images/catalog/dr-althea-147-barrier-cream-0.webp",
@@ -83,6 +84,7 @@
   ],
   "medicube-pdrn-pink-capsule-cream": [
     "images/catalog/medicube-pdrn-pink-capsule-cream-0.webp",
+    "assets/products-web/Skincare/Medicube%20PDRN%20pink%20capsule%20cream(1)--93fff813.webp",
     "assets/products-web/Skincare/MEDICUBE%20pink%20PDRN%20capsule%20cream--2e44a91e.webp"
   ],
   "medicube-lip-sleeping-mask": [
@@ -97,7 +99,8 @@
     "images/catalog/medicube-pdrn-collagen-jelly-eye-mask-3.webp"
   ],
   "medicube-txa-serum": [
-    "images/catalog/medicube-txa-serum-0.webp"
+    "assets/products-web/Skincare/Medicube%20TXA%20serum--b3beb8e2.webp",
+    "assets/products-web/Skincare/MEDICUBE%20TXA%20SERUM%20--94120f5e.webp"
   ],
   "medicube-pdrn-gel-mask": [
     "images/catalog/medicube-pdrn-gel-mask-0.webp",
@@ -106,10 +109,9 @@
     "assets/products-web/Skincare/MEDICUBE%20PDRN%20Pink%20Collagen%20Gel%20Mask--ff665311.webp"
   ],
   "dr-althea-35-relief-mist": [
-    "images/catalog/dr-althea-35-relief-mist-0.webp",
-    "images/catalog/dr-althea-35-relief-mist-1.webp",
-    "images/catalog/dr-althea-35-relief-mist-2.webp",
-    "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST%20WEBP--a4373c06.webp",
-    "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MISTT--cd97d4b5.webp"
+    "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MISTT--cd97d4b5.webp",
+    "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST--3f6ee80e.webp",
+    "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST(1)--4f52b450.webp",
+    "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST%20WEBP--a4373c06.webp"
   ]
 }

@@ -482,8 +482,8 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "images/catalog/celimax-the-vita-a-retinal-shot-tightening-booster-0.png",
       "assets/products-web/Skincare/Celimax%20retinal%20shot(1)--09b409aa.webp",
+      "images/catalog/celimax-the-vita-a-retinal-shot-tightening-booster-0.png",
       "assets/products-web/Skincare/Celimax%20retinal%20shot--fa55873a.webp"
     ],
     "_sourceFiles": [
@@ -640,9 +640,10 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "images/catalog/dr-althea-345-relief-cream-0.webp",
-      "images/catalog/dr-althea-345-relief-cream-1.webp",
-      "images/catalog/dr-althea-345-relief-cream-2.webp"
+      "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20%20--ed148ce2.webp",
+      "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20--8a8ebb40.webp",
+      "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20(1)--9a09c048.webp",
+      "assets/products-web/Skincare/Dr%20Althea%20345%20relief%20cream%20(2)--8cc3cd9c.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Dr Althea 345 relief cream  .WEBP",
@@ -691,11 +692,10 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "images/catalog/dr-althea-35-relief-mist-0.webp",
-      "images/catalog/dr-althea-35-relief-mist-1.webp",
-      "images/catalog/dr-althea-35-relief-mist-2.webp",
-      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST%20WEBP--a4373c06.webp",
-      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MISTT--cd97d4b5.webp"
+      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MISTT--cd97d4b5.webp",
+      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST--3f6ee80e.webp",
+      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST(1)--4f52b450.webp",
+      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST%20WEBP--a4373c06.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/DR Althea 35 relief MIST.WEBP",
@@ -746,9 +746,9 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
+      "assets/products-web/Skincare/DR%20MELAXIN%20black%20rice%20peel%20shot(1)--72d827f8.webp",
       "images/catalog/dr-melaxin-peel-shot-exfoliating-black-rice-ampoule-0.png",
-      "assets/products-web/Skincare/DR%20melaxin%20black%20rice%20peel%20shot--cb8743cd.webp",
-      "assets/products-web/Skincare/DR%20MELAXIN%20black%20rice%20peel%20shot(1)--72d827f8.webp"
+      "assets/products-web/Skincare/DR%20melaxin%20black%20rice%20peel%20shot--cb8743cd.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Dr MElaxin peel shot exfoliating black rice ampoule.PNG",
@@ -1034,6 +1034,7 @@ export const PRODUCTS = [
     },
     "images": [
       "images/catalog/medicube-pdrn-pink-capsule-cream-0.webp",
+      "assets/products-web/Skincare/Medicube%20PDRN%20pink%20capsule%20cream(1)--93fff813.webp",
       "assets/products-web/Skincare/MEDICUBE%20pink%20PDRN%20capsule%20cream--2e44a91e.webp"
     ],
     "_sourceFiles": [
@@ -1085,7 +1086,8 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "images/catalog/medicube-txa-serum-0.webp"
+      "assets/products-web/Skincare/Medicube%20TXA%20serum--b3beb8e2.webp",
+      "assets/products-web/Skincare/MEDICUBE%20TXA%20SERUM%20--94120f5e.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/MEDICUBE TXA SERUM .WEBP",

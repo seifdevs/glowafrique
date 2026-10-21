@@ -220,6 +220,12 @@ const slug = (value) =>
 const money = (value, currency = 'XOF') => formatXof(toXof(value, currency));
 const productHasVerifiedPrice = (product) =>
   product?.price != null && product.isBetaPrice !== true && product.pricingType !== 'beta';
+const SINGLE_SHEET_MASK_IDS = new Set([
+  'biodance-bio-collagen-real-deep-mask',
+  'biodance-rejuvenating-caviar-pdrn-mask',
+  'medicube-pdrn-gel-mask',
+]);
+const isSingleSheetMask = (product) => SINGLE_SHEET_MASK_IDS.has(product?.id);
 const localePath = (path, locale) =>
   locale === 'en' ? (path === '/' ? '/en' : `/en${path}`) : path;
 
@@ -251,6 +257,9 @@ function ProductCard({ product }) {
         <PageLink to={productPath(product)}>
           <h3>{product.name}</h3>
         </PageLink>
+        {isSingleSheetMask(product) ? (
+          <p className="product-sale-note">Note: these masks are sold separately (1 sheet)</p>
+        ) : null}
         <p
           className="rating"
           aria-label={product.rating ? `${product.rating} out of 5` : undefined}
@@ -698,6 +707,9 @@ function ProductPage({ id }) {
     (p) => p.id !== product.id && (p.brand === product.brand || p.category === product.category),
   ).slice(0, 4);
   const productContent = product.content?.[locale] || null;
+  const galleryImages = [
+    ...new Set([...(product.images || []), ...(product.beforeAfter?.images || [])]),
+  ];
   async function submitReview(event) {
     event.preventDefault();
     setLoading(true);
@@ -739,13 +751,13 @@ function ProductPage({ id }) {
         <div className="gallery">
           <div className="main-product-image image-fallback">
             <img
-              src={product.images?.[selectedImage] ? `/${product.images[selectedImage].replace(/^\//, '')}` : productImage(product)}
+              src={galleryImages[selectedImage] ? `/${galleryImages[selectedImage].replace(/^\//, '')}` : productImage(product)}
               alt={`${product.brand} ${product.name}`}
             />
           </div>
-          {(product.images || []).length > 1 ? (
+          {galleryImages.length > 1 ? (
             <div className="thumbs" aria-label={locale === 'en' ? 'Product images' : 'Images du produit'}>
-              {product.images.map((image, index) => (
+              {galleryImages.map((image, index) => (
                 <button
                   type="button"
                   className={selectedImage === index ? 'active' : ''}
@@ -763,6 +775,9 @@ function ProductPage({ id }) {
         <div className="product-buy">
           <p className="eyebrow product-brand">{product.brand}</p>
           <h1>{product.name}</h1>
+          {isSingleSheetMask(product) ? (
+            <p className="product-sale-note">Note: these masks are sold separately (1 sheet)</p>
+          ) : null}
           <p className="price large">
             {!productHasVerifiedPrice(product)
               ? text(locale, 'noPrice')
