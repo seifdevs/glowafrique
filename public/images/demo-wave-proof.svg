@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img" aria-labelledby="title description">
+  <title id="title">Demo Wave payment screenshot</title>
+  <desc id="description">Fictional payment receipt for a local storefront presentation, not a real transaction.</desc>
+  <rect width="800" height="1000" rx="38" fill="#f2f8f8"/>
+  <rect x="45" y="45" width="710" height="910" rx="30" fill="#fff"/>
+  <rect x="45" y="45" width="710" height="155" rx="30" fill="#142f42"/>
+  <path d="M45 168h710v32H45z" fill="#142f42"/>
+  <circle cx="108" cy="112" r="34" fill="#fff"/>
+  <path d="M100 91h17v21c0 13-6 22-19 26l-6-14c8-2 11-6 11-13h-3z" fill="#1d88d5"/>
+  <text x="163" y="124" fill="#fff" font-family="Arial,sans-serif" font-size="42" font-weight="700">Wave</text>
+  <rect x="93" y="242" width="614" height="76" rx="15" fill="#fff1d7"/>
+  <text x="400" y="290" text-anchor="middle" fill="#8c4d06" font-family="Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="2">DEMO ONLY · NOT A REAL PAYMENT</text>
+  <circle cx="400" cy="404" r="58" fill="#e4f6ed"/>
+  <path d="m373 404 18 18 38-42" fill="none" stroke="#208454" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="400" y="510" text-anchor="middle" fill="#24323a" font-family="Arial,sans-serif" font-size="28">Transfer received</text>
+  <text x="400" y="590" text-anchor="middle" fill="#142f42" font-family="Arial,sans-serif" font-size="62" font-weight="700">32,400 XOF</text>
+  <line x1="105" y1="645" x2="695" y2="645" stroke="#dce5e9" stroke-width="2"/>
+  <text x="110" y="704" fill="#788890" font-family="Arial,sans-serif" font-size="22">FROM</text>
+  <text x="690" y="704" text-anchor="end" fill="#263941" font-family="Arial,sans-serif" font-size="25">+225 07 11 22 33 44</text>
+  <text x="110" y="774" fill="#788890" font-family="Arial,sans-serif" font-size="22">REFERENCE</text>
+  <text x="690" y="774" text-anchor="end" fill="#263941" font-family="Arial,sans-serif" font-size="25">DEMO-WV-2026-001</text>
+  <text x="400" y="883" text-anchor="middle" fill="#839198" font-family="Arial,sans-serif" font-size="20">Sample proof image for local presentation</text>
+</svg>

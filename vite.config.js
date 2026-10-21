@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import { cpSync, existsSync } from 'node:fs';
+import { cpSync, existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const apiRoutes = {
@@ -54,6 +54,96 @@ export default defineConfig(({ mode }) => {
           server.middlewares.use(async (req, res, next) => {
             const requestUrl = new URL(req.url || '/', 'http://localhost');
             const pathname = requestUrl.pathname;
+
+            // Local-only showcase fixture. It is opt-in, requires the control
+            // login cookie, and never replaces a configured database.
+            if (
+              process.env.CONTROL_DEMO_MODE === 'true' &&
+              !process.env.MONGODB_URI &&
+              pathname === '/api/admin/orders' &&
+              req.method === 'GET'
+            ) {
+              const { hasControlSession } = await import('./lib/auth.js');
+              if (!hasControlSession(req)) {
+                res.statusCode = 401;
+                res.setHeader('Content-Type', 'application/json; charset=utf-8');
+                return res.end(JSON.stringify({ error: 'Please sign in to access the control panel.' }));
+              }
+              const order = {
+                orderNumber: 'DEMO-20261021-001',
+                status: 'pending',
+                paymentMethod: 'cash_on_delivery',
+                paymentStatus: 'pending',
+                shippingQuotePending: false,
+                stockConfirmationPending: false,
+                subtotalXof: 27000,
+                discountXof: 2700,
+                shippingXof: 0,
+                totalXof: 24300,
+                createdAt: new Date().toISOString(),
+                customer: {
+                  fullName: 'Amina Demo Customer',
+                  email: 'amina.demo@example.com',
+                  phone: '+225 07 00 00 00 00',
+                  addressLine1: 'Rue des Jardins',
+                  city: 'Abidjan',
+                  division: 'Cocody',
+                },
+                items: [{ name: 'GlowAfrique Skincare Set', quantity: 1, unitPriceXof: 27000 }],
+              };
+              const waveOrder = {
+                orderNumber: 'DEMO-20261021-002',
+                status: 'pending',
+                paymentMethod: 'wave',
+                paymentStatus: 'awaiting_verification',
+                paymentProofId: 'demo-wave-proof-001',
+                waveSenderPhone: '+225 07 11 22 33 44',
+                shippingQuotePending: false,
+                stockConfirmationPending: false,
+                subtotalXof: 36000,
+                discountXof: 3600,
+                shippingXof: 0,
+                totalXof: 32400,
+                createdAt: new Date(Date.now() - 60_000).toISOString(),
+                customer: {
+                  fullName: 'Mariam Demo Customer',
+                  email: 'mariam.demo@example.com',
+                  phone: '+225 07 11 22 33 44',
+                  addressLine1: 'Boulevard Latrille',
+                  city: 'Abidjan',
+                  division: 'Cocody',
+                },
+                items: [{ name: 'GlowAfrique Radiance Set', quantity: 1, unitPriceXof: 36000 }],
+              };
+              const status = requestUrl.searchParams.get('status') || 'pending';
+              const orders = status === 'pending'
+                ? [order, waveOrder]
+                : status === 'payment_verification'
+                  ? [waveOrder]
+                  : status === 'all'
+                    ? [order, waveOrder]
+                    : [];
+              res.statusCode = 200;
+              res.setHeader('Cache-Control', 'no-store');
+              res.setHeader('Content-Type', 'application/json; charset=utf-8');
+              return res.end(JSON.stringify({ orders, total: orders.length, page: 1, limit: 50 }));
+            }
+            if (
+              process.env.CONTROL_DEMO_MODE === 'true' &&
+              !process.env.MONGODB_URI &&
+              pathname === '/api/payment-proof' &&
+              requestUrl.searchParams.get('id') === 'demo-wave-proof-001'
+            ) {
+              const { hasControlSession } = await import('./lib/auth.js');
+              if (!hasControlSession(req)) {
+                res.statusCode = 401;
+                return res.end('Please sign in to access the control panel.');
+              }
+              res.statusCode = 200;
+              res.setHeader('Cache-Control', 'no-store');
+              res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+              return res.end(readFileSync(resolve('public/images/demo-wave-proof.svg')));
+            }
             const modulePath = apiRoutes[pathname];
             if (!modulePath) return next();
 
