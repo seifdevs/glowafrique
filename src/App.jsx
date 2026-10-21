@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { PRODUCTS } from '../data/catalog.js';
 import STORE_INFO from '../content/store-info.json';
 import { formatXof, toXof } from '../lib/currency.js';
+import { DELIVERY_ZONES } from '../lib/shipping-rates.js';
 import { POLICIES } from './content/policies.js';
 
 const StoreContext = createContext(null);
@@ -2232,8 +2233,10 @@ function CartAndSocialLinks() {
   const [busy, setBusy] = useState(false);
   const [quote, setQuote] = useState(null);
   const [quoteEmail, setQuoteEmail] = useState('');
+  const [selectedShippingZone, setSelectedShippingZone] = useState('');
   const [paymentSelection, setPaymentSelection] = useState('cash_on_delivery');
   const [proofPreview, setProofPreview] = useState('');
+  const selectedDeliveryZone = DELIVERY_ZONES.find((zone) => zone.id === selectedShippingZone);
   const idempotencyKey = useRef(null);
   useEffect(() => () => {
     if (proofPreview.startsWith('blob:')) URL.revokeObjectURL(proofPreview);
@@ -2253,6 +2256,7 @@ function CartAndSocialLinks() {
         body: JSON.stringify({
           items: cart.map((x) => ({ productId: x.id, quantity: x.quantity })),
           email: quoteEmail,
+          division: selectedShippingZone,
         }),
       })
         .then((r) => (r.ok ? r.json() : null))
@@ -2268,7 +2272,7 @@ function CartAndSocialLinks() {
       window.clearTimeout(timeout);
       controller.abort();
     };
-  }, [open, cart, checkout, quoteEmail]);
+  }, [open, cart, checkout, quoteEmail, selectedShippingZone]);
   function change(id, quantity) {
     idempotencyKey.current = null;
     const safeQuantity = Number.isFinite(Number(quantity))
@@ -2287,6 +2291,7 @@ function CartAndSocialLinks() {
     setCheckout(false);
     setQuote(null);
     setQuoteEmail('');
+    setSelectedShippingZone('');
     setPaymentSelection('cash_on_delivery');
     setProofPreview('');
   }
@@ -2361,6 +2366,7 @@ function CartAndSocialLinks() {
       setOpen(false);
       setQuote(null);
       setQuoteEmail('');
+      setSelectedShippingZone('');
       setPaymentSelection('cash_on_delivery');
       setProofPreview('');
       const confirmationPath = localePath('/order-confirmation', locale);
@@ -2503,6 +2509,7 @@ function CartAndSocialLinks() {
                     setFeedback('');
                     setPaymentSelection('cash_on_delivery');
                     setQuoteEmail('');
+                    setSelectedShippingZone('');
                     setQuote(null);
                     setProofPreview('');
                   }}
@@ -2553,11 +2560,62 @@ function CartAndSocialLinks() {
                     {locale === 'en' ? 'City' : 'Ville'}
                     <input name="city" required maxLength="100" />
                   </label>
-                  <label>
-                    {locale === 'en' ? 'Region' : 'Région'}
-                    <input name="division" required maxLength="100" />
+                  <label className="checkout-region-label">
+                    {locale === 'en' ? 'Delivery Region' : 'Zone de livraison'}
+                    <select
+                      name="division"
+                      value={selectedShippingZone}
+                      required
+                      onChange={(event) => {
+                        setSelectedShippingZone(event.target.value);
+                        setQuote(null);
+                        setPaymentSelection('cash_on_delivery');
+                      }}
+                    >
+                      <option value="">
+                        {locale === 'en' ? 'Select your delivery region' : 'Sélectionnez votre zone de livraison'}
+                      </option>
+                      {DELIVERY_ZONES.map((zone) => (
+                        <option value={zone.id} key={zone.id}>
+                          {zone.label} — {money(zone.rateXof)}
+                        </option>
+                      ))}
+                    </select>
                   </label>
                 </div>
+                {selectedDeliveryZone ? (
+                  <p className="delivery-zone-details">
+                    <strong>{locale === 'en' ? 'Areas covered:' : 'Zones couvertes :'} </strong>
+                    {selectedDeliveryZone.areas.join(' · ')}
+                  </p>
+                ) : null}
+                <section className="checkout-order-cost" aria-live="polite">
+                  <h3>{locale === 'en' ? 'Order Cost' : 'Coût de la commande'}</h3>
+                  {quote?.quoteStatus === 'ready' ? (
+                    <>
+                      <p><span>{locale === 'en' ? 'Products' : 'Produits'}</span><strong>{money(quote.subtotalXof)}</strong></p>
+                      {quote.discountXof > 0 ? (
+                        <p className="checkout-discount-row"><span>{locale === 'en' ? 'First-order discount' : 'Remise première commande'}</span><strong>−{money(quote.discountXof)}</strong></p>
+                      ) : null}
+                      <p><span>{locale === 'en' ? 'Delivery' : 'Livraison'} · {selectedDeliveryZone?.label}</span><strong>{quote.shippingXof === 0 ? (locale === 'en' ? 'Free' : 'Offerte') : money(quote.shippingXof)}</strong></p>
+                      <p className="checkout-grand-total"><span>{locale === 'en' ? 'Total to pay' : 'Total à payer'}</span><strong>{money(quote.totalXof)}</strong></p>
+                    </>
+                  ) : (
+                    <p className="checkout-cost-hint">
+                      {!selectedDeliveryZone
+                        ? locale === 'en'
+                          ? 'Choose your delivery region to calculate shipping.'
+                          : 'Choisissez votre zone de livraison pour calculer les frais.'
+                        : !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(quoteEmail)
+                          ? locale === 'en'
+                            ? 'Enter your email to calculate your order total and any first-order discount.'
+                            : 'Saisissez votre adresse e-mail pour calculer le total et votre éventuelle remise de première commande.'
+                          : locale === 'en'
+                            ? 'Calculating your delivery and order total…'
+                            : 'Calcul du tarif de livraison et du total…'}
+                    </p>
+                  )}
+                </section>
                 <fieldset className="payment-methods">
                   <legend>{locale === 'en' ? 'Payment Method' : 'Mode De Paiement'}</legend>
                   <label>
@@ -2578,7 +2636,7 @@ function CartAndSocialLinks() {
                       name="paymentMethod"
                       type="radio"
                       value="wave"
-                      disabled={quote?.quoteStatus === 'confirmation-pending' || quote?.quoteStatus === 'enter-email'}
+                      disabled={quote?.quoteStatus === 'confirmation-pending' || quote?.quoteStatus === 'select-region' || quote?.quoteStatus === 'enter-email'}
                       onChange={() => setPaymentSelection('wave')}
                     />{' '}
                     Wave
@@ -2598,19 +2656,11 @@ function CartAndSocialLinks() {
                     </label>
                   ) : null}
                 </fieldset>
-                {quote?.quoteStatus !== 'ready' ? (
+                {quote?.shippingQuotePending && quote?.quoteStatus === 'confirmation-pending' ? (
                   <p className="checkout-delivery-note" role="status">
-                    {quote?.stockConfirmationPending && quote?.shippingQuotePending
-                      ? locale === 'en'
-                        ? 'Cash on Delivery is available. We will confirm product availability, the delivery fee, and your final total before dispatch.'
-                        : 'Le paiement à la livraison est disponible. Nous confirmerons la disponibilité des produits, les frais de livraison et le total avant l’expédition.'
-                      : quote?.stockConfirmationPending
-                        ? locale === 'en'
-                          ? 'Cash on Delivery is available. We will confirm product availability before dispatch.'
-                          : 'Le paiement à la livraison est disponible. Nous confirmerons la disponibilité des produits avant l’expédition.'
-                        : locale === 'en'
-                          ? 'Cash on Delivery is available. We will confirm your delivery fee and final total before dispatch.'
-                          : 'Le paiement à la livraison est disponible. Nous confirmerons les frais de livraison et le total avant l’expédition.'}
+                    {locale === 'en'
+                      ? 'We cannot calculate delivery for this region yet. Please contact us before placing your order.'
+                      : 'Les frais de livraison de cette zone ne sont pas encore configurés. Veuillez nous contacter avant de commander.'}
                   </p>
                 ) : null}
                 {quote?.quoteStatus === 'ready' && quote.stockConfirmationPending ? (
