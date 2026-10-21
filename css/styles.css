@@ -653,7 +653,7 @@ button:disabled,.button:disabled{box-shadow:0 3px 9px #3a211c12!important}
 @media(max-width:700px){.benefit-bar{margin-bottom:32px}}
 
 /* Seamless, swipeable infinite homepage carousels for concerns and brands. */
-.infinite-carousel{display:block;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;padding:10px 2px 18px;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+.infinite-carousel{display:block;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;padding:10px 2px 18px;overscroll-behavior-x:contain;scrollbar-width:none;scroll-behavior:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
 .infinite-carousel::-webkit-scrollbar{display:none}
 .infinite-carousel:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
 .infinite-carousel-track{display:flex;width:max-content;min-width:100%;will-change:scroll-position}
