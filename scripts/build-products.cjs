@@ -18,6 +18,33 @@ const REPORT_PATH = path.join(__dirname, 'import-report.md');
 const IMAGE_CLASSIFICATION_PATH = path.join(ROOT, 'data', 'image-classification.csv');
 const PRODUCT_IMAGE_OVERRIDES_PATH = path.join(ROOT, 'data', 'product-image-overrides.json');
 const DESCRIPTIONS_REPORT_PATH = path.join(ROOT, 'data', 'descriptions-report.csv');
+const PRODUCT_DUPLICATES = {
+  'axix-y-unsay-morning-cleanser-foam': 'axis-y-sunday-morning-cleansing-foam',
+  'cosrx-pimple-patch': 'cosrx-acne-pimple-master-patch',
+  'lip-sleeping-mask-medicube': 'medicube-lip-sleeping-mask',
+  'lip-sleeping-mask': 'medicube-lip-sleeping-mask',
+  'celimax-retinal-shot': 'celimax-the-vita-a-retinal-shot-tightening-booster',
+  'dr-althea-35-relief-mist-webp': 'dr-althea-35-relief-mist',
+  'dr-althea-35-relief-mistt': 'dr-althea-35-relief-mist',
+  'dr-melaxin-black-rice-peel-shot': 'dr-melaxin-peel-shot-exfoliating-black-rice-ampoule',
+  'medicube-kojic-acid-peel-shot-80ml': 'medicube-kojic-acid-turmeric-peel-shot-80ml',
+  'medicube-pdrn-pink-collagen-gel-mask': 'medicube-pdrn-gel-mask',
+  'medicube-pink-pdrn-capsule-cream': 'medicube-pdrn-pink-capsule-cream',
+};
+
+function mergeDuplicateProducts(products) {
+  const kept = new Map(products.map((product) => [product.id, product]));
+  const removed = new Set();
+  for (const [duplicateId, retainedId] of Object.entries(PRODUCT_DUPLICATES)) {
+    const duplicate = kept.get(duplicateId);
+    const retained = kept.get(retainedId);
+    if (!duplicate || !retained) continue;
+    retained.images.push(...duplicate.images);
+    retained._sourceFiles.push(...duplicate._sourceFiles);
+    removed.add(duplicateId);
+  }
+  return products.filter((product) => !removed.has(product.id));
+}
 const IMAGE_EXTENSIONS = new Set([
   '.jpg',
   '.jpeg',
@@ -632,7 +659,7 @@ async function run() {
     return;
   }
   const files = listImages(IMAGE_ROOT),
-    auto = makeAutoProducts(files);
+    auto = mergeDuplicateProducts(makeAutoProducts(files));
   const folderCounts = new Map();
   for (const f of files) {
     const info = folderInfo(f);

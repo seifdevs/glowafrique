@@ -17,15 +17,20 @@
     "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-4.webp"
   ],
   "celimax-the-vita-a-retinal-shot-tightening-booster": [
-    "images/catalog/celimax-the-vita-a-retinal-shot-tightening-booster-0.png"
+    "images/catalog/celimax-the-vita-a-retinal-shot-tightening-booster-0.png",
+    "assets/products-web/Skincare/Celimax%20retinal%20shot(1)--09b409aa.webp",
+    "assets/products-web/Skincare/Celimax%20retinal%20shot--fa55873a.webp"
   ],
   "cosrx-acne-pimple-master-patch": [
     "images/catalog/cosrx-acne-pimple-master-patch-0.jpg",
     "images/catalog/cosrx-acne-pimple-master-patch-1.jpg",
-    "images/catalog/cosrx-acne-pimple-master-patch-2.jpg"
+    "images/catalog/cosrx-acne-pimple-master-patch-2.jpg",
+    "assets/products-web/Skincare/COSRX%20pimple%20patch--be090b23.webp"
   ],
   "dr-melaxin-peel-shot-exfoliating-black-rice-ampoule": [
-    "images/catalog/dr-melaxin-peel-shot-exfoliating-black-rice-ampoule-0.png"
+    "images/catalog/dr-melaxin-peel-shot-exfoliating-black-rice-ampoule-0.png",
+    "assets/products-web/Skincare/DR%20melaxin%20black%20rice%20peel%20shot--cb8743cd.webp",
+    "assets/products-web/Skincare/DR%20MELAXIN%20black%20rice%20peel%20shot(1)--72d827f8.webp"
   ],
   "dr-althea-345-relief-cream": [
     "images/catalog/dr-althea-345-relief-cream-0.webp",
@@ -77,10 +82,13 @@
     "images/catalog/medicube-glow-sunscreen-2.webp"
   ],
   "medicube-pdrn-pink-capsule-cream": [
-    "images/catalog/medicube-pdrn-pink-capsule-cream-0.webp"
+    "images/catalog/medicube-pdrn-pink-capsule-cream-0.webp",
+    "assets/products-web/Skincare/MEDICUBE%20pink%20PDRN%20capsule%20cream--2e44a91e.webp"
   ],
   "medicube-lip-sleeping-mask": [
-    "images/catalog/medicube-lip-sleeping-mask-0.webp"
+    "images/catalog/medicube-lip-sleeping-mask-0.webp",
+    "assets/products-web/Lip%20Care/Lip%20sleeping%20mask%20medicube--bd30f3a9.webp",
+    "assets/products-web/Lip%20Care/Lip%20sleeping%20mask--977e348d.webp"
   ],
   "medicube-pdrn-collagen-jelly-eye-mask": [
     "images/catalog/medicube-pdrn-collagen-jelly-eye-mask-0.webp",
@@ -94,11 +102,14 @@
   "medicube-pdrn-gel-mask": [
     "images/catalog/medicube-pdrn-gel-mask-0.webp",
     "images/catalog/medicube-pdrn-gel-mask-1.webp",
-    "images/catalog/medicube-pdrn-gel-mask-2.webp"
+    "images/catalog/medicube-pdrn-gel-mask-2.webp",
+    "assets/products-web/Skincare/MEDICUBE%20PDRN%20Pink%20Collagen%20Gel%20Mask--ff665311.webp"
   ],
   "dr-althea-35-relief-mist": [
     "images/catalog/dr-althea-35-relief-mist-0.webp",
     "images/catalog/dr-althea-35-relief-mist-1.webp",
-    "images/catalog/dr-althea-35-relief-mist-2.webp"
+    "images/catalog/dr-althea-35-relief-mist-2.webp",
+    "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST%20WEBP--a4373c06.webp",
+    "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MISTT--cd97d4b5.webp"
   ]
 }

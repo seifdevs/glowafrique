@@ -249,98 +249,6 @@ export const PRODUCTS = [
     "noGoodHero": false
   },
   {
-    "id": "lip-sleeping-mask-medicube",
-    "name": "MEDICUBE Lip sleeping mask",
-    "brand": "MEDICUBE",
-    "category": "Lèvres",
-    "concerns": [
-      "Lèvres"
-    ],
-    "price": 9000,
-    "oldPrice": null,
-    "bestSeller": false,
-    "isNew": false,
-    "rating": null,
-    "reviews": [],
-    "description": "",
-    "sections": [],
-    "sourceUrl": "",
-    "benefits": [],
-    "howToUse": [],
-    "ingredients": "",
-    "beforeAfter": null,
-    "images": [
-      "assets/products-web/Lip%20Care/Lip%20sleeping%20mask%20medicube--bd30f3a9.webp"
-    ],
-    "_sourceFiles": [
-      "assets/products/Lip Care/Lip sleeping mask medicube.WEBP"
-    ],
-    "_unmappedFolders": [],
-    "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
-    "content": {
-      "en": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      },
-      "fr": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      }
-    },
-    "noGoodHero": false
-  },
-  {
-    "id": "lip-sleeping-mask",
-    "name": "Lip sleeping mask",
-    "brand": "",
-    "category": "Lèvres",
-    "concerns": [
-      "Lèvres"
-    ],
-    "price": 9000,
-    "oldPrice": null,
-    "bestSeller": false,
-    "isNew": false,
-    "rating": null,
-    "reviews": [],
-    "description": "",
-    "sections": [],
-    "sourceUrl": "",
-    "benefits": [],
-    "howToUse": [],
-    "ingredients": "",
-    "beforeAfter": null,
-    "images": [
-      "assets/products-web/Lip%20Care/Lip%20sleeping%20mask--977e348d.webp"
-    ],
-    "_sourceFiles": [
-      "assets/products/Lip Care/Lip sleeping mask.WEBP"
-    ],
-    "_unmappedFolders": [],
-    "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
-    "content": {
-      "en": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      },
-      "fr": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      }
-    },
-    "noGoodHero": true
-  },
-  {
     "id": "medicube-lip-sleeping-mask",
     "name": "MEDICUBE lip sleeping mask",
     "brand": "MEDICUBE",
@@ -362,10 +270,14 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "images/catalog/medicube-lip-sleeping-mask-0.webp"
+      "images/catalog/medicube-lip-sleeping-mask-0.webp",
+      "assets/products-web/Lip%20Care/Lip%20sleeping%20mask%20medicube--bd30f3a9.webp",
+      "assets/products-web/Lip%20Care/Lip%20sleeping%20mask--977e348d.webp"
     ],
     "_sourceFiles": [
-      "assets/products/Lip Care/Medicube lip sleeping mask.WEBP"
+      "assets/products/Lip Care/Medicube lip sleeping mask.WEBP",
+      "assets/products/Lip Care/Lip sleeping mask medicube.WEBP",
+      "assets/products/Lip Care/Lip sleeping mask.WEBP"
     ],
     "_unmappedFolders": [],
     "_keywordMatches": [],
@@ -408,10 +320,12 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "assets/products-web/Skincare/AXIS%20Y%20Sunday%20morning%20cleansing%20foam--bf39e711.webp"
+      "assets/products-web/Skincare/AXIS%20Y%20Sunday%20morning%20cleansing%20foam--bf39e711.webp",
+      "assets/products-web/Skincare/AXIX%20Y%20unsay%20morning%20cleanser%20foam--8bec28ca.webp"
     ],
     "_sourceFiles": [
-      "assets/products/Skincare/AXIS Y Sunday morning cleansing foam.WEBP"
+      "assets/products/Skincare/AXIS Y Sunday morning cleansing foam.WEBP",
+      "assets/products/Skincare/AXIX Y unsay morning cleanser foam.WEBP"
     ],
     "_unmappedFolders": [
       "Skincare"
@@ -430,54 +344,6 @@ export const PRODUCTS = [
         "description": "Commencez votre routine avec un nettoyant visage rafraîchissant qui aide à éliminer les impuretés du quotidien et l’excès de sébum.\n\nSa texture moussante offre une étape de nettoyage simple et agréable, le matin comme le soir.\n\nIl laisse une sensation de fraîcheur et de propreté, pour s’intégrer facilement aux soins quotidiens.",
         "howToUse": "1. Mouillez le visage à l’eau tiède.\n2. Faites mousser une petite quantité entre vos mains.\n3. Massez le visage en évitant les yeux, puis rincez soigneusement.",
         "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
-      }
-    },
-    "noGoodHero": false
-  },
-  {
-    "id": "axix-y-unsay-morning-cleanser-foam",
-    "name": "AXIS-Y unsay morning cleanser foam",
-    "brand": "AXIS-Y",
-    "category": "Soins de la peau",
-    "concerns": [
-      "Pores dilatés & excès de sébum"
-    ],
-    "price": null,
-    "oldPrice": null,
-    "bestSeller": false,
-    "isNew": false,
-    "rating": null,
-    "reviews": [],
-    "description": "",
-    "sections": [],
-    "sourceUrl": "",
-    "benefits": [],
-    "howToUse": [],
-    "ingredients": "",
-    "beforeAfter": null,
-    "images": [
-      "assets/products-web/Skincare/AXIX%20Y%20unsay%20morning%20cleanser%20foam--8bec28ca.webp"
-    ],
-    "_sourceFiles": [
-      "assets/products/Skincare/AXIX Y unsay morning cleanser foam.WEBP"
-    ],
-    "_unmappedFolders": [
-      "Skincare"
-    ],
-    "_keywordMatches": [],
-    "priceCurrency": null,
-    "pricingType": null,
-    "isBetaPrice": false,
-    "content": {
-      "en": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      },
-      "fr": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
       }
     },
     "noGoodHero": false
@@ -595,56 +461,6 @@ export const PRODUCTS = [
     "noGoodHero": false
   },
   {
-    "id": "celimax-retinal-shot",
-    "name": "Celimax retinal shot",
-    "brand": "Celimax",
-    "category": "Soins de la peau",
-    "concerns": [
-      "Rides & fermeté"
-    ],
-    "price": 17000,
-    "oldPrice": null,
-    "bestSeller": false,
-    "isNew": false,
-    "rating": null,
-    "reviews": [],
-    "description": "",
-    "sections": [],
-    "sourceUrl": "",
-    "benefits": [],
-    "howToUse": [],
-    "ingredients": "",
-    "beforeAfter": null,
-    "images": [
-      "assets/products-web/Skincare/Celimax%20retinal%20shot(1)--09b409aa.webp",
-      "assets/products-web/Skincare/Celimax%20retinal%20shot--fa55873a.webp"
-    ],
-    "_sourceFiles": [
-      "assets/products/Skincare/Celimax retinal shot.WEBP",
-      "assets/products/Skincare/Celimax retinal shot(1).WEBP"
-    ],
-    "_unmappedFolders": [
-      "Skincare"
-    ],
-    "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
-    "content": {
-      "en": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      },
-      "fr": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      }
-    },
-    "noGoodHero": false
-  },
-  {
     "id": "celimax-the-vita-a-retinal-shot-tightening-booster",
     "name": "Celimax the vita A retinal shot tightening booster",
     "brand": "Celimax",
@@ -666,10 +482,14 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "images/catalog/celimax-the-vita-a-retinal-shot-tightening-booster-0.png"
+      "images/catalog/celimax-the-vita-a-retinal-shot-tightening-booster-0.png",
+      "assets/products-web/Skincare/Celimax%20retinal%20shot(1)--09b409aa.webp",
+      "assets/products-web/Skincare/Celimax%20retinal%20shot--fa55873a.webp"
     ],
     "_sourceFiles": [
-      "assets/products/Skincare/Celimax the vita A retinal shot tightening booster.PNG"
+      "assets/products/Skincare/Celimax the vita A retinal shot tightening booster.PNG",
+      "assets/products/Skincare/Celimax retinal shot.WEBP",
+      "assets/products/Skincare/Celimax retinal shot(1).WEBP"
     ],
     "_unmappedFolders": [
       "Skincare"
@@ -716,12 +536,14 @@ export const PRODUCTS = [
     "images": [
       "images/catalog/cosrx-acne-pimple-master-patch-0.jpg",
       "images/catalog/cosrx-acne-pimple-master-patch-1.jpg",
-      "images/catalog/cosrx-acne-pimple-master-patch-2.jpg"
+      "images/catalog/cosrx-acne-pimple-master-patch-2.jpg",
+      "assets/products-web/Skincare/COSRX%20pimple%20patch--be090b23.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/COSRX Acne Pimple Master Patch (dup).JPG",
       "assets/products/Skincare/COSRX Acne Pimple Master Patch.JPG",
-      "assets/products/Skincare/COSRX Acne Pimple Master Patch(1).JPG"
+      "assets/products/Skincare/COSRX Acne Pimple Master Patch(1).JPG",
+      "assets/products/Skincare/COSRX pimple patch.WEBP"
     ],
     "_unmappedFolders": [
       "Skincare"
@@ -743,54 +565,6 @@ export const PRODUCTS = [
       }
     },
     "noGoodHero": false
-  },
-  {
-    "id": "cosrx-pimple-patch",
-    "name": "COSRX pimple patch",
-    "brand": "COSRX",
-    "category": "Soins de la peau",
-    "concerns": [
-      "Acné & imperfections"
-    ],
-    "price": 3500,
-    "oldPrice": null,
-    "bestSeller": false,
-    "isNew": false,
-    "rating": null,
-    "reviews": [],
-    "description": "",
-    "sections": [],
-    "sourceUrl": "",
-    "benefits": [],
-    "howToUse": [],
-    "ingredients": "",
-    "beforeAfter": null,
-    "images": [
-      "assets/products-web/Skincare/COSRX%20pimple%20patch--be090b23.webp"
-    ],
-    "_sourceFiles": [
-      "assets/products/Skincare/COSRX pimple patch.WEBP"
-    ],
-    "_unmappedFolders": [
-      "Skincare"
-    ],
-    "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "retail",
-    "isBetaPrice": false,
-    "content": {
-      "en": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      },
-      "fr": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      }
-    },
-    "noGoodHero": true
   },
   {
     "id": "dr-althea-147-barrier-cream",
@@ -898,52 +672,6 @@ export const PRODUCTS = [
     "noGoodHero": false
   },
   {
-    "id": "dr-althea-35-relief-mist-webp",
-    "name": "Dr. Althea 35 relief MIST WEBP",
-    "brand": "Dr. Althea",
-    "category": "Soins de la peau",
-    "concerns": [],
-    "price": null,
-    "oldPrice": null,
-    "bestSeller": false,
-    "isNew": false,
-    "rating": null,
-    "reviews": [],
-    "description": "",
-    "sections": [],
-    "sourceUrl": "",
-    "benefits": [],
-    "howToUse": [],
-    "ingredients": "",
-    "beforeAfter": null,
-    "images": [
-      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST%20WEBP--a4373c06.webp"
-    ],
-    "_sourceFiles": [
-      "assets/products/Skincare/DR Althea 35 relief MIST WEBP.webp"
-    ],
-    "_unmappedFolders": [
-      "Skincare"
-    ],
-    "_keywordMatches": [],
-    "priceCurrency": null,
-    "pricingType": null,
-    "isBetaPrice": false,
-    "content": {
-      "en": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      },
-      "fr": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      }
-    },
-    "noGoodHero": true
-  },
-  {
     "id": "dr-althea-35-relief-mist",
     "name": "Dr. Althea 345 Relief Cream Mist",
     "brand": "Dr. Althea",
@@ -965,11 +693,15 @@ export const PRODUCTS = [
     "images": [
       "images/catalog/dr-althea-35-relief-mist-0.webp",
       "images/catalog/dr-althea-35-relief-mist-1.webp",
-      "images/catalog/dr-althea-35-relief-mist-2.webp"
+      "images/catalog/dr-althea-35-relief-mist-2.webp",
+      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MIST%20WEBP--a4373c06.webp",
+      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MISTT--cd97d4b5.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/DR Althea 35 relief MIST.WEBP",
-      "assets/products/Skincare/DR Althea 35 relief MIST(1).WEBP"
+      "assets/products/Skincare/DR Althea 35 relief MIST(1).WEBP",
+      "assets/products/Skincare/DR Althea 35 relief MIST WEBP.webp",
+      "assets/products/Skincare/DR Althea 35 relief MISTT.WEBP"
     ],
     "_unmappedFolders": [
       "Skincare"
@@ -988,102 +720,6 @@ export const PRODUCTS = [
         "description": "Une brume visage fine conçue pour ajouter une étape d’hydratation pratique à votre routine.\n\nSon format spray facilite l’application lorsque la peau a besoin d’une touche de fraîcheur.\n\nGardez-la à portée de main pour une application dans la journée, selon les instructions de l’emballage.",
         "howToUse": "1. Agitez le flacon si l’étiquette le demande.\n2. Fermez les yeux et vaporisez à la distance recommandée.\n3. Laissez le produit se déposer ou tapotez doucement si cela est indiqué.\n\nUtilisez avant ou après le maquillage uniquement si les instructions du produit le permettent.",
         "ingredients": "La liste complète des ingrédients n’a pas encore été fournie par le fournisseur. Veuillez consulter l’emballage du produit."
-      }
-    },
-    "noGoodHero": false
-  },
-  {
-    "id": "dr-althea-35-relief-mistt",
-    "name": "Dr. Althea 35 relief MISTT",
-    "brand": "Dr. Althea",
-    "category": "Soins de la peau",
-    "concerns": [],
-    "price": null,
-    "oldPrice": null,
-    "bestSeller": false,
-    "isNew": false,
-    "rating": null,
-    "reviews": [],
-    "description": "",
-    "sections": [],
-    "sourceUrl": "",
-    "benefits": [],
-    "howToUse": [],
-    "ingredients": "",
-    "beforeAfter": null,
-    "images": [
-      "assets/products-web/Skincare/DR%20Althea%2035%20relief%20MISTT--cd97d4b5.webp"
-    ],
-    "_sourceFiles": [
-      "assets/products/Skincare/DR Althea 35 relief MISTT.WEBP"
-    ],
-    "_unmappedFolders": [
-      "Skincare"
-    ],
-    "_keywordMatches": [],
-    "priceCurrency": null,
-    "pricingType": null,
-    "isBetaPrice": false,
-    "content": {
-      "en": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      },
-      "fr": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      }
-    },
-    "noGoodHero": false
-  },
-  {
-    "id": "dr-melaxin-black-rice-peel-shot",
-    "name": "DR. MELAXIN black rice peel shot",
-    "brand": "DR. MELAXIN",
-    "category": "Soins de la peau",
-    "concerns": [
-      "Peau terne"
-    ],
-    "price": 18000,
-    "oldPrice": null,
-    "bestSeller": false,
-    "isNew": false,
-    "rating": null,
-    "reviews": [],
-    "description": "",
-    "sections": [],
-    "sourceUrl": "",
-    "benefits": [],
-    "howToUse": [],
-    "ingredients": "",
-    "beforeAfter": null,
-    "images": [
-      "assets/products-web/Skincare/DR%20MELAXIN%20black%20rice%20peel%20shot(1)--72d827f8.webp",
-      "assets/products-web/Skincare/DR%20melaxin%20black%20rice%20peel%20shot--cb8743cd.webp"
-    ],
-    "_sourceFiles": [
-      "assets/products/Skincare/DR melaxin black rice peel shot.WEBP",
-      "assets/products/Skincare/DR MELAXIN black rice peel shot(1).WEBP"
-    ],
-    "_unmappedFolders": [
-      "Skincare"
-    ],
-    "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
-    "content": {
-      "en": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      },
-      "fr": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
       }
     },
     "noGoodHero": false
@@ -1110,10 +746,14 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "images/catalog/dr-melaxin-peel-shot-exfoliating-black-rice-ampoule-0.png"
+      "images/catalog/dr-melaxin-peel-shot-exfoliating-black-rice-ampoule-0.png",
+      "assets/products-web/Skincare/DR%20melaxin%20black%20rice%20peel%20shot--cb8743cd.webp",
+      "assets/products-web/Skincare/DR%20MELAXIN%20black%20rice%20peel%20shot(1)--72d827f8.webp"
     ],
     "_sourceFiles": [
-      "assets/products/Skincare/Dr MElaxin peel shot exfoliating black rice ampoule.PNG"
+      "assets/products/Skincare/Dr MElaxin peel shot exfoliating black rice ampoule.PNG",
+      "assets/products/Skincare/DR melaxin black rice peel shot.WEBP",
+      "assets/products/Skincare/DR MELAXIN black rice peel shot(1).WEBP"
     ],
     "_unmappedFolders": [
       "Skincare"
@@ -1192,58 +832,6 @@ export const PRODUCTS = [
     "noGoodHero": false
   },
   {
-    "id": "medicube-kojic-acid-peel-shot-80ml",
-    "name": "MEDICUBE kojic acid peel shot 80ML",
-    "brand": "MEDICUBE",
-    "category": "Soins de la peau",
-    "concerns": [
-      "Taches & hyperpigmentation",
-      "Teint irrégulier",
-      "Peau terne"
-    ],
-    "price": null,
-    "oldPrice": null,
-    "bestSeller": false,
-    "isNew": false,
-    "rating": null,
-    "reviews": [],
-    "description": "",
-    "sections": [],
-    "sourceUrl": "",
-    "benefits": [],
-    "howToUse": [],
-    "ingredients": "",
-    "beforeAfter": null,
-    "images": [
-      "assets/products-web/Skincare/Medicube%20kojic%20acid%20peel%20shot%2080ML(1)--d697de31.webp",
-      "assets/products-web/Skincare/Medicube%20kojic%20acid%20peel%20shot%2080ML--ec0af68c.webp"
-    ],
-    "_sourceFiles": [
-      "assets/products/Skincare/Medicube kojic acid peel shot 80ML.WEBP",
-      "assets/products/Skincare/Medicube kojic acid peel shot 80ML(1).WEBP"
-    ],
-    "_unmappedFolders": [
-      "Skincare"
-    ],
-    "_keywordMatches": [],
-    "priceCurrency": null,
-    "pricingType": null,
-    "isBetaPrice": false,
-    "content": {
-      "en": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      },
-      "fr": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      }
-    },
-    "noGoodHero": false
-  },
-  {
     "id": "medicube-kojic-acid-turmeric-peel-shot-80ml",
     "name": "MEDICUBE Kojic Acid Turmeric Peel Shot, 80 ml",
     "brand": "MEDICUBE",
@@ -1278,7 +866,9 @@ export const PRODUCTS = [
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Medicube Kojic acid turmeric peel shot 80ML .PNG",
-      "assets/products/Skincare/Medicube Kojic acid turmeric peel shot 80ML (1).PNG"
+      "assets/products/Skincare/Medicube Kojic acid turmeric peel shot 80ML (1).PNG",
+      "assets/products/Skincare/Medicube kojic acid peel shot 80ML.WEBP",
+      "assets/products/Skincare/Medicube kojic acid peel shot 80ML(1).WEBP"
     ],
     "_unmappedFolders": [
       "Skincare"
@@ -1378,16 +968,22 @@ export const PRODUCTS = [
     "benefits": [],
     "howToUse": [],
     "ingredients": "",
-    "beforeAfter": null,
+    "beforeAfter": {
+      "images": [
+        "assets/products-web/Skincare/MEDICUBE%20PDRN%20Pink%20Collagen%20Gel%20Mask--ff665311.webp"
+      ]
+    },
     "images": [
       "images/catalog/medicube-pdrn-gel-mask-0.webp",
       "images/catalog/medicube-pdrn-gel-mask-1.webp",
-      "images/catalog/medicube-pdrn-gel-mask-2.webp"
+      "images/catalog/medicube-pdrn-gel-mask-2.webp",
+      "assets/products-web/Skincare/MEDICUBE%20PDRN%20Pink%20Collagen%20Gel%20Mask--ff665311.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Medicube PDRN gel mask.WEBP",
       "assets/products/Skincare/Medicube PDRN gel mask(1).WEBP",
-      "assets/products/Skincare/Medicube PDRN gel mask(2).WEBP"
+      "assets/products/Skincare/Medicube PDRN gel mask(2).WEBP",
+      "assets/products/Skincare/MEDICUBE PDRN Pink Collagen Gel Mask.PNG"
     ],
     "_unmappedFolders": [
       "Skincare"
@@ -1431,13 +1027,19 @@ export const PRODUCTS = [
     "benefits": [],
     "howToUse": [],
     "ingredients": "",
-    "beforeAfter": null,
+    "beforeAfter": {
+      "images": [
+        "assets/products-web/Skincare/MEDICUBE%20pink%20PDRN%20capsule%20cream--2e44a91e.webp"
+      ]
+    },
     "images": [
-      "images/catalog/medicube-pdrn-pink-capsule-cream-0.webp"
+      "images/catalog/medicube-pdrn-pink-capsule-cream-0.webp",
+      "assets/products-web/Skincare/MEDICUBE%20pink%20PDRN%20capsule%20cream--2e44a91e.webp"
     ],
     "_sourceFiles": [
       "assets/products/Skincare/Medicube PDRN pink capsule cream.WEBP",
-      "assets/products/Skincare/Medicube PDRN pink capsule cream(1).WEBP"
+      "assets/products/Skincare/Medicube PDRN pink capsule cream(1).WEBP",
+      "assets/products/Skincare/MEDICUBE pink PDRN capsule cream.PNG"
     ],
     "_unmappedFolders": [
       "Skincare"
@@ -1459,108 +1061,6 @@ export const PRODUCTS = [
       }
     },
     "noGoodHero": false
-  },
-  {
-    "id": "medicube-pdrn-pink-collagen-gel-mask",
-    "name": "MEDICUBE PDRN Pink Collagen Gel Mask",
-    "brand": "MEDICUBE",
-    "category": "Soins de la peau",
-    "concerns": [
-      "Peau sèche",
-      "Peau terne"
-    ],
-    "price": 9500,
-    "oldPrice": null,
-    "bestSeller": false,
-    "isNew": false,
-    "rating": null,
-    "reviews": [],
-    "description": "",
-    "sections": [],
-    "sourceUrl": "",
-    "benefits": [],
-    "howToUse": [],
-    "ingredients": "",
-    "beforeAfter": {
-      "images": [
-        "assets/products-web/Skincare/MEDICUBE%20PDRN%20Pink%20Collagen%20Gel%20Mask--ff665311.webp"
-      ]
-    },
-    "images": [],
-    "_sourceFiles": [
-      "assets/products/Skincare/MEDICUBE PDRN Pink Collagen Gel Mask.PNG"
-    ],
-    "_unmappedFolders": [
-      "Skincare"
-    ],
-    "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
-    "content": {
-      "en": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      },
-      "fr": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      }
-    },
-    "noGoodHero": true
-  },
-  {
-    "id": "medicube-pink-pdrn-capsule-cream",
-    "name": "MEDICUBE pink PDRN capsule cream",
-    "brand": "MEDICUBE",
-    "category": "Soins de la peau",
-    "concerns": [
-      "Barrière cutanée",
-      "Peau sèche"
-    ],
-    "price": 16000,
-    "oldPrice": null,
-    "bestSeller": false,
-    "isNew": false,
-    "rating": null,
-    "reviews": [],
-    "description": "",
-    "sections": [],
-    "sourceUrl": "",
-    "benefits": [],
-    "howToUse": [],
-    "ingredients": "",
-    "beforeAfter": {
-      "images": [
-        "assets/products-web/Skincare/MEDICUBE%20pink%20PDRN%20capsule%20cream--2e44a91e.webp"
-      ]
-    },
-    "images": [],
-    "_sourceFiles": [
-      "assets/products/Skincare/MEDICUBE pink PDRN capsule cream.PNG"
-    ],
-    "_unmappedFolders": [
-      "Skincare"
-    ],
-    "_keywordMatches": [],
-    "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
-    "content": {
-      "en": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      },
-      "fr": {
-        "description": "",
-        "howToUse": "",
-        "ingredients": ""
-      }
-    },
-    "noGoodHero": true
   },
   {
     "id": "medicube-txa-serum",

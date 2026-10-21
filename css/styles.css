@@ -725,6 +725,38 @@ button:disabled,.button:disabled{box-shadow:0 3px 9px #3a211c12!important}
 @media(max-width:800px){.account-welcome{align-items:flex-start;flex-direction:column}.account-welcome-actions{flex-wrap:wrap}.account-overview-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.account-shop-card{grid-column:1/-1}}
 @media(max-width:520px){.account-dashboard{gap:17px;padding:26px 14px 54px}.account-welcome{min-height:0;padding:26px 21px;border-radius:22px}.account-welcome h1{font-size:36px}.account-welcome-orbit{right:-120px;opacity:.65}.account-member-badge{font-size:12px}.account-overview-cards{grid-template-columns:1fr;gap:11px}.account-overview-card{min-height:112px;padding:18px;border-radius:18px}.account-shop-card{grid-column:auto}.account-orders-panel{padding:20px 15px;border-radius:20px}.account-orders-heading{align-items:flex-start}.account-order-row{gap:11px;padding:12px}.account-order-row-icon{flex-basis:38px;width:38px;height:38px}.account-order-total{font-size:12px}.account-empty-orders{align-items:flex-start;gap:13px;min-height:0;padding:18px 14px}.account-empty-icon{flex-basis:48px;width:48px;height:48px;border-radius:15px}.account-empty-icon svg{width:24px;height:24px}.account-empty-orders h3{font-size:19px}.account-empty-orders p{font-size:13px}}
 
+.loyalty-banner{position:relative;overflow:hidden;min-height:112px;padding:20px 24px;border-color:#f0d9d1;background:radial-gradient(ellipse at 8% 0%,#fff 0,transparent 46%),linear-gradient(110deg,#fffaf4,#f8e9e4 65%,#f7e3df);box-shadow:0 14px 36px #8f514016}
+.loyalty-banner>span{display:grid;place-items:center;flex:0 0 52px;width:52px;height:52px;border-radius:18px;background:linear-gradient(145deg,#fff,#fbe8e3);box-shadow:0 8px 18px #b75e4820}
+.loyalty-banner>div{min-width:0}
+.loyalty-banner>div p{max-width:660px}
+.loyalty-banner>.button{flex:0 0 auto;margin-left:auto;min-width:148px}
+.account-points-hint{display:block;max-width:190px;margin-top:7px;color:#817066;font-size:11px;line-height:1.45}
+.admin-order-details{margin:14px 0 18px;border:1px solid #ead9cc;border-radius:14px;background:linear-gradient(145deg,#fffdfa,#fff7f0);overflow:hidden}
+.admin-order-details>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;cursor:pointer;color:#704635;font-weight:600;list-style:none}
+.admin-order-details>summary::-webkit-details-marker{display:none}
+.admin-order-details>summary::after{content:'⌄';font-size:18px;transition:transform .2s ease}
+.admin-order-details[open]>summary::after{transform:rotate(180deg)}
+.admin-order-details>summary span{margin-left:auto;color:#8b756a;font-size:12px;font-weight:400}
+.admin-order-details-content{padding:0 16px 15px;border-top:1px solid #efe3d9}
+.admin-order-item-list{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.admin-order-item-list li,.admin-order-item-total{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:12px 0;border-bottom:1px solid #f0e5dc}
+.admin-order-item-list li>span{display:grid;gap:3px}
+.admin-order-item-list li small{color:#817066;font-size:12px}
+.admin-order-item-list li>strong,.admin-order-item-total>strong{flex:0 0 auto;color:#704635}
+.admin-order-note{padding:11px 13px;border-radius:10px;background:#f8eee6;color:#705c51;font-size:13px;line-height:1.6}
+.admin-order-item-total{margin:0;border-bottom:0;font-size:13px;font-weight:600}
+@media(max-width:700px){.loyalty-banner{align-items:center;flex-wrap:wrap}.loyalty-banner>span{flex-basis:42px;width:42px;height:42px}.loyalty-banner>div{flex:1 1 calc(100% - 60px)}.loyalty-banner>.button{margin-left:auto}.account-points-hint{max-width:240px}}
+@media(max-width:430px){.loyalty-banner>.button{width:100%;margin-left:52px}.admin-order-details-content{padding-inline:12px}.admin-order-details>summary{padding:12px}}
+.confirmation-order-items{max-width:560px;margin:24px auto 28px;padding:20px;border:1px solid #efdfd3;border-radius:18px;background:linear-gradient(145deg,#fff,#fff8f2);text-align:left;box-shadow:0 10px 26px #3a211c0b}
+.confirmation-order-items h2{margin:0 0 8px;font-size:21px;font-weight:500}
+.confirmation-order-items ul{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.confirmation-order-items li{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid #efe4dc}
+.confirmation-order-items li>span{display:grid;gap:3px;min-width:0}
+.confirmation-order-items li small{color:#817066;font-size:12px;overflow-wrap:anywhere}
+.confirmation-order-items li>strong,.confirmation-order-total strong{flex:0 0 auto;color:#704635}
+.confirmation-order-total{display:flex;justify-content:space-between;gap:16px;margin:13px 0 0;font-weight:600}
+.admin-order-number-label{display:block;margin-bottom:3px;color:#897970;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+
 /* Final product card overrides keep the quantity picker and hover zoom consistent. */
 .product-card .product-image img{object-fit:cover!important;padding:0!important;mix-blend-mode:normal;transform:scale(1);transition:opacity .3s ease,transform .45s ease}
 .product-card:hover .product-image img{transform:scale(1.055)}

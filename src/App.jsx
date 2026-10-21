@@ -908,6 +908,15 @@ function OrderConfirmationPage() {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const orderNumber = query.get('order') || '';
+  let receipt = location.state?.receipt?.orderNumber === orderNumber ? location.state.receipt : null;
+  if (!receipt && orderNumber) {
+    try {
+      const savedReceipt = JSON.parse(sessionStorage.getItem(`glowafrique-receipt-${orderNumber}`) || 'null');
+      if (savedReceipt?.orderNumber === orderNumber) receipt = savedReceipt;
+    } catch (_) {
+      receipt = null;
+    }
+  }
   const payment = query.get('payment') || '';
   const shippingPending = query.get('shipping') === 'pending';
   const stockPending = query.get('stock') === 'pending';
@@ -954,8 +963,31 @@ function OrderConfirmationPage() {
       <p className="confirmation-message">{message}</p>
       {orderNumber ? (
         <p className="confirmation-reference">
-          {english ? 'Order reference' : 'Référence de commande'}: <strong>{orderNumber}</strong>
+          {english ? 'Order number' : 'Numéro de commande'}: <strong>{orderNumber}</strong>
         </p>
+      ) : null}
+      {receipt?.items?.length ? (
+        <section className="confirmation-order-items" aria-label={english ? 'Ordered products' : 'Produits commandés'}>
+          <h2>{english ? 'Your order' : 'Votre commande'}</h2>
+          <ul>
+            {receipt.items.map((item, index) => (
+              <li key={`${item.productId || item.productName}-${index}`}>
+                <span>
+                  <strong>{item.productName || item.productId}</strong>
+                  {item.productId ? <small>{english ? 'Product code' : 'Code produit'}: {item.productId}</small> : null}
+                  {item.variant ? <small>{item.variant}</small> : null}
+                  <small>{english ? 'Quantity' : 'Quantité'}: {Number(item.quantity) || 0}</small>
+                </span>
+                {item.lineTotalXof == null ? null : <strong>{money(item.lineTotalXof)}</strong>}
+              </li>
+            ))}
+          </ul>
+          {receipt.totalXof == null ? null : (
+            <p className="confirmation-order-total">
+              {english ? 'Order total' : 'Total de la commande'} <strong>{money(receipt.totalXof)}</strong>
+            </p>
+          )}
+        </section>
       ) : null}
       <PageLink className="button" to="/products">
         {english ? 'Continue shopping' : 'Continuer les achats'}
@@ -1145,6 +1177,17 @@ function AccountPage() {
     }
   }, []);
   useEffect(() => {
+    if (!user) return;
+    let active = true;
+    fetch('/api/auth/me', { credentials: 'same-origin', cache: 'no-store' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (active && data?.user) setUser(data.user);
+      })
+      .catch(() => {});
+    return () => { active = false; };
+  }, [user?.email, setUser]);
+  useEffect(() => {
     const returnTo = new URLSearchParams(location.search).get('returnTo');
     const hasResetToken = new URLSearchParams(location.search).has('resetToken');
     if (
@@ -1264,6 +1307,9 @@ function AccountPage() {
               <p>{text(locale, 'points')}</p>
               <strong>{Number(user.points || 0)}</strong>
               <small>{text(locale, 'pointsCount')}</small>
+              <small className="account-points-hint">
+                {locale === 'en' ? 'Added when an order is confirmed · 1 point per 630 XOF' : 'Ajoutés à la confirmation · 1 point par tranche de 630 XOF'}
+              </small>
             </div>
           </article>
           <article className="account-overview-card account-orders-count-card">
@@ -1679,7 +1725,7 @@ function AdminPage() {
           </label>
           {orders.map((order) => (
             <article className="order-card" key={order.orderNumber}>
-              <h2>{order.orderNumber}</h2>
+              <h2><span className="admin-order-number-label">{locale === 'en' ? 'Order number' : 'Numéro de commande'}</span>{order.orderNumber}</h2>
               <p>
                 {order.status} · {order.paymentStatus}
                 {order.stockConfirmationPending
@@ -1692,6 +1738,35 @@ function AdminPage() {
               <p>
                 {order.customer?.fullName} · {order.customer?.email}
               </p>
+              <details className="admin-order-details">
+                <summary>
+                  {locale === 'en' ? 'Show order items' : 'Afficher les articles'}
+                  <span>{(Array.isArray(order.items) ? order.items : []).length} {locale === 'en' ? 'products' : 'produits'}</span>
+                </summary>
+                <div className="admin-order-details-content">
+                  {(Array.isArray(order.items) ? order.items : []).length ? (
+                    <ul className="admin-order-item-list">
+                      {order.items.map((item, index) => (
+                        <li key={`${item.productId || item.productName}-${index}`}>
+                          <span>
+                            <strong>{item.productName || item.productId}</strong>
+                            {item.variant ? <small>{item.variant}</small> : null}
+                            <small>{locale === 'en' ? 'Quantity' : 'Quantité'}: {Number(item.quantity) || 0}</small>
+                          </span>
+                          <strong>{item.lineTotalXof == null ? '—' : money(item.lineTotalXof)}</strong>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : <p>{locale === 'en' ? 'No product details were saved for this order.' : 'Aucun détail produit enregistré pour cette commande.'}</p>}
+                  {order.customer?.deliveryInstructions ? (
+                    <p className="admin-order-note"><strong>{locale === 'en' ? 'Delivery notes' : 'Instructions de livraison'}:</strong> {order.customer.deliveryInstructions}</p>
+                  ) : null}
+                  <p className="admin-order-item-total">
+                    {locale === 'en' ? 'Products subtotal' : 'Sous-total des produits'}
+                    <strong>{order.subtotalXof == null ? '—' : money(order.subtotalXof)}</strong>
+                  </p>
+                </div>
+              </details>
               {order.paymentMethod === 'wave' && order.paymentStatus === 'awaiting_verification' ? (
                 <div className="admin-payment-review">
                   {order.paymentProofId ? (
@@ -2375,6 +2450,19 @@ function CartAndSocialLinks() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || text(locale, 'unavailable'));
+      const order = result.order;
+      if (order && typeof order.orderNumber === 'string') {
+        const receipt = {
+          orderNumber: order.orderNumber,
+          items: Array.isArray(order.items) ? order.items : [],
+          totalXof: order.totalXof ?? null,
+        };
+        try {
+          sessionStorage.setItem(`glowafrique-receipt-${order.orderNumber}`, JSON.stringify(receipt));
+        } catch (_) {
+          // The navigation state still carries the receipt if session storage is unavailable.
+        }
+      }
       if (result.authorizationUrl) {
         window.location.assign(result.authorizationUrl);
         return;
@@ -2394,6 +2482,7 @@ function CartAndSocialLinks() {
       const confirmationPath = localePath('/order-confirmation', locale);
       navigate(
         `${confirmationPath}?order=${encodeURIComponent(result.order.orderNumber)}&payment=${encodeURIComponent(paymentMethod)}${result.order.shippingQuotePending ? '&shipping=pending' : ''}${result.order.stockConfirmationPending ? '&stock=pending' : ''}`,
+        { state: { receipt: { orderNumber: result.order.orderNumber, items: result.order.items, totalXof: result.order.totalXof ?? null } } },
       );
     } catch (error) {
       setFeedback(error.message);

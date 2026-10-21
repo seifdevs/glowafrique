@@ -273,19 +273,15 @@ export default async function adminOrders(req, res) {
             patch.$set.stockConfirmationPending = false;
             patch.$set.stockReserved = true;
           }
-          if (order.shippingQuotePending || order.stockConfirmationPending)
-            patch.$set.pointsEarned = order.customerId ? pointsForXof(eligibleSubtotal) : 0;
-        }
-        if (nextStatus === 'delivered' && !order.pointsAwardedAt) {
-          patch.$set.pointsAwardedAt = now;
-          if (
-            order.customerId &&
-            Number.isSafeInteger(order.pointsEarned) &&
-            order.pointsEarned > 0
-          ) {
+          const pointsEarned = order.customerId ? pointsForXof(eligibleSubtotal) : 0;
+          patch.$set.pointsEarned = pointsEarned;
+          if (!order.pointsAwardedAt) {
+            patch.$set.pointsAwardedAt = now;
+          }
+          if (order.customerId && !order.pointsAwardedAt && pointsEarned > 0) {
             await users.updateOne(
               { _id: order.customerId },
-              { $inc: { points: order.pointsEarned }, $set: { updatedAt: now } },
+              { $inc: { points: pointsEarned }, $set: { updatedAt: now } },
               { session },
             );
           }
