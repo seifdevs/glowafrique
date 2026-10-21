@@ -235,7 +235,7 @@ function PageLink({ to, children, ...props }) {
 }
 
 function ProductCard({ product }) {
-  const { locale, addItem } = useStore();
+  const { locale } = useStore();
   return (
     <article className="product-card">
       <PageLink
@@ -261,16 +261,40 @@ function ProductCard({ product }) {
             ? text(locale, 'noPrice')
             : money(product.price, product.priceCurrency)}
         </p>
-        <button
-          type="button"
-          className="button small"
-          disabled={!productHasVerifiedPrice(product)}
-          onClick={() => addItem(product)}
-        >
-          {productHasVerifiedPrice(product) ? text(locale, 'add') : text(locale, 'noPrice')}
-        </button>
+        <AddToBagButton product={product} className="button small" />
       </div>
     </article>
+  );
+}
+
+function AddToBagButton({ product, className = 'button' }) {
+  const { locale, addItem } = useStore();
+  const [added, setAdded] = useState(false);
+  const resetTimer = useRef(null);
+  useEffect(() => () => window.clearTimeout(resetTimer.current), []);
+  function add() {
+    addItem(product);
+    setAdded(true);
+    window.clearTimeout(resetTimer.current);
+    resetTimer.current = window.setTimeout(() => setAdded(false), 3200);
+  }
+  const canAdd = productHasVerifiedPrice(product);
+  return (
+    <div className={`add-to-bag-action${added ? ' is-added' : ''}`}>
+      <button type="button" className={`${className}${added ? ' added' : ''}`} disabled={!canAdd} onClick={add}>
+        {canAdd ? (added ? `✓ ${locale === 'en' ? 'Added successfully' : 'Ajouté avec succès'}` : text(locale, 'add')) : text(locale, 'noPrice')}
+      </button>
+      {added ? (
+        <button
+          type="button"
+          className="add-another-button"
+          onClick={add}
+          aria-label={locale === 'en' ? `Add another ${product.name}` : `Ajouter encore ${product.name}`}
+        >
+          + {locale === 'en' ? 'Add one more' : 'Ajouter un autre'}
+        </button>
+      ) : null}
+    </div>
   );
 }
 
@@ -643,7 +667,7 @@ function CollectionPage({ path, search }) {
 }
 
 function ProductPage({ id }) {
-  const { locale, addItem, user, setUser } = useStore();
+  const { locale, user, setUser } = useStore();
   const product = PRODUCTS.find((p) => p.id === id);
   const [reviews, setReviews] = useState([]);
   const [feedback, setFeedback] = useState('');
@@ -738,14 +762,7 @@ function ProductPage({ id }) {
               : money(product.price, product.priceCurrency)}
           </p>
           <p className="muted">{product.category}</p>
-          <button
-            className="button product-add"
-            type="button"
-            disabled={!productHasVerifiedPrice(product)}
-            onClick={() => addItem(product)}
-          >
-            {text(locale, 'add')}
-          </button>
+          <AddToBagButton product={product} className="button product-add" />
           <p className="muted">{text(locale, 'deliveryNote')}</p>
           <section className="product-accordions">
             <h2>{locale === 'en' ? 'Product Information' : 'Informations Produit'}</h2>
@@ -906,11 +923,11 @@ function OrderConfirmationPage() {
   if (payment === 'wave' && stockPending)
     message = english
       ? 'Thanks, we received your order and Wave screenshot. Payment will be reviewed, and our team will confirm product availability before dispatch.'
-      : 'Merci, nous avons reçu votre commande et votre capture Wave. Le paiement sera vérifié et notre équipe confirmera la disponibilité avant l’expédition.';
+      : 'Merci, nous avons reçu votre commande et votre capture Wave. Le paiement sera vérifié et notre équipe confirmera la disponibilité avant l’expédition. Sans capture d’écran, la commande ne sera pas expédiée.';
   else if (payment === 'wave')
     message = english
-      ? 'Thanks, we received your order. Your Wave payment will be reviewed by GlowAfrique.'
-      : 'Merci, nous avons bien reçu votre commande. Votre paiement Wave sera vérifié par GlowAfrique.';
+      ? 'Thanks, we received your order. Your Wave payment and screenshot will be reviewed by GlowAfrique before dispatch.'
+      : 'Merci, nous avons bien reçu votre commande. Votre paiement Wave et la capture d’écran seront vérifiés par GlowAfrique avant l’expédition.';
   else if (payment === 'pending')
     message = english
       ? 'Thanks, we received your order. Your payment is still being confirmed; keep your order reference.'
@@ -1594,6 +1611,11 @@ function AdminPage() {
           {feedback}
         </p>
       ) : null}
+      {import.meta.env.VITE_CONTROL_DEMO_MODE === 'true' ? (
+        <p className="control-feedback" role="status">
+          DEMO MODE — This sample order is for presentation only and is not a customer order.
+        </p>
+      ) : null}
       {section === 'inventory' ? (
         <div className="inventory-list">
           {inventory.map((item) => (
@@ -2249,11 +2271,16 @@ function CartAndSocialLinks() {
   }, [open, cart, checkout, quoteEmail]);
   function change(id, quantity) {
     idempotencyKey.current = null;
+    const safeQuantity = Number.isFinite(Number(quantity))
+      ? Math.max(1, Math.min(99, Math.floor(Number(quantity))))
+      : 1;
     setCart((items) =>
-      items
-        .map((item) => (item.id === id ? { ...item, quantity } : item))
-        .filter((item) => item.quantity > 0),
+      items.map((item) => (item.id === id ? { ...item, quantity: safeQuantity } : item)),
     );
+  }
+  function removeItem(id) {
+    idempotencyKey.current = null;
+    setCart((items) => items.filter((item) => item.id !== id));
   }
   function closeCart() {
     setOpen(false);
@@ -2406,63 +2433,70 @@ function CartAndSocialLinks() {
             aria-modal="true"
             aria-labelledby="cart-title"
           >
-            <button
-              className="icon-button"
-              onClick={closeCart}
-              aria-label={text(locale, 'remove')}
-            >
-              ×
-            </button>
-            <h2 id="cart-title">{checkout ? text(locale, 'checkout') : text(locale, 'cart')}</h2>
+            <header className="cart-drawer-header">
+              <div>
+                <p className="eyebrow">GLOWAFRIQUE · {checkout ? 'CHECKOUT' : 'YOUR BAG'}</p>
+                <h2 id="cart-title">{checkout ? text(locale, 'checkout') : text(locale, 'cart')}</h2>
+                {!checkout ? (
+                  <p className="cart-item-count">
+                    {cart.reduce((count, item) => count + item.quantity, 0)} {locale === 'en' ? 'items selected' : 'articles sélectionnés'}
+                  </p>
+                ) : null}
+              </div>
+              <button className="icon-button cart-close" type="button" onClick={closeCart} aria-label={locale === 'en' ? 'Close bag' : 'Fermer le panier'}>
+                ×
+              </button>
+            </header>
             {feedback ? <p role="status">{feedback}</p> : null}
             {!checkout ? (
               <>
                 {cart.length ? (
-                  cart.map((item) => {
+                  <div className="cart-items-list">
+                  {cart.map((item) => {
                     const product = PRODUCTS.find((p) => p.id === item.id);
                     return product ? (
                       <article className="cart-line" key={item.id}>
                         <img src={productImage(product)} alt="" />
-                        <div>
-                          <b>{product.name}</b>
-                          <p>
+                        <div className="cart-line-main">
+                          <b className="cart-product-name">{product.name}</b>
+                          <p className="cart-product-price">
                             {!productHasVerifiedPrice(product)
                               ? text(locale, 'noPrice')
                               : money(product.price, product.priceCurrency)}
                           </p>
-                          <label>
-                            {locale === 'en' ? 'Quantity' : 'Quantité'}
-                            <input
-                              type="number"
-                              min="0"
-                              max="99"
-                              value={item.quantity}
-                              onChange={(e) => change(item.id, Number(e.target.value))}
-                            />
-                          </label>
+                          <div className="cart-line-actions">
+                            <div className="cart-quantity-control" role="group" aria-label={locale === 'en' ? 'Quantity' : 'Quantité'}>
+                              <button type="button" disabled={item.quantity <= 1} onClick={() => change(item.id, item.quantity - 1)} aria-label={locale === 'en' ? 'Decrease quantity' : 'Diminuer la quantité'}>−</button>
+                              <span aria-live="polite">{item.quantity}</span>
+                              <button type="button" disabled={item.quantity >= 99} onClick={() => change(item.id, item.quantity + 1)} aria-label={locale === 'en' ? 'Increase quantity' : 'Augmenter la quantité'}>+</button>
+                            </div>
+                            <button className="cart-remove-button" type="button" onClick={() => removeItem(item.id)}>
+                              {locale === 'en' ? 'Remove' : 'Retirer'}
+                            </button>
+                          </div>
                         </div>
-                        <button className="text-button" onClick={() => change(item.id, 0)}>
-                          {text(locale, 'remove')}
-                        </button>
                       </article>
                     ) : null;
-                  })
+                  })}
+                  </div>
                 ) : (
-                  <p>{text(locale, 'empty')}</p>
+                  <div className="cart-empty-state">
+                    <span aria-hidden="true">✦</span>
+                    <h3>{text(locale, 'empty')}</h3>
+                    <p>{locale === 'en' ? 'Your next skincare favorite is waiting to be discovered.' : 'Votre prochain soin préféré vous attend.'}</p>
+                    <button className="button secondary" type="button" onClick={() => { closeCart(); navigate(localePath('/products', locale)); }}>{locale === 'en' ? 'Explore the collection' : 'Découvrir la collection'}</button>
+                  </div>
                 )}
-                <p>
-                  {text(locale, 'total')}:{' '}
-                  {cart.length === 0
-                    ? money(0)
-                    : quote?.quoteStatus === 'ready' && quote.totalXof != null
-                      ? money(quote.totalXof)
-                      : locale === 'en'
-                        ? 'Confirmed at checkout'
-                        : 'Confirmé à la commande'}
-                </p>
-                <p className="muted">{text(locale, 'deliveryNote')}</p>
+                {cart.length ? (
+                  <div className="cart-summary-card">
+                    <p className="cart-total-row"><span>{text(locale, 'total')}</span><strong>
+                      {quote?.quoteStatus === 'ready' && quote.totalXof != null
+                        ? money(quote.totalXof)
+                        : locale === 'en' ? 'Confirmed at checkout' : 'Confirmé à la commande'}
+                    </strong></p>
+                    <p className="cart-delivery-note">{text(locale, 'deliveryNote')}</p>
                 <button
-                  className="button"
+                  className="button cart-checkout-button"
                   disabled={!cart.length}
                   onClick={() => {
                     setCheckout(true);
@@ -2473,8 +2507,10 @@ function CartAndSocialLinks() {
                     setProofPreview('');
                   }}
                 >
-                  {text(locale, 'checkout')}
+                  {text(locale, 'checkout')} <span aria-hidden="true">→</span>
                 </button>
+                  </div>
+                ) : null}
               </>
             ) : (
               <form className="checkout-form" onSubmit={placeOrder}>
@@ -2542,7 +2578,7 @@ function CartAndSocialLinks() {
                       name="paymentMethod"
                       type="radio"
                       value="wave"
-                      disabled={quote?.quoteStatus !== 'ready'}
+                      disabled={quote?.quoteStatus === 'confirmation-pending' || quote?.quoteStatus === 'enter-email'}
                       onChange={() => setPaymentSelection('wave')}
                     />{' '}
                     Wave
@@ -2586,6 +2622,22 @@ function CartAndSocialLinks() {
                 ) : null}
                 {paymentSelection === 'wave' ? (
                   <>
+                    <aside className="wave-payment-instructions">
+                      <div>
+                        <p className="eyebrow">WAVE · PAIEMENT SÉCURISÉ</p>
+                        <h3>{locale === 'en' ? 'Pay with Wave' : 'Payer avec Wave'}</h3>
+                        <p>
+                          {locale === 'en'
+                            ? 'Scan this QR code in Wave, complete your transfer, then upload a clear screenshot of the successful payment. Orders without a payment screenshot will not be shipped.'
+                            : 'Scannez ce QR code avec Wave et effectuez le paiement. Téléversez ensuite une capture d’écran lisible de la transaction réussie. Sans capture d’écran du paiement, la commande ne sera pas expédiée.'}
+                        </p>
+                        {quote?.totalXof != null ? <strong className="wave-qr-amount">{money(quote.totalXof)}</strong> : null}
+                      </div>
+                      <img
+                        src="/images/wave.jpeg"
+                        alt={locale === 'en' ? 'GlowAfrique Wave payment QR code' : 'Code QR Wave pour le paiement GlowAfrique'}
+                      />
+                    </aside>
                     <label>
                       Wave Sender Phone
                       <input name="waveSenderPhone" type="tel" placeholder="+225…" required />
@@ -2599,7 +2651,10 @@ function CartAndSocialLinks() {
                         accept="image/jpeg,image/png,image/webp"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
-                          setProofPreview(file ? URL.createObjectURL(file) : '');
+                          setProofPreview((previous) => {
+                            if (previous.startsWith('blob:')) URL.revokeObjectURL(previous);
+                            return file ? URL.createObjectURL(file) : '';
+                          });
                         }}
                       />
                     </label>
