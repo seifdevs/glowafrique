@@ -1380,7 +1380,8 @@ function AccountPage() {
 }
 
 function AdminPage() {
-  const { locale, user, authLoading } = useStore();
+  const { user, authLoading, setUser } = useStore();
+  const locale = 'en';
   const [orders, setOrders] = useState([]);
   const [inventory, setInventory] = useState([]);
   const [status, setStatus] = useState('pending');
@@ -1390,6 +1391,8 @@ function AdminPage() {
   const [busyOrder, setBusyOrder] = useState('');
   const [manualEvidence, setManualEvidence] = useState({});
   const [rejectionReasons, setRejectionReasons] = useState({});
+  const [loginBusy, setLoginBusy] = useState(false);
+  const [loginFeedback, setLoginFeedback] = useState('');
   useEffect(() => {
     if (user?.role !== 'admin') return;
     if (section === 'inventory') {
@@ -1460,6 +1463,39 @@ function AdminPage() {
       setBusyOrder('');
     }
   }
+  async function signIn(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setLoginBusy(true);
+    setLoginFeedback('Signing in…');
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: form.elements.username.value.trim(), password: form.elements.password.value }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Sign in failed.');
+      if (data.user?.role !== 'admin') throw new Error('Administrator access is required.');
+      setUser(data.user);
+      setLoginFeedback('');
+      form.reset();
+    } catch (error) {
+      setLoginFeedback(error.message || 'The service is temporarily unavailable. Please try again.');
+    } finally {
+      setLoginBusy(false);
+    }
+  }
+  async function signOut() {
+    try {
+      const response = await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
+      if (!response.ok) throw new Error('Could not sign out. Please try again.');
+      setUser(null);
+    } catch (error) {
+      setFeedback(error.message || 'Could not sign out. Please try again.');
+    }
+  }
   const transitions = {
     pending: ['confirmed', 'cancelled'],
     confirmed: ['processing', 'cancelled'],
@@ -1474,10 +1510,16 @@ function AdminPage() {
     );
   if (!user)
     return (
-      <section className="section account-shell">
-        <h1>Administrator sign-in required</h1>
-        <p>Sign in with an administrator account to manage orders and inventory.</p>
-        <PageLink to="/account?returnTo=%2Fcontrol">Go to sign in</PageLink>
+      <section className="admin-login-screen">
+        <form className="admin-login-card" onSubmit={signIn}>
+          <p className="eyebrow">GlowAfrique · Administration</p>
+          <h1>Welcome Back</h1>
+          <p className="muted">Sign in to manage store orders and inventory.</p>
+          <label>Username<input name="username" autoComplete="username" required /></label>
+          <label>Password<input name="password" type="password" autoComplete="current-password" required /></label>
+          <button className="button" type="submit" disabled={loginBusy}>{loginBusy ? 'Signing in…' : 'Sign In'}</button>
+          <p role="status" aria-live="polite">{loginFeedback}</p>
+        </form>
       </section>
     );
   if (user.role !== 'admin')
@@ -1505,6 +1547,7 @@ function AdminPage() {
           <i aria-hidden="true" />
           {locale === 'en' ? 'Store Admin' : 'Administration'}
         </span>
+        <button className="button secondary" type="button" onClick={signOut}>Log Out</button>
       </div>
       <nav
         className="control-tabs"
