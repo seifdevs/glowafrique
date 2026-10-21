@@ -1740,7 +1740,11 @@ function AdminPage() {
               <option value="cancelled">Cancelled</option>
             </select>
           </label>
-          {orders.map((order) => (
+          {orders.map((order) => {
+            const orderItems = Array.isArray(order.items) ? order.items : [];
+            const orderItemName = (item) => item.productName || item.name || item.product?.name || item.productId || item.product?.id || (locale === 'en' ? 'Product' : 'Produit');
+            const orderItemQuantity = (item) => Number(item.quantity ?? item.qty ?? item.count) || 1;
+            return (
             <article className="order-card" key={order.orderNumber}>
               <h2><span className="admin-order-number-label">{locale === 'en' ? 'Order number' : 'Numéro de commande'}</span>{order.orderNumber}</h2>
               <p>
@@ -1755,22 +1759,28 @@ function AdminPage() {
               <p>
                 {order.customer?.fullName} · {order.customer?.email}
               </p>
+              <p className="admin-order-preview">
+                <strong>{locale === 'en' ? 'Order:' : 'Commande :'}</strong>{' '}
+                {orderItems.length
+                  ? orderItems.map((item) => `${orderItemName(item)} × ${orderItemQuantity(item)}`).join(' · ')
+                  : locale === 'en' ? 'Product details unavailable' : 'Détails des produits indisponibles'}
+              </p>
               <details className="admin-order-details">
                 <summary>
-                  {locale === 'en' ? 'Show order items' : 'Afficher les articles'}
-                  <span>{(Array.isArray(order.items) ? order.items : []).length} {locale === 'en' ? 'products' : 'produits'}</span>
+                  {locale === 'en' ? 'Order items and notes' : 'Articles et notes de commande'}
+                  <span>{orderItems.length} {locale === 'en' ? 'products' : 'produits'}</span>
                 </summary>
                 <div className="admin-order-details-content">
-                  {(Array.isArray(order.items) ? order.items : []).length ? (
+                  {orderItems.length ? (
                     <ul className="admin-order-item-list">
-                      {order.items.map((item, index) => (
-                        <li key={`${item.productId || item.productName}-${index}`}>
+                      {orderItems.map((item, index) => (
+                        <li key={`${item.productId || item.productName || item.name || index}-${index}`}>
                           <span>
-                            <strong>{item.productName || item.productId}</strong>
+                            <strong>{orderItemName(item)}</strong>
                             {item.variant ? <small>{item.variant}</small> : null}
-                            <small>{locale === 'en' ? 'Quantity' : 'Quantité'}: {Number(item.quantity) || 0}</small>
+                            <small>{locale === 'en' ? 'Quantity' : 'Quantité'}: {orderItemQuantity(item)}</small>
                           </span>
-                          <strong>{item.lineTotalXof == null ? '—' : money(item.lineTotalXof)}</strong>
+                          <strong>{item.lineTotalXof == null ? item.unitPriceXof == null ? '—' : money(item.unitPriceXof * orderItemQuantity(item)) : money(item.lineTotalXof)}</strong>
                         </li>
                       ))}
                     </ul>
@@ -1953,7 +1963,8 @@ function AdminPage() {
                 </div>
               ) : null}
             </article>
-          ))}
+            );
+          })}
         </>
       ) : null}
     </section>

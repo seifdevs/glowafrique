@@ -23,12 +23,19 @@ const TRANSITIONS = {
 };
 
 function outputOrder(order) {
+  const orderItems = Array.isArray(order.items)
+    ? order.items
+    : Array.isArray(order.products)
+      ? order.products
+      : Array.isArray(order.cartItems)
+        ? order.cartItems
+        : [];
   return {
     orderNumber: order.orderNumber,
     createdAt: order.createdAt,
     updatedAt: order.updatedAt,
     customer: order.customer,
-    items: order.items,
+    items: orderItems,
     subtotalXof: order.subtotalXof,
     shippingXof: order.shippingXof,
     shippingQuotePending: order.shippingQuotePending === true,
