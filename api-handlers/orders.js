@@ -15,6 +15,7 @@ import { validatePaymentProof } from '../lib/payment-proof.js';
 import { initializePaystackTransaction } from '../lib/payments/paystack.js';
 import { notifyOrder } from '../lib/order-notifications.js';
 import { reserveInventory } from '../lib/inventory.js';
+import { configuredFallbackShippingXof, findDeliveryZone } from '../lib/shipping-rates.js';
 
 const FREE_DELIVERY_XOF = 45000;
 const MAX_ITEMS = 50;
@@ -91,7 +92,11 @@ function validCustomer(body, user) {
   const addressLine1 = String(customer.addressLine1 || '').trim();
   const addressLine2 = String(customer.addressLine2 || '').trim();
   const city = String(customer.city || '').trim();
-  const division = String(customer.division || customer.region || '').trim();
+  const selectedDivision = String(
+    customer.division || customer.deliveryZoneId || customer.region || '',
+  ).trim();
+  const deliveryZone = findDeliveryZone(selectedDivision);
+  const division = deliveryZone?.label || selectedDivision;
   const region = division;
   const postalCode = String(customer.postalCode || '').trim();
   const country = 'Côte d’Ivoire';
@@ -120,6 +125,7 @@ function validCustomer(body, user) {
     city,
     region,
     division,
+    deliveryZoneId: deliveryZone?.id || '',
     postalCode,
     country,
     deliveryInstructions,
@@ -280,10 +286,8 @@ export default async function ordersApi(req, res) {
     );
     const discountXof = previousPurchase ? 0 : Math.floor(subtotalXof / 10);
     const eligibleSubtotalXof = subtotalXof - discountXof;
-    const shippingFee =
-      process.env.SHIPPING_FEE_XOF === undefined || process.env.SHIPPING_FEE_XOF === ''
-        ? null
-        : Number(process.env.SHIPPING_FEE_XOF);
+    const shippingZone = findDeliveryZone(customer.deliveryZoneId);
+    const shippingFee = shippingZone?.rateXof ?? configuredFallbackShippingXof();
     const shippingQuotePending =
       eligibleSubtotalXof < FREE_DELIVERY_XOF &&
       (!Number.isSafeInteger(shippingFee) || shippingFee < 0);

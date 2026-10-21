@@ -9,6 +9,7 @@ import {
   validEmail,
 } from '../lib/auth.js';
 import { catalogPriceXof } from '../lib/catalog.js';
+import { configuredFallbackShippingXof, findDeliveryZone } from '../lib/shipping-rates.js';
 
 const FREE_DELIVERY_XOF = 45000;
 
@@ -55,15 +56,18 @@ export default async function orderQuote(req, res) {
     });
     const user = await authenticatedUser(req);
     const email = user ? user.email : normalizeEmail(body.email);
+    const deliveryZone = findDeliveryZone(body.division || body.deliveryZoneId);
     if (!validEmail(email))
       return res.status(200).json({
         subtotalXof,
         discountXof: 0,
-        shippingXof: null,
+        shippingXof: deliveryZone?.rateXof ?? configuredFallbackShippingXof(),
         totalXof: null,
         currency: 'XOF',
         quoteStatus: 'enter-email',
         stockConfirmationPending,
+        deliveryZoneId: deliveryZone?.id || null,
+        deliveryZoneLabel: deliveryZone?.label || null,
       });
     const orders = (await getDatabase()).collection('glowafrique_orders');
     const previousPurchase = await orders.findOne(
@@ -72,13 +76,11 @@ export default async function orderQuote(req, res) {
     );
     const discountXof = previousPurchase ? 0 : Math.floor(subtotalXof / 10);
     const eligibleSubtotal = subtotalXof - discountXof;
-    const configuredFee =
-      process.env.SHIPPING_FEE_XOF === undefined || process.env.SHIPPING_FEE_XOF === ''
-        ? null
-        : Number(process.env.SHIPPING_FEE_XOF);
-    const feeConfigured = Number.isSafeInteger(configuredFee) && configuredFee >= 0;
+    const configuredFee = configuredFallbackShippingXof();
     const shippingXof =
-      eligibleSubtotal >= FREE_DELIVERY_XOF ? 0 : feeConfigured ? configuredFee : null;
+      eligibleSubtotal >= FREE_DELIVERY_XOF
+        ? 0
+        : deliveryZone?.rateXof ?? configuredFee;
     const shippingQuotePending = shippingXof == null;
     if (shippingQuotePending)
       return res.status(200).json({
@@ -87,9 +89,11 @@ export default async function orderQuote(req, res) {
         shippingXof,
         totalXof: null,
         currency: 'XOF',
-        quoteStatus: 'confirmation-pending',
+        quoteStatus: deliveryZone ? 'confirmation-pending' : 'select-region',
         stockConfirmationPending,
         shippingQuotePending,
+        deliveryZoneId: deliveryZone?.id || null,
+        deliveryZoneLabel: deliveryZone?.label || null,
       });
     return res.status(200).json({
       subtotalXof,
@@ -100,6 +104,8 @@ export default async function orderQuote(req, res) {
       quoteStatus: 'ready',
       stockConfirmationPending,
       shippingQuotePending: false,
+      deliveryZoneId: deliveryZone?.id || null,
+      deliveryZoneLabel: deliveryZone?.label || null,
     });
   } catch (error) {
     console.error('[order-quote] quote failed:', error && error.name, (error && error.code) || '');
