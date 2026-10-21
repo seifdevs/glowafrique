@@ -235,6 +235,25 @@ function PageLink({ to, children, ...props }) {
   );
 }
 
+function NavIcon({ name }) {
+  const paths = {
+    products: <><path d="M5 8h14l-1 12H6L5 8Z" /><path d="M9 9V6a3 3 0 0 1 6 0v3" /></>,
+    best: <><path d="m12 3 2.5 5.1 5.6.8-4.1 4 .97 5.6L12 15.9l-5 2.6.97-5.6-4.1-4 5.6-.8L12 3Z" /></>,
+    brands: <><rect x="4" y="4" width="7" height="7" rx="2" /><rect x="13" y="4" width="7" height="7" rx="2" /><rect x="4" y="13" width="7" height="7" rx="2" /><rect x="13" y="13" width="7" height="7" rx="2" /></>,
+    concerns: <><circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="4.5" /><circle cx="12" cy="12" r="1" /></>,
+    guide: <><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5Z" /><path d="M4 17a2.5 2.5 0 0 1 2.5-2.5H20M8 7h7M8 10h5" /></>,
+    contact: <><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8 8 0 0 1-3.5-.8L4 20l1.1-3.3A7.1 7.1 0 0 1 4 12c0-4.1 3.6-7.5 8-7.5s8 3.1 8 7Z" /><path d="M8 12h.01M12 12h.01M16 12h.01" /></>,
+    account: <><circle cx="12" cy="8" r="3.5" /><path d="M4.5 20a7.5 7.5 0 0 1 15 0" /></>,
+    cart: <><path d="M3 4h2l2.1 11.1a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 1.9-1.4L21 8H6" /><circle cx="9.5" cy="20" r="1" /><circle cx="18" cy="20" r="1" /></>,
+    language: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></>,
+    signout: <><path d="M10 17l5-5-5-5M15 12H3" /><path d="M12 4h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" /></>,
+    close: <><path d="m6 6 12 12M18 6 6 18" /></>,
+    menu: <><path d="M4 7h16M4 12h16M4 17h16" /></>,
+    chevron: <path d="m8 10 4 4 4-4" />,
+  };
+  return <svg className="mobile-nav-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round">{paths[name]}</svg>;
+}
+
 function ProductCard({ product }) {
   const { locale } = useStore();
   return (
@@ -2114,7 +2133,7 @@ function Header() {
           aria-label="Menu"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          ☰
+          <NavIcon name="menu" />
         </button>
         <PageLink className="logo logo-image" to="/" aria-label="GlowAfrique">
           <img width="50" height="50" src="/logo.jpeg" alt="" />
@@ -2178,13 +2197,17 @@ function Header() {
         }}
       >
         <div className="mobile-drawer-head">
-          <span>{locale === 'en' ? 'Explore GlowAfrique' : 'Découvrir GlowAfrique'}</span>
-          <button type="button" className="icon-button mobile-close" aria-label={locale === 'en' ? 'Close menu' : 'Fermer le menu'} onClick={() => setMenuOpen(false)}>×</button>
+          <div className="mobile-drawer-brand">
+            <span className="mobile-drawer-kicker">GLOWAFRIQUE · BEAUTY EDIT</span>
+            <span className="mobile-drawer-title">{locale === 'en' ? 'Explore GlowAfrique' : 'Découvrir GlowAfrique'}</span>
+          </div>
+          <button type="button" className="icon-button mobile-close" aria-label={locale === 'en' ? 'Close menu' : 'Fermer le menu'} onClick={() => setMenuOpen(false)}><NavIcon name="close" /></button>
         </div>
-        <PageLink to="/products">{text(locale, 'products')}</PageLink>
-        <PageLink to="/collections/best-sellers">{text(locale, 'best')}</PageLink>
+        <div className="mobile-nav-caption">{locale === 'en' ? 'DISCOVER' : 'DÉCOUVRIR'}</div>
+        <PageLink className="mobile-nav-link" to="/products"><NavIcon name="products" /><span>{text(locale, 'products')}</span><span className="mobile-nav-arrow">↗</span></PageLink>
+        <PageLink className="mobile-nav-link" to="/collections/best-sellers"><NavIcon name="best" /><span>{text(locale, 'best')}</span><span className="mobile-nav-arrow">↗</span></PageLink>
         <div className="nav-dropdown">
-          <PageLink to="/collections/brands">{text(locale, 'brands')}⌄</PageLink>
+          <PageLink className="mobile-nav-link" to="/collections/brands"><NavIcon name="brands" /><span>{text(locale, 'brands')}</span><NavIcon name="chevron" /></PageLink>
           <div className="dropdown-menu">
             {[...new Set(PRODUCTS.map((p) => p.brand).filter(Boolean))]
               .sort((a, b) => a.localeCompare(b, locale, { sensitivity: 'base' }))
@@ -2196,7 +2219,7 @@ function Header() {
           </div>
         </div>
         <div className="nav-dropdown">
-          <PageLink to="/collections/concerns">{text(locale, 'concerns')}⌄</PageLink>
+          <PageLink className="mobile-nav-link" to="/collections/concerns"><NavIcon name="concerns" /><span>{text(locale, 'concerns')}</span><NavIcon name="chevron" /></PageLink>
           <div className="dropdown-menu">
             {[
               ...new Set(
@@ -2215,15 +2238,16 @@ function Header() {
               ))}
           </div>
         </div>
-        <PageLink to="/policies/how-to-use">{text(locale, 'howto')}</PageLink>
-        <PageLink to="/contact">{text(locale, 'contact')}</PageLink>
+        <PageLink className="mobile-nav-link" to="/policies/how-to-use"><NavIcon name="guide" /><span>{text(locale, 'howto')}</span><span className="mobile-nav-arrow">↗</span></PageLink>
+        <PageLink className="mobile-nav-link" to="/contact"><NavIcon name="contact" /><span>{text(locale, 'contact')}</span><span className="mobile-nav-arrow">↗</span></PageLink>
+        <div className="mobile-nav-caption mobile-nav-account-caption">{locale === 'en' ? 'YOUR GLOW' : 'VOTRE ÉCLAT'}</div>
         <div className="mobile-nav-utilities">
-          <PageLink to="/account" onClick={() => setMenuOpen(false)}>{text(locale, 'account')}</PageLink>
+          <PageLink to="/account" onClick={() => setMenuOpen(false)}><NavIcon name="account" /><span>{text(locale, 'account')}</span><span className="mobile-nav-arrow">↗</span></PageLink>
           {user ? (
-            <button type="button" onClick={signOut}>{text(locale, 'signOut')}</button>
+            <button type="button" onClick={signOut}><NavIcon name="signout" /><span>{text(locale, 'signOut')}</span></button>
           ) : null}
-          <button type="button" onClick={() => { setMenuOpen(false); setCartOpen(true); }}>{text(locale, 'cart')} <span>{count}</span></button>
-          <button type="button" onClick={() => { switchLanguage(); setMenuOpen(false); }}>{locale === 'fr' ? 'FR | EN' : 'EN | FR'}</button>
+          <button type="button" onClick={() => { setMenuOpen(false); setCartOpen(true); }}><NavIcon name="cart" /><span>{text(locale, 'cart')}</span><span className="mobile-cart-count">{count}</span></button>
+          <button type="button" onClick={() => { switchLanguage(); setMenuOpen(false); }}><NavIcon name="language" /><span>{locale === 'fr' ? 'Français' : 'English'}</span><span className="mobile-language-switch">{locale === 'fr' ? 'FR / EN' : 'EN / FR'}</span></button>
         </div>
       </nav>
     </>

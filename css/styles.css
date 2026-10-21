@@ -840,3 +840,37 @@ button:disabled,.button:disabled{box-shadow:0 3px 9px #3a211c12!important}
 .admin-order-preview strong{color:#3a211c}
 .admin-order-details>summary{min-height:48px}
 @media(max-width:700px){.admin-order-preview{font-size:12px;padding:10px 11px}.admin-order-details>summary{align-items:flex-start;flex-wrap:wrap}.admin-order-details>summary span{margin-left:0}}
+
+/* Refined mobile navigation drawer */
+.mobile-nav-icon{display:none}
+@media(max-width:700px){
+  .menu-toggle .mobile-nav-icon{display:block;width:21px;height:21px}
+  .category-nav{width:min(404px,89vw);padding:calc(18px + env(safe-area-inset-top)) 21px calc(22px + env(safe-area-inset-bottom));border:1px solid #ead8cb;border-left:0;border-radius:0 28px 28px 0;background:radial-gradient(ellipse at 0 0,#fff 0,transparent 38%),linear-gradient(155deg,#fffdf9 0%,#fbf0e7 52%,#f1dfd7 100%);box-shadow:22px 0 64px #2415122b}
+  .mobile-drawer-head{min-height:72px;margin:0 0 19px;padding:0 0 18px;border-bottom:1px solid #e9d7c9}
+  .mobile-drawer-brand{display:flex;flex-direction:column;gap:3px}
+  .mobile-drawer-kicker{color:#bd684c;font:700 9px/1.2 'Open Sans',sans-serif;letter-spacing:.18em}
+  .mobile-drawer-title{color:#49302a;font:400 22px/1.25 Georgia,serif;letter-spacing:-.035em}
+  .mobile-close{position:static;flex:0 0 42px;width:42px;min-width:42px;min-height:42px;border-color:#ead9cc;background:#fff8f2;box-shadow:0 5px 14px #55382b0c}
+  .mobile-close .mobile-nav-icon{display:block;width:18px;height:18px}
+  .mobile-nav-caption{margin:0 0 6px 4px;color:#a77d6a;font-size:9px;font-weight:700;letter-spacing:.18em}
+  .mobile-nav-account-caption{margin:21px 0 5px 4px}
+  .category-nav>a.mobile-nav-link,.category-nav .nav-dropdown>a.mobile-nav-link{display:grid;grid-template-columns:38px minmax(0,1fr) 18px;align-items:center;gap:10px;min-height:55px;padding:7px 7px;border:0;border-radius:15px;font-size:14px;letter-spacing:.005em;font-weight:600;transition:background .18s ease,transform .18s ease,color .18s ease}
+  .category-nav>a.mobile-nav-link:hover,.category-nav .nav-dropdown>a.mobile-nav-link:hover,.category-nav>a.mobile-nav-link:focus-visible,.category-nav .nav-dropdown>a.mobile-nav-link:focus-visible{background:#fffaf6;color:#a84e3f;transform:translateX(2px)}
+  .mobile-nav-link .mobile-nav-icon,.mobile-nav-utilities .mobile-nav-icon{display:block;width:19px;height:19px}
+  .mobile-nav-link>.mobile-nav-icon:first-child,.mobile-nav-utilities .mobile-nav-icon{box-sizing:content-box;width:19px;height:19px;padding:9px;border:1px solid #ecd9cc;border-radius:12px;background:linear-gradient(145deg,#fff,#fff3e9);color:#b35c45;box-shadow:0 4px 11px #79513a0b}
+  .mobile-nav-link>.mobile-nav-icon:last-child:not(:first-child){width:15px;height:15px;color:#ac8878}
+  .mobile-nav-arrow{justify-self:end;color:#bb8b77;font-size:16px;font-weight:400}
+  .nav-dropdown{width:100%}
+  .mobile-nav-utilities{gap:5px;margin:0;padding:0;border:0}
+  .mobile-nav-utilities>a,.mobile-nav-utilities>button{display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:55px;padding:6px 7px;border:0;border-radius:15px;background:transparent;text-align:left;font-size:14px;font-weight:600;transition:background .18s ease}
+  .mobile-nav-utilities>a:hover,.mobile-nav-utilities>button:hover{background:#fffaf6}
+  .mobile-nav-utilities button span{display:block;min-width:0;height:auto;border-radius:0;background:none;color:inherit;font-size:inherit}
+  .mobile-nav-utilities .mobile-cart-count{display:grid;place-items:center;min-width:25px;height:25px;border-radius:50%;background:linear-gradient(135deg,#d47748,#dc5b70);color:#fff;font-size:11px;font-weight:700}
+  .mobile-nav-utilities .mobile-language-switch{padding:5px 9px;border:1px solid #ead8cb;border-radius:20px;background:#fff8f2;color:#9d6049;font-size:10px;font-weight:700;letter-spacing:.04em}
+  .mobile-nav-utilities button:last-child{justify-content:initial;color:inherit}
+  .mobile-nav-scrim{background:#21171480;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);animation:drawer-scrim-in .2s ease both}
+  .category-nav.menu-open{animation:drawer-in .28s cubic-bezier(.2,.75,.25,1) both}
+  @keyframes drawer-in{from{opacity:.75}to{opacity:1}}
+  @keyframes drawer-scrim-in{from{opacity:0}to{opacity:1}}
+}
+@media(prefers-reduced-motion:reduce){.category-nav,.category-nav *,.mobile-nav-scrim{animation:none!important;transition:none!important}}
