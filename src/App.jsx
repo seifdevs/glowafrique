@@ -322,25 +322,89 @@ function ProductGrid({ products }) {
 
 function Carousel({ items, label, renderItem, variant = 'concern' }) {
   const duration = `${Math.max(32, items.length * (variant === 'brand' ? 5.5 : 4.5))}s`;
+  const viewportRef = useRef(null);
+  const groupRef = useRef(null);
+  const [copyCount, setCopyCount] = useState(3);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    const group = groupRef.current;
+    if (!viewport || !group || !items.length) return undefined;
+
+    const updateCopies = () => {
+      const groupWidth = group.getBoundingClientRect().width;
+      if (!groupWidth) return;
+      setCopyCount(Math.max(2, Math.ceil(viewport.clientWidth / groupWidth) + 2));
+    };
+    updateCopies();
+    const observer = new ResizeObserver(updateCopies);
+    observer.observe(viewport);
+    observer.observe(group);
+    return () => observer.disconnect();
+  }, [items.length, variant]);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    const group = groupRef.current;
+    if (!viewport || !group || paused || !items.length) return undefined;
+
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (motionPreference.matches) return undefined;
+
+    let frame = 0;
+    let previousTime = 0;
+    const tick = (time) => {
+      if (previousTime) {
+        const width = group.getBoundingClientRect().width;
+        const seconds = Number.parseFloat(duration) || 48;
+        if (width > 0) {
+          viewport.scrollLeft += ((width / seconds) * (time - previousTime)) / 1000;
+          if (viewport.scrollLeft >= width) viewport.scrollLeft %= width;
+        }
+      }
+      previousTime = time;
+      frame = window.requestAnimationFrame(tick);
+    };
+    frame = window.requestAnimationFrame(tick);
+    const stop = () => window.cancelAnimationFrame(frame);
+    motionPreference.addEventListener('change', stop, { once: true });
+    return () => {
+      stop();
+      motionPreference.removeEventListener('change', stop);
+    };
+  }, [duration, items.length, paused]);
+
+  const duplicates = Array.from({ length: copyCount - 1 }, (_, copyIndex) => (
+    <div className="infinite-carousel-group" key={`copy-${copyIndex}`} aria-hidden="true" inert>
+      {items.map((item, index) =>
+        React.cloneElement(renderItem(item), { key: `duplicate-${copyIndex}-${index}` }),
+      )}
+    </div>
+  ));
+
   return (
     <div
       className={`infinite-carousel ${variant}-marquee`}
-      style={{ '--marquee-duration': duration }}
+      ref={viewportRef}
       tabIndex={0}
       role="region"
       aria-label={label}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onPointerDown={() => setPaused(true)}
+      onPointerUp={() => setPaused(false)}
+      onPointerCancel={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false);
+      }}
     >
-      <div
-        className="infinite-carousel-track"
-      >
-        <div className="infinite-carousel-group">
+      <div className="infinite-carousel-track">
+        <div className="infinite-carousel-group" ref={groupRef}>
           {items.map(renderItem)}
         </div>
-        <div className="infinite-carousel-group" aria-hidden="true" inert>
-          {items.map((item, index) =>
-            React.cloneElement(renderItem(item), { key: `duplicate-${index}` }),
-          )}
-        </div>
+        {duplicates}
       </div>
     </div>
   );

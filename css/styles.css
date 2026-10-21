@@ -175,9 +175,6 @@
 .product-accordion{border-bottom:1px solid var(--line)}.product-accordion h2{margin:0}.accordion-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;padding:18px 2px;border:0;background:transparent;text-align:left;font-size:19px;color:var(--espresso)}.accordion-toggle span{color:var(--pink);font-size:23px;transition:transform .25s}.accordion-toggle[aria-expanded=true] span{transform:rotate(180deg)}.accordion-panel{overflow:hidden;padding:0 3px 20px}.accordion-panel[hidden]{display:none}.accordion-panel p{margin:0;line-height:1.8}
 @media(prefers-reduced-motion:reduce){.empty-state svg{animation:none}}
 .brand-strip{display:block;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
-.brand-marquee{display:flex;width:max-content;gap:14px;animation:brand-marquee 32s linear infinite}
-.brand-marquee:hover{animation-play-state:paused}.brand-marquee .brand-tile{animation:none}
-@keyframes brand-marquee{to{transform:translateX(-50%)}}
 .concern-tile:nth-child(3n+1){background:linear-gradient(145deg,#fffaf4,#f8e6de)}.concern-tile:nth-child(3n+2){background:linear-gradient(145deg,#fffaf4,#f5ead8)}.concern-tile:nth-child(3n){background:linear-gradient(145deg,#fffaf4,#f6e3e9)}
 .concern-icon svg{width:28px;height:28px;animation:icon-sway 4s ease-in-out infinite}.concern-tile:nth-child(even) .concern-icon svg{animation-delay:-1.5s}
 @keyframes icon-sway{50%{transform:translateY(-3px) rotate(3deg)}}
@@ -328,12 +325,6 @@ body[data-page="control"]{background:#f5f2ef;color:#241d1a}body[data-page="contr
 @media(max-width:1000px) and (min-width:701px){.footer-columns{grid-template-columns:1fr 1.2fr}.footer-policies{grid-column:1/-1;grid-template-columns:repeat(3,minmax(0,1fr))}}
 .concern-section,.featured-brand-section{min-width:0;max-width:100%;overflow:clip}.horizontal-controls{flex:0 0 auto}.horizontal-controls .icon-button{display:grid;place-items:center;transition:background .2s,color .2s,transform .2s}.horizontal-controls .icon-button:hover:not(:disabled){background:var(--espresso);color:#fff;transform:translateY(-1px)}.horizontal-controls .icon-button:disabled{opacity:.38;cursor:default}.concern-carousel,.featured-brand-grid{display:flex;gap:clamp(12px,1.5vw,20px);width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;touch-action:pan-x;scrollbar-width:thin;scrollbar-color:#c8aa96 transparent;padding:8px 3px 16px}.concern-carousel:focus-visible,.featured-brand-grid:focus-visible{outline:2px solid var(--orange);outline-offset:2px}.concern-carousel .concern-tile{flex:0 0 clamp(175px,20vw,250px);min-width:0;min-height:190px;scroll-snap-align:start;gap:12px;background:linear-gradient(145deg,#fffaf4,#f6e7dc 60%,#fffdf9);box-shadow:0 8px 22px #3a211c0a;transition:transform .22s,box-shadow .22s,border-color .22s}.concern-carousel .concern-tile:hover,.concern-carousel .concern-tile:focus-visible{transform:translateY(-3px);border-color:#d3ad96;box-shadow:0 14px 28px #3a211c14}.concern-carousel .concern-icon{flex:0 0 54px;width:54px;height:54px;display:grid;place-items:center;border-radius:50%;background:#fff;color:var(--pink);box-shadow:0 7px 18px #3a211c10}.concern-carousel .concern-icon svg{width:27px;height:27px}.concern-carousel .concern-label{font-weight:600;line-height:1.35}.concern-carousel .concern-tile small{margin-top:auto}.featured-brand-grid .brand-tile{flex:0 0 clamp(150px,17vw,220px);min-width:0;min-height:96px;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;gap:12px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,#fff,#fffaf4);box-shadow:0 6px 18px #3a211c08;font-size:clamp(15px,1.4vw,20px);font-weight:600;letter-spacing:.02em;text-align:center;transition:transform .22s,box-shadow .22s,border-color .22s}.featured-brand-grid .brand-tile:hover,.featured-brand-grid .brand-tile:focus-visible{transform:translateY(-3px);border-color:#d3ad96;box-shadow:0 12px 24px #3a211c12}.featured-brand-grid .brand-wordmark-text{overflow-wrap:anywhere}.featured-brand-grid .brand-tile>span[aria-hidden=true]{color:var(--orange)}.concern-carousel::-webkit-scrollbar,.featured-brand-grid::-webkit-scrollbar{height:7px}.concern-carousel::-webkit-scrollbar-track,.featured-brand-grid::-webkit-scrollbar-track{background:transparent}.concern-carousel::-webkit-scrollbar-thumb,.featured-brand-grid::-webkit-scrollbar-thumb{background:#c8aa96;border-radius:99px}
 @media(max-width:700px){.concern-carousel,.featured-brand-grid{gap:12px}.concern-carousel .concern-tile{flex-basis:clamp(124px,calc((100vw - 58px)/2),190px);min-height:172px;padding:16px}.featured-brand-grid .brand-tile{flex-basis:clamp(124px,calc((100vw - 58px)/2),170px);min-height:84px;padding:14px;font-size:15px}.section-heading{gap:12px}.horizontal-controls{gap:5px}.horizontal-controls .icon-button{width:34px;height:34px}.horizontal-controls>a{display:none}}
-
-/* Seamless home marquees: keep the viewport full width and animate the duplicated track. */
-.infinite-carousel.brand-marquee,.infinite-carousel.concern-marquee{display:block;width:100%;max-width:100%;overflow:hidden;animation:none}
-.infinite-carousel .infinite-carousel-track{width:max-content;animation:infinite-home-marquee var(--marquee-duration,48s) linear infinite}
-.infinite-carousel.brand-marquee:hover .infinite-carousel-track,.infinite-carousel.concern-marquee:hover .infinite-carousel-track,.infinite-carousel:focus-within .infinite-carousel-track{animation-play-state:paused}
-@keyframes infinite-home-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* Refined storefront cart and product add feedback. */
 .cart-overlay{display:flex;justify-content:flex-end;align-items:stretch;padding:0;background:#2217138c;backdrop-filter:blur(5px)}
@@ -661,21 +652,22 @@ button:disabled,.button:disabled{box-shadow:0 3px 9px #3a211c12!important}
 .benefit-bar-icon svg{display:block;width:22px;height:22px;fill:none;stroke:#b96744;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:700px){.benefit-bar{margin-bottom:32px}}
 
-/* Seamless, pause-on-focus homepage marquees for concerns and brands. */
-.infinite-carousel{width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;padding:10px 2px 18px;overscroll-behavior-x:contain;scrollbar-width:none;touch-action:pan-x;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+/* Seamless, swipeable infinite homepage carousels for concerns and brands. */
+.infinite-carousel{display:block;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;padding:10px 2px 18px;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
 .infinite-carousel::-webkit-scrollbar{display:none}
 .infinite-carousel:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
-.infinite-carousel-track{display:flex;width:max-content;will-change:transform;animation:infinite-home-marquee var(--marquee-duration,48s) linear infinite}
+.infinite-carousel-track{display:flex;width:max-content;min-width:100%;will-change:scroll-position}
 .infinite-carousel-group{display:flex;flex:0 0 auto;align-items:stretch;gap:clamp(12px,1.5vw,20px);padding-right:clamp(12px,1.5vw,20px)}
-.infinite-carousel:hover .infinite-carousel-track,.infinite-carousel:focus-within .infinite-carousel-track{animation-play-state:paused}
-@keyframes infinite-home-marquee{to{transform:translateX(-50%)}}
+.infinite-carousel-group[aria-hidden="true"]{pointer-events:none;user-select:none}
 .infinite-carousel .concern-tile{flex:0 0 clamp(175px,20vw,250px);min-width:0;min-height:190px;gap:12px;scroll-snap-align:start}
 .infinite-carousel .concern-icon{flex:0 0 54px;width:54px;height:54px;display:grid;place-items:center;border:1px solid #f0e0d5;border-radius:50%;background:linear-gradient(145deg,#fff,#fff5ed);color:#bd6849;box-shadow:0 8px 20px #3a211c10}
 .infinite-carousel .concern-icon svg{display:block;width:26px;height:26px;animation:none}
 .infinite-carousel .brand-tile{flex:0 0 clamp(122px,13vw,172px);min-width:0;min-height:76px;padding:10px;scroll-snap-align:start}
+.infinite-carousel .brand-tile{animation:none}
 .infinite-carousel .brand-logo{max-width:calc(100% - 16px);max-height:38px}
 .infinite-carousel .brand-wordmark-text{font-size:clamp(13px,1vw,16px)}
-@media(prefers-reduced-motion:reduce){.infinite-carousel-track{animation:none}.infinite-carousel-group[aria-hidden="true"]{display:none}}
+@media(max-width:700px){.infinite-carousel{padding:8px 1px 16px;mask-image:linear-gradient(90deg,transparent,#000 2%,#000 98%,transparent)}.infinite-carousel .concern-tile{flex-basis:clamp(150px,61vw,220px);min-height:178px}.infinite-carousel .brand-tile{flex-basis:clamp(130px,42vw,170px);min-height:78px}}
+@media(prefers-reduced-motion:reduce){.infinite-carousel-group[aria-hidden="true"]{display:none}}
 
 /* Signed-in account dashboard */
 .account-dashboard{display:grid;gap:clamp(22px,3vw,34px);width:min(1440px,100%);margin:0 auto;padding:clamp(34px,5vw,76px) clamp(20px,5vw,76px) 90px}

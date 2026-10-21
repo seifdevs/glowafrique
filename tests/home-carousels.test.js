@@ -49,17 +49,16 @@ test('homepage brand carousel uses genuine local assets and filtered brand route
   }
 });
 
-test('both homepage carousels support horizontal scroll, snap, and reduced motion', () => {
-  assert.match(styles, /\.concern-carousel,\.featured-brand-grid\{[^}]*overflow-x:auto/);
-  assert.match(styles, /scroll-snap-type:x mandatory/);
+test('both homepage carousels loop continuously, remain swipeable, and respect reduced motion', () => {
+  assert.match(styles, /\.infinite-carousel\{[^}]*overflow-x:auto/);
   assert.match(styles, /touch-action:pan-x/);
-  assert.match(
-    styles,
-    /prefers-reduced-motion:reduce\)\{\.concern-carousel,\.featured-brand-grid\{scroll-behavior:auto/,
-  );
+  assert.match(styles, /@media\(max-width:700px\)\{\.infinite-carousel/);
+  assert.match(app, /viewport\.scrollLeft \+=/);
+  assert.match(app, /viewport\.scrollLeft %= width/);
+  assert.match(app, /ResizeObserver\(updateCopies\)/);
+  assert.match(app, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
   assert.match(app, /className={`infinite-carousel \$\{variant\}-marquee`}/);
   assert.match(app, /className="infinite-carousel-track"/);
   assert.match(app, /aria-hidden="true" inert/);
-  assert.match(styles, /animation:infinite-home-marquee[^}]*infinite/);
-  assert.match(styles, /prefers-reduced-motion:reduce\)\{\.infinite-carousel-track\{animation:none/);
+  assert.match(styles, /\.infinite-carousel-group\[aria-hidden="true"\]\{display:none\}/);
 });
