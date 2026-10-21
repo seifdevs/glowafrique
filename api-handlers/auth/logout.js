@@ -1,6 +1,7 @@
 import {
   authHeaders,
   destroySession,
+  hasControlSession,
   methodNotAllowed,
   rateLimit,
   sameOriginRequest,
@@ -11,7 +12,7 @@ export default async function logout(req, res) {
   if (
     methodNotAllowed(req, res, 'POST') ||
     sameOriginRequest(req, res) ||
-    (await rateLimit(req, res, 'auth-logout'))
+    (!hasControlSession(req) && (await rateLimit(req, res, 'auth-logout')))
   )
     return;
   try {
