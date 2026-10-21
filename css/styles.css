@@ -843,3 +843,8 @@ button:disabled,.button:disabled{box-shadow:0 3px 9px #3a211c12!important}
   .loyalty-banner{margin:12px;padding:16px}
 }
 @media(prefers-reduced-motion:reduce){.product-card .product-image img{transition:none}}
+
+.admin-order-preview{margin:10px 0 4px;padding:11px 13px;border:1px solid #efdfd3;border-radius:12px;background:#fffaf5;color:#634a40;font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+.admin-order-preview strong{color:#3a211c}
+.admin-order-details>summary{min-height:48px}
+@media(max-width:700px){.admin-order-preview{font-size:12px;padding:10px 11px}.admin-order-details>summary{align-items:flex-start;flex-wrap:wrap}.admin-order-details>summary span{margin-left:0}}

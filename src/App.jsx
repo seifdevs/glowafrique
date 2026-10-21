@@ -1678,7 +1678,11 @@ function AdminPage() {
               <option value="cancelled">Cancelled</option>
             </select>
           </label>
-          {orders.map((order) => (
+          {orders.map((order) => {
+            const orderItems = Array.isArray(order.items) ? order.items : [];
+            const orderItemName = (item) => item.productName || item.name || item.product?.name || item.productId || item.product?.id || (locale === 'en' ? 'Product' : 'Produit');
+            const orderItemQuantity = (item) => Number(item.quantity ?? item.qty ?? item.count) || 1;
+            return (
             <article className="order-card" key={order.orderNumber}>
               <h2>{order.orderNumber}</h2>
               <p>
@@ -1693,6 +1697,41 @@ function AdminPage() {
               <p>
                 {order.customer?.fullName} · {order.customer?.email}
               </p>
+              <p className="admin-order-preview">
+                <strong>{locale === 'en' ? 'Order:' : 'Commande :'}</strong>{' '}
+                {orderItems.length
+                  ? orderItems.map((item) => `${orderItemName(item)} × ${orderItemQuantity(item)}`).join(' · ')
+                  : locale === 'en' ? 'Product details unavailable' : 'Détails des produits indisponibles'}
+              </p>
+              <details className="admin-order-details">
+                <summary>
+                  {locale === 'en' ? 'Order items and notes' : 'Articles et notes de commande'}
+                  <span>{orderItems.length} {locale === 'en' ? 'products' : 'produits'}</span>
+                </summary>
+                <div className="admin-order-details-content">
+                  {orderItems.length ? (
+                    <ul className="admin-order-item-list">
+                      {orderItems.map((item, index) => (
+                        <li key={`${item.productId || item.productName || item.name || index}-${index}`}>
+                          <span>
+                            <strong>{orderItemName(item)}</strong>
+                            {item.variant ? <small>{item.variant}</small> : null}
+                            <small>{locale === 'en' ? 'Quantity' : 'Quantité'}: {orderItemQuantity(item)}</small>
+                          </span>
+                          <strong>{item.lineTotalXof == null ? item.unitPriceXof == null ? '—' : money(item.unitPriceXof * orderItemQuantity(item)) : money(item.lineTotalXof)}</strong>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : <p>{locale === 'en' ? 'No product details were saved for this order.' : 'Aucun détail produit enregistré pour cette commande.'}</p>}
+                  {order.customer?.deliveryInstructions ? (
+                    <p className="admin-order-note"><strong>{locale === 'en' ? 'Delivery notes' : 'Instructions de livraison'}:</strong> {order.customer.deliveryInstructions}</p>
+                  ) : null}
+                  <p className="admin-order-item-total">
+                    {locale === 'en' ? 'Products subtotal' : 'Sous-total des produits'}
+                    <strong>{order.subtotalXof == null ? '—' : money(order.subtotalXof)}</strong>
+                  </p>
+                </div>
+              </details>
               {order.paymentMethod === 'wave' && order.paymentStatus === 'awaiting_verification' ? (
                 <div className="admin-payment-review">
                   {order.paymentProofId ? (
@@ -1862,7 +1901,8 @@ function AdminPage() {
                 </div>
               ) : null}
             </article>
-          ))}
+            );
+          })}
         </>
       ) : null}
     </section>
