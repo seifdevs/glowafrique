@@ -364,7 +364,7 @@ export const PRODUCTS = [
       "Peau sèche",
       "Peau terne"
     ],
-    "price": 9500,
+    "price": 6000,
     "oldPrice": null,
     "bestSeller": true,
     "isNew": false,
