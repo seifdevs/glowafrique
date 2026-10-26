@@ -395,8 +395,8 @@ export const PRODUCTS = [
     ],
     "_keywordMatches": [],
     "priceCurrency": "XOF",
-    "pricingType": "beta",
-    "isBetaPrice": true,
+    "pricingType": "retail",
+    "isBetaPrice": false,
     "content": {
       "en": {
         "description": "",
