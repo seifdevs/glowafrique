@@ -18,6 +18,12 @@ const LOGOS = {
   KUNDAL: '/assets/brands/kundal.png',
   MEDICUBE: '/assets/brands/medicube.png',
 };
+const SOLD_PER_SHEET_PRODUCT_IDS = new Set([
+  'biodance-bio-collagen-real-deep-mask',
+  'biodance-rejuvenating-caviar-pdrn-mask',
+  'medicube-pdrn-collagen-jelly-eye-mask',
+  'medicube-pdrn-gel-mask',
+]);
 const COPY = {
   en: {
     home: 'Home',
@@ -56,6 +62,7 @@ const COPY = {
     continue: 'Continue Shopping',
     noPrice: 'Price Pending',
     pricePending: 'Pricing Will Be Confirmed Before Ordering',
+    soldPerSheet: '⚠ Sold per one sheet',
     clearFilters: 'Clear Filters',
     filterResults: 'Products',
     loading: 'Loading…',
@@ -147,6 +154,7 @@ const COPY = {
     continue: 'Continuer Mes Achats',
     noPrice: 'Prix En Attente',
     pricePending: 'Prix À Confirmer Avant Toute Commande',
+    soldPerSheet: '⚠ Vendu à l’unité : 1 feuille',
     clearFilters: 'Effacer Les Filtres',
     filterResults: 'Produits',
     loading: 'Chargement…',
@@ -281,6 +289,11 @@ function ProductCard({ product }) {
             ? text(locale, 'noPrice')
             : money(product.price, product.priceCurrency)}
         </p>
+        {SOLD_PER_SHEET_PRODUCT_IDS.has(product.id) ? (
+          <p className="sold-per-sheet-note" role="note">
+            {text(locale, 'soldPerSheet')}
+          </p>
+        ) : null}
         <AddToBagButton product={product} className="button small" showQuantity={false} />
       </div>
     </article>
@@ -861,6 +874,11 @@ function ProductPage({ id }) {
               ? text(locale, 'noPrice')
               : money(product.price, product.priceCurrency)}
           </p>
+          {SOLD_PER_SHEET_PRODUCT_IDS.has(product.id) ? (
+            <p className="sold-per-sheet-note" role="note">
+              {text(locale, 'soldPerSheet')}
+            </p>
+          ) : null}
           <p className="muted">{product.category}</p>
           <AddToBagButton product={product} className="button product-add" showQuantity />
           <p className="muted">{text(locale, 'deliveryNote')}</p>

@@ -874,3 +874,5 @@ button:disabled,.button:disabled{box-shadow:0 3px 9px #3a211c12!important}
   @keyframes drawer-scrim-in{from{opacity:0}to{opacity:1}}
 }
 @media(prefers-reduced-motion:reduce){.category-nav,.category-nav *,.mobile-nav-scrim{animation:none!important;transition:none!important}}
+.sold-per-sheet-note{display:table;width:max-content;max-width:100%;margin:0 0 12px;padding:6px 9px;border:1px solid #e8c39d;border-radius:8px;background:#fff0df;color:#7a421f;font-size:12px;font-weight:700;line-height:1.35}
+.product-buy .sold-per-sheet-note{margin:0 0 14px;font-size:13px}

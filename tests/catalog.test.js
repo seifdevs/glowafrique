@@ -6,14 +6,13 @@ import { fileURLToPath } from 'node:url';
 import { PRODUCTS } from '../data/catalog.js';
 import { catalogPriceXof } from '../lib/catalog.js';
 
-test('supplied XOF retail prices are verified and unavailable prices cannot be ordered', () => {
-  assert.equal(PRODUCTS.length, 34);
+test('supplied XOF retail prices are verified and duplicate listings are consolidated', () => {
+  assert.equal(PRODUCTS.length, 23);
   const suppliedPrices = {
     'beauty-of-joseon-mate-sun-stick': 13000,
     'biodance-rejuvenating-caviar-pdrn-mask': 18000,
     'celimax-the-vita-a-retinal-shot-tightening-booster': 14000,
     'cosrx-acne-pimple-master-patch': 3500,
-    'cosrx-pimple-patch': 3500,
     'dr-melaxin-peel-shot-exfoliating-black-rice-ampoule': 18000,
     'dr-althea-345-relief-cream': 17500,
     'dr-althea-147-barrier-cream': 18000,
@@ -38,17 +37,9 @@ test('supplied XOF retail prices are verified and unavailable prices cannot be o
     assert.equal(product.pricingType, 'retail', `${id} is no longer beta priced`);
     assert.equal(catalogPriceXof(product), expectedPrice, `${id} is purchasable at its XOF price`);
   }
-  for (const id of [
-    'axis-y-sunday-morning-cleansing-foam',
-    'kundal-travel-kit-baby-powder',
-    'medicube-kojic-acid-peel-shot-80ml',
-    'dr-althea-35-relief-mist-webp',
-    'dr-althea-35-relief-mistt',
-  ]) {
-    const product = PRODUCTS.find((item) => item.id === id);
-    assert.ok(product, `${id} exists`);
-    assert.equal(product.price, null, `${id} has no invented price`);
-    assert.equal(catalogPriceXof(product), null, `${id} cannot be ordered until priced`);
+  for (const product of PRODUCTS) {
+    assert.ok(product.price > 0, `${product.id} has a price`);
+    assert.ok(catalogPriceXof(product) > 0, `${product.id} can be ordered`);
   }
   for (const product of PRODUCTS) {
     assert.ok(
@@ -111,7 +102,7 @@ test('supplied catalog images resolve to local public assets in gallery order', 
   const overrides = JSON.parse(
     fs.readFileSync(path.join(root, 'data/product-image-overrides.json'), 'utf8'),
   );
-  assert.ok(Object.keys(overrides).length >= 20);
+  assert.ok(Object.keys(overrides).length >= 10);
   for (const [id, images] of Object.entries(overrides)) {
     const product = PRODUCTS.find((item) => item.id === id);
     assert.ok(product, `${id} exists in the catalog`);

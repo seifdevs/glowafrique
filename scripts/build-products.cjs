@@ -17,7 +17,9 @@ const CSV_PATH = path.join(ROOT, 'products-edit.csv');
 const REPORT_PATH = path.join(__dirname, 'import-report.md');
 const IMAGE_CLASSIFICATION_PATH = path.join(ROOT, 'data', 'image-classification.csv');
 const PRODUCT_IMAGE_OVERRIDES_PATH = path.join(ROOT, 'data', 'product-image-overrides.json');
+const PRODUCT_COVERS_PATH = path.join(ROOT, 'data', 'product-covers.json');
 const DESCRIPTIONS_REPORT_PATH = path.join(ROOT, 'data', 'descriptions-report.csv');
+const PRODUCT_MERGES_PATH = path.join(ROOT, 'data', 'product-merges.json');
 const IMAGE_EXTENSIONS = new Set([
   '.jpg',
   '.jpeg',
@@ -279,6 +281,25 @@ function makeAutoProducts(files) {
     };
   });
 }
+function mergeDuplicateProducts(products) {
+  if (!fs.existsSync(PRODUCT_MERGES_PATH)) return products;
+  const merges = JSON.parse(fs.readFileSync(PRODUCT_MERGES_PATH, 'utf8'));
+  const byId = new Map(products.map((product) => [product.id, product]));
+  const removed = new Set();
+  for (const [canonicalId, duplicateIds] of Object.entries(merges)) {
+    const canonical = byId.get(canonicalId);
+    if (!canonical) throw new Error(`Merge target not found: ${canonicalId}`);
+    for (const duplicateId of duplicateIds) {
+      const duplicate = byId.get(duplicateId);
+      if (!duplicate) throw new Error(`Duplicate product not found: ${duplicateId}`);
+      canonical.images = [...new Set([...canonical.images, ...duplicate.images])];
+      canonical._sourceFiles = [...new Set([...canonical._sourceFiles, ...duplicate._sourceFiles])];
+      canonical.concerns = [...new Set([...canonical.concerns, ...duplicate.concerns])];
+      removed.add(duplicateId);
+    }
+  }
+  return products.filter((product) => !removed.has(product.id));
+}
 const HERO_INDEXES = {
   'kundal-travel-kit-baby-powder': [0],
   'medicube-deodorant-vanilla-pistachio': [1],
@@ -329,6 +350,15 @@ function classificationRows(products) {
   const old = fs.existsSync(IMAGE_CLASSIFICATION_PATH)
     ? readCsv(fs.readFileSync(IMAGE_CLASSIFICATION_PATH, 'utf8'))
     : [];
+  const merges = fs.existsSync(PRODUCT_MERGES_PATH)
+    ? JSON.parse(fs.readFileSync(PRODUCT_MERGES_PATH, 'utf8'))
+    : {};
+  const canonicalById = new Map(
+    Object.entries(merges).flatMap(([canonical, aliases]) => aliases.map((alias) => [alias, canonical])),
+  );
+  old.forEach((row) => {
+    row.product = canonicalById.get(row.product) || row.product;
+  });
   const prior = new Map(old.map((r) => [r.file, r]));
   const previousOrder = new Map();
   old.forEach((r) => {
@@ -422,6 +452,19 @@ function applyProductImageOverrides(products) {
     const images = overrides[product.id];
     if (!Array.isArray(images) || images.length === 0) continue;
     product.images = images;
+    product.noGoodHero = false;
+  }
+}
+function applyProductCovers(products) {
+  if (!fs.existsSync(PRODUCT_COVERS_PATH)) return;
+  const covers = JSON.parse(fs.readFileSync(PRODUCT_COVERS_PATH, 'utf8'));
+  for (const product of products) {
+    const cover = covers[product.id];
+    if (!cover) continue;
+    if (!fs.existsSync(path.join(ROOT, 'public', cover))) {
+      throw new Error(`Cover image not found for ${product.id}: ${cover}`);
+    }
+    product.images = [cover, ...product.images.filter((image) => image !== cover)];
     product.noGoodHero = false;
   }
 }
@@ -632,7 +675,7 @@ async function run() {
     return;
   }
   const files = listImages(IMAGE_ROOT),
-    auto = makeAutoProducts(files);
+    auto = mergeDuplicateProducts(makeAutoProducts(files));
   const folderCounts = new Map();
   for (const f of files) {
     const info = folderInfo(f);
@@ -665,6 +708,7 @@ async function run() {
   const imageRows = classificationRows(products);
   orderAndApplyClassifications(products, imageRows);
   applyProductImageOverrides(products);
+  applyProductCovers(products);
   if (!csvExists) fs.writeFileSync(CSV_PATH, writeCsv(editRows));
   else {
     const existing = new Set(csvRows.map((r) => r.id));
