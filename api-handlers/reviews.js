@@ -86,18 +86,18 @@ export default async function reviewsApi(req, res) {
         await reviews.insertOne(review, { session });
         const updated = await users.findOneAndUpdate(
           { _id: user._id },
-          { $inc: { points: 15 }, $set: { updatedAt: new Date() } },
+          { $inc: { points: 20 }, $set: { updatedAt: new Date() } },
           { returnDocument: 'after', session, projection: { points: 1 } },
         );
         const updatedUser = updatedDocument(updated);
-        review.pointsBalance = Number((updatedUser && updatedUser.points) || 15);
+        review.pointsBalance = Number((updatedUser && updatedUser.points) || 20);
       });
     } finally {
       await session.endSession();
     }
     return res.status(201).json({
       review: { name, rating, text, createdAt: review.createdAt },
-      pointsAwarded: 15,
+      pointsAwarded: 20,
       points: review.pointsBalance,
     });
   } catch (error) {

@@ -52,7 +52,7 @@ const COPY = {
     cookies: 'Cookie Policy',
     howto: 'How To Use',
     points: 'Glow Points',
-    pointsExplain: 'Earn 1 point for each 630 CFA spent and 15 points for each approved review.',
+    pointsExplain: 'Earn 1 point for every 585 CFA spent and 20 points for one review per product.',
     delivery: 'Free Delivery On Orders Of 45,000 CFA Or More',
     authentic: 'Thoughtfully selected beauty and care products.',
     learn: 'Explore The Collection',
@@ -100,7 +100,7 @@ const COPY = {
     review: 'Write A Review',
     rating: 'Rating',
     reviewText: 'Your Review',
-    signInReview: 'Sign in to review this product. Approved reviews earn 15 Glow Points.',
+    signInReview: 'Sign in to review this product. One review per product earns 20 Glow Points.',
     success: 'Thank you. Your request was received.',
     unavailable: 'This feature is temporarily unavailable. Please contact customer support.',
     language: 'Français',
@@ -144,7 +144,7 @@ const COPY = {
     cookies: 'Politique Relative Aux Cookies',
     howto: 'Mode D’emploi',
     points: 'Glow Points',
-    pointsExplain: 'Gagnez 1 point par tranche de 630 CFA dépensés et 15 points par avis approuvé.',
+    pointsExplain: 'Gagnez 1 point par tranche de 585 CFA dépensés et 20 points par avis et produit.',
     delivery: 'Livraison Offerte Dès 45 000 CFA D’achat',
     authentic: 'Une sélection de produits de beauté et de soin.',
     learn: 'Découvrir La Sélection',
@@ -194,7 +194,7 @@ const COPY = {
     rating: 'Note',
     reviewText: 'Votre Avis',
     signInReview:
-      'Connectez-vous pour donner votre avis. Chaque avis approuvé rapporte 15 Glow Points.',
+      'Connectez-vous pour donner votre avis. Un avis par produit rapporte 20 Glow Points.',
     success: 'Merci. Votre demande a été reçue.',
     unavailable:
       'Cette fonctionnalité est momentanément indisponible. Contactez le service client.',
@@ -541,6 +541,7 @@ function HomePage() {
             fetchPriority="high"
           />
         </picture>
+        <PageLink className="hero-cta-link" to="/products" aria-label={locale === 'en' ? 'Shop the boutique' : 'Visiter la boutique'} />
         <div className="hero-copy">
           <p className="eyebrow">GlowAfrique · Côte d’Ivoire</p>
           <h1>{text(locale, 'skin')}</h1>
@@ -548,6 +549,10 @@ function HomePage() {
             {text(locale, 'learn')}
           </PageLink>
         </div>
+      </section>
+      <section className="section new-stock-message">
+        <p className="eyebrow">GlowAfrique · {locale === 'en' ? 'Coming Soon' : 'Bientôt disponible'}</p>
+        <h2>{locale === 'en' ? 'New Stock Coming Soon' : 'De Nouveaux Stocks Arrivent Bientôt'}</h2>
       </section>
       <section className="loyalty-banner">
         <span aria-hidden="true">✦</span>
@@ -827,7 +832,7 @@ function ProductPage({ id }) {
       setReviews((items) => [data.review, ...items]);
       if (Number.isFinite(Number(data.points)))
         setUser((current) => (current ? { ...current, points: Number(data.points) } : current));
-      setFeedback(`${text(locale, 'success')} +15 ${text(locale, 'pointsCount')}.`);
+      setFeedback(`${text(locale, 'success')} +20 ${text(locale, 'pointsCount')}.`);
       formElement.reset();
     } catch (error) {
       setFeedback(error.message);
@@ -1168,6 +1173,56 @@ function ContactPage() {
       </section>
     </>
   );
+}
+
+function PreOrdersPage() {
+  const { locale } = useStore();
+  const [busy, setBusy] = useState(false);
+  const [feedback, setFeedback] = useState('');
+  async function submit(event) {
+    event.preventDefault();
+    setBusy(true);
+    setFeedback('');
+    const form = event.currentTarget;
+    const values = new FormData(form);
+    const image = values.get('image');
+    try {
+      if (!(image instanceof File) || !image.size) throw new Error(locale === 'en' ? 'Please attach a product image.' : 'Veuillez joindre une image du produit.');
+      if (image.size > 4 * 1024 * 1024) throw new Error(locale === 'en' ? 'The product image must be under 4 MB.' : 'L’image du produit doit faire moins de 4 Mo.');
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(image.type)) throw new Error(locale === 'en' ? 'Upload a JPEG, PNG, or WebP image.' : 'Téléversez une image JPEG, PNG ou WebP.');
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error(locale === 'en' ? 'The image could not be read.' : 'Impossible de lire l’image.'));
+        reader.readAsDataURL(image);
+      });
+      const response = await fetch('/api/pre-orders', {
+        method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          product: values.get('product'), name: values.get('name'), email: values.get('email'), phone: values.get('phone'),
+          image: { mimeType: image.type, name: image.name, data: String(dataUrl).split(',')[1] },
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || text(locale, 'unavailable'));
+      setFeedback(locale === 'en' ? 'Thanks! Your pre-order request and image have been sent.' : 'Merci ! Votre demande de précommande et votre image ont été envoyées.');
+      form.reset();
+    } catch (error) {
+      setFeedback(error.message || text(locale, 'unavailable'));
+    } finally { setBusy(false); }
+  }
+  return <>
+    <section className="page-intro"><p className="eyebrow">GlowAfrique</p><h1>{locale === 'en' ? 'Pre-Orders' : 'Précommandes'}</h1><p>{locale === 'en' ? 'Tell us what you would like us to bring in next.' : 'Dites-nous quel produit vous souhaitez retrouver en boutique.'}</p></section>
+    <section className="contact-layout"><form className="form-card" onSubmit={submit}>
+      <label>{locale === 'en' ? 'Product you want' : 'Produit souhaité'}<input name="product" required maxLength="180" /></label>
+      <label>{locale === 'en' ? 'Product screenshot or image' : 'Capture ou image du produit'}<input name="image" type="file" accept="image/jpeg,image/png,image/webp" required /><span className="form-note">JPEG, PNG, WebP · max 4 MB</span></label>
+      <label>{text(locale, 'name')}<input name="name" autoComplete="name" required maxLength="120" /></label>
+      <label>{text(locale, 'email')}<input name="email" type="email" autoComplete="email" required maxLength="254" /></label>
+      <label>{locale === 'en' ? 'Phone number' : 'Numéro de téléphone'}<input name="phone" type="tel" autoComplete="tel" required maxLength="32" /></label>
+      <button className="button" disabled={busy}>{busy ? text(locale, 'loading') : locale === 'en' ? 'Send Pre-Order Request' : 'Envoyer La Demande'}</button>
+      <p role="status">{feedback}</p>
+    </form></section>
+  </>;
 }
 
 function PoliciesPage({ type }) {
@@ -2264,8 +2319,8 @@ function Header() {
               ))}
           </div>
         </div>
-        <PageLink className="mobile-nav-link" to="/policies/how-to-use"><NavIcon name="guide" /><span>{text(locale, 'howto')}</span><span className="mobile-nav-arrow">↗</span></PageLink>
         <PageLink className="mobile-nav-link" to="/contact"><NavIcon name="contact" /><span>{text(locale, 'contact')}</span><span className="mobile-nav-arrow">↗</span></PageLink>
+        <PageLink className="mobile-nav-link" to="/pre-orders"><NavIcon name="products" /><span>{locale === 'en' ? 'Pre-Orders' : 'Précommandes'}</span><span className="mobile-nav-arrow">↗</span></PageLink>
         <div className="mobile-nav-caption mobile-nav-account-caption">{locale === 'en' ? 'YOUR GLOW' : 'VOTRE ÉCLAT'}</div>
         <div className="mobile-nav-utilities">
           <PageLink to="/account" onClick={() => setMenuOpen(false)}><NavIcon name="account" /><span>{text(locale, 'account')}</span><span className="mobile-nav-arrow">↗</span></PageLink>
@@ -2284,6 +2339,7 @@ function Footer() {
   const { locale } = useStore();
   const links = [
     ['/contact', text(locale, 'contact')],
+    ['/pre-orders', locale === 'en' ? 'Pre-Orders' : 'Précommandes'],
     ['/policies/how-to-order', locale === 'en' ? 'How To Order' : 'Comment Commander'],
     ['/policies/returns', text(locale, 'return')],
     ['/policies/shipping', text(locale, 'shipping')],
@@ -2339,7 +2395,7 @@ function Footer() {
               Instagram ↗
             </a>
             <a
-              href="https://www.tiktok.com/@glowafrique7?_r=1&_t=ZS-9AdIk5iQXFU"
+              href="https://www.tiktok.com/@glowafrique7"
               target="_blank"
               rel="noreferrer"
               aria-label="TikTok"
@@ -2396,6 +2452,7 @@ function CartAndSocialLinks() {
   const [quoteEmail, setQuoteEmail] = useState('');
   const [selectedShippingZone, setSelectedShippingZone] = useState('');
   const [paymentSelection, setPaymentSelection] = useState('cash_on_delivery');
+  const [deliveryProvider, setDeliveryProvider] = useState('standard');
   const [proofPreview, setProofPreview] = useState('');
   const selectedDeliveryZone = DELIVERY_ZONES.find((zone) => zone.id === selectedShippingZone);
   const cartProductSubtotalXof = cart.reduce((subtotal, item) => {
@@ -2439,7 +2496,7 @@ function CartAndSocialLinks() {
         .then((r) => (r.ok ? r.json() : null))
         .then((data) => {
           setQuote(data);
-          if (data?.quoteStatus !== 'ready') setPaymentSelection('cash_on_delivery');
+          if (data?.quoteStatus !== 'ready') setPaymentSelection(deliveryProvider === 'yango' ? 'wave' : 'cash_on_delivery');
         })
         .catch((error) => {
           if (error.name !== 'AbortError') setQuote(null);
@@ -2449,7 +2506,7 @@ function CartAndSocialLinks() {
       window.clearTimeout(timeout);
       controller.abort();
     };
-  }, [open, cart, checkout, quoteEmail, selectedShippingZone]);
+  }, [open, cart, checkout, quoteEmail, selectedShippingZone, deliveryProvider]);
   function change(id, quantity) {
     idempotencyKey.current = null;
     const safeQuantity = Number.isFinite(Number(quantity))
@@ -2470,6 +2527,7 @@ function CartAndSocialLinks() {
     setQuoteEmail('');
     setSelectedShippingZone('');
     setPaymentSelection('cash_on_delivery');
+    setDeliveryProvider('standard');
     setProofPreview('');
   }
   async function placeOrder(e) {
@@ -2507,6 +2565,7 @@ function CartAndSocialLinks() {
           language: locale,
           idempotencyKey: (idempotencyKey.current ||= crypto.randomUUID()),
           paymentMethod,
+          deliveryProvider,
           waveSenderPhone: data.waveSenderPhone,
           waveProof,
           customer: {
@@ -2693,6 +2752,7 @@ function CartAndSocialLinks() {
                     setCheckout(true);
                     setFeedback('');
                     setPaymentSelection('cash_on_delivery');
+                    setDeliveryProvider('standard');
                     setQuoteEmail('');
                     setSelectedShippingZone('');
                     setQuote(null);
@@ -2724,7 +2784,7 @@ function CartAndSocialLinks() {
                     onChange={(event) => {
                       setQuoteEmail(event.target.value);
                       setQuote(null);
-                      setPaymentSelection('cash_on_delivery');
+                      setPaymentSelection(deliveryProvider === 'yango' ? 'wave' : 'cash_on_delivery');
                     }}
                   />
                 </label>
@@ -2754,7 +2814,7 @@ function CartAndSocialLinks() {
                       onChange={(event) => {
                         setSelectedShippingZone(event.target.value);
                         setQuote(null);
-                        setPaymentSelection('cash_on_delivery');
+                        setPaymentSelection(deliveryProvider === 'yango' ? 'wave' : 'cash_on_delivery');
                       }}
                     >
                       <option value="">
@@ -2813,6 +2873,18 @@ function CartAndSocialLinks() {
                   ) : null}
                 </section>
                 <fieldset className="payment-methods">
+                  <legend>{locale === 'en' ? 'Delivery Option' : 'Mode De Livraison'}</legend>
+                  <label>
+                    <input name="deliveryProvider" type="radio" value="standard" checked={deliveryProvider === 'standard'} onChange={() => { setDeliveryProvider('standard'); if (paymentSelection === 'wave') setPaymentSelection('cash_on_delivery'); }} />
+                    {locale === 'en' ? 'Standard delivery' : 'Livraison standard'}
+                  </label>
+                  <label>
+                    <input name="deliveryProvider" type="radio" value="yango" checked={deliveryProvider === 'yango'} onChange={() => { setDeliveryProvider('yango'); setPaymentSelection('wave'); setProofPreview(''); }} />
+                    {locale === 'en' ? 'Yango delivery' : 'Livraison Yango'}
+                  </label>
+                  <p className="checkout-delivery-note">{locale === 'en' ? 'Delivery rates depend on your selected destination. Yango delivery requires payment via Wave.' : 'Les frais de livraison dépendent de votre destination. La livraison Yango nécessite un paiement par Wave.'}</p>
+                </fieldset>
+                <fieldset className="payment-methods">
                   <legend>{locale === 'en' ? 'Payment Method' : 'Mode De Paiement'}</legend>
                   <label>
                     <input
@@ -2820,6 +2892,8 @@ function CartAndSocialLinks() {
                       type="radio"
                       value="cash_on_delivery"
                       defaultChecked
+                      checked={paymentSelection === 'cash_on_delivery'}
+                      disabled={deliveryProvider === 'yango'}
                       onChange={() => {
                         setPaymentSelection('cash_on_delivery');
                         setProofPreview('');
@@ -2832,6 +2906,7 @@ function CartAndSocialLinks() {
                       name="paymentMethod"
                       type="radio"
                       value="wave"
+                      checked={paymentSelection === 'wave'}
                       disabled={quote?.quoteStatus === 'confirmation-pending' || quote?.quoteStatus === 'select-region' || quote?.quoteStatus === 'enter-email'}
                       onChange={() => setPaymentSelection('wave')}
                     />{' '}
@@ -2843,6 +2918,7 @@ function CartAndSocialLinks() {
                         name="paymentMethod"
                         type="radio"
                         value="paystack"
+                      checked={paymentSelection === 'paystack'}
                         disabled={quote?.quoteStatus !== 'ready'}
                         onChange={() => setPaymentSelection('paystack')}
                       />
@@ -2922,6 +2998,7 @@ function CartAndSocialLinks() {
                   onClick={() => {
                     setCheckout(false);
                     setPaymentSelection('cash_on_delivery');
+                    setDeliveryProvider('standard');
                     setQuoteEmail('');
                     setQuote(null);
                     setProofPreview('');
@@ -2957,6 +3034,7 @@ function RouteContent() {
   if (id) return <ProductPage id={decodeURIComponent(id)} />;
   if (normalized === '/about') return <AboutPage />;
   if (normalized === '/contact') return <ContactPage />;
+  if (normalized === '/pre-orders') return <PreOrdersPage />;
   if (normalized === '/account') return <AccountPage />;
   if (normalized === '/order-confirmation') return <OrderConfirmationPage />;
   if (normalized === '/control' || normalized === '/admin') return <AdminPage />;
@@ -2971,6 +3049,36 @@ function RouteContent() {
       <h1>404</h1>
       <PageLink to="/">{text(location.pathname.startsWith('/en') ? 'en' : 'fr', 'home')}</PageLink>
     </section>
+  );
+}
+
+function LoyaltyWelcome() {
+  const { locale } = useStore();
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    if (sessionStorage.getItem('ga-loyalty-welcome-dismissed')) return;
+    const timer = window.setTimeout(() => setVisible(true), 700);
+    return () => window.clearTimeout(timer);
+  }, []);
+  if (!visible) return null;
+  const dismiss = () => {
+    sessionStorage.setItem('ga-loyalty-welcome-dismissed', 'yes');
+    setVisible(false);
+  };
+  return (
+    <div className="loyalty-welcome-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) dismiss(); }}>
+      <section className="loyalty-welcome" role="dialog" aria-modal="true" aria-labelledby="loyalty-welcome-title">
+        <button type="button" className="icon-button loyalty-welcome-close" aria-label={locale === 'en' ? 'Close' : 'Fermer'} onClick={dismiss}>×</button>
+        <span aria-hidden="true">✦</span>
+        <p className="eyebrow">GLOWAFRIQUE · LOYALTY</p>
+        <h2 id="loyalty-welcome-title">{locale === 'en' ? 'Welcome to Glow Points' : 'Bienvenue aux Glow Points'}</h2>
+        <p>{locale === 'en' ? 'Earn 1 point for every 585 CFA spent and 20 points for one review per product.' : 'Gagnez 1 point par tranche de 585 CFA dépensés et 20 points par avis et produit.'}</p>
+        <div className="loyalty-welcome-actions">
+          <PageLink className="button" to="/account" onClick={dismiss}>{locale === 'en' ? 'Join the program' : 'Rejoindre le programme'}</PageLink>
+          <button type="button" className="text-button" onClick={dismiss}>{locale === 'en' ? 'Maybe later' : 'Plus tard'}</button>
+        </div>
+      </section>
+    </div>
   );
 }
 
@@ -3062,6 +3170,7 @@ export default function App() {
   return (
     <StoreContext.Provider value={value}>
       {!isAdminRoute && !maintenanceEnabled ? <Header /> : null}
+      {!isAdminRoute && !maintenanceEnabled ? <LoyaltyWelcome /> : null}
       <main id="page-content" className={isAdminRoute ? 'admin-shell' : undefined}>
         {maintenanceEnabled && !isAdminRoute ? <StoreMaintenancePage /> : <RouteContent />}
       </main>

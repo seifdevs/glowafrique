@@ -194,6 +194,16 @@
 .hero picture img{position:static;display:block;width:100%;height:auto;aspect-ratio:1366/578;object-fit:contain;object-position:center}
 .hero-copy,.hero-orbit{display:none}
 .hero-cta-link{position:absolute;left:3.6%;top:69%;width:21.5%;height:8%;z-index:2}
+.hero-cta-link:focus-visible{outline:3px solid var(--espresso);outline-offset:4px;border-radius:8px}
+.new-stock-message{text-align:center;margin:12px auto 0;padding:26px 20px;background:linear-gradient(110deg,#fffaf4,#f8e9e4);border:1px solid var(--line);border-radius:var(--radius)}
+.new-stock-message .eyebrow{margin:0;color:var(--orange)}.new-stock-message h2{margin:7px 0 0;font-weight:300}
+.loyalty-welcome-backdrop{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:20px;background:#24151280;backdrop-filter:blur(3px)}
+.loyalty-welcome{position:relative;width:min(470px,100%);padding:38px;border:1px solid var(--line);border-radius:22px;background:var(--ivory);box-shadow:var(--shadow);text-align:center}
+.loyalty-welcome>span{display:grid;place-items:center;width:54px;height:54px;margin:0 auto 14px;border-radius:18px;background:#f8e9e4;color:var(--pink);font-size:27px}
+.loyalty-welcome h2{margin:6px 0;font:300 30px Georgia,serif}.loyalty-welcome p:not(.eyebrow){line-height:1.6;color:#705d55}
+.loyalty-welcome-close{position:absolute;right:12px;top:12px}.loyalty-welcome-actions{display:grid;justify-items:center;gap:6px;margin-top:22px}
+.loyalty-welcome-actions .text-button{margin:0}.checkout-delivery-note{font-size:13px;line-height:1.5;color:#806a62}
+@media(max-width:700px){.loyalty-welcome{padding:30px 22px}.new-stock-message{margin:10px 14px 0}.new-stock-message h2{font-size:26px}}
 
 /* GlowAfrique storefront updates */
 .points-counter{display:inline-flex;align-items:center;gap:5px;padding:7px 11px;border:1px solid var(--line);border-radius:24px;font-size:12px;white-space:nowrap;color:var(--espresso)}

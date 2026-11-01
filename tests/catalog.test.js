@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { PRODUCTS } from '../data/catalog.js';
 import { catalogPriceXof } from '../lib/catalog.js';
@@ -102,13 +103,22 @@ test('supplied catalog images resolve to local public assets in gallery order', 
   const overrides = JSON.parse(
     fs.readFileSync(path.join(root, 'data/product-image-overrides.json'), 'utf8'),
   );
+  const covers = JSON.parse(fs.readFileSync(path.join(root, 'data/product-covers.json'), 'utf8'));
   assert.ok(Object.keys(overrides).length >= 10);
   for (const [id, images] of Object.entries(overrides)) {
     const product = PRODUCTS.find((item) => item.id === id);
     assert.ok(product, `${id} exists in the catalog`);
     assert.ok(images.length > 0, `${id} has a cover or gallery image`);
-    assert.deepEqual(product.images, images, `${id} uses the supplied image order`);
-    for (const image of images) {
+    const expected = [covers[id], ...images].filter(Boolean);
+    const seen = new Set();
+    const uniqueExpected = expected.filter((image) => {
+      const digest = crypto.createHash('sha256').update(fs.readFileSync(path.join(root, 'public', image))).digest('hex');
+      if (seen.has(digest)) return false;
+      seen.add(digest);
+      return true;
+    });
+    assert.deepEqual(product.images, uniqueExpected, `${id} uses each distinct supplied image once`);
+    for (const image of product.images) {
       assert.ok(fs.existsSync(path.join(root, 'public', image)), `${image} is present locally`);
     }
   }

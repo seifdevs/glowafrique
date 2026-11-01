@@ -1,4 +1,5 @@
 import contact from '../api-handlers/contact.js';
+import preOrders from '../api-handlers/pre-orders.js';
 import locations from '../api-handlers/locations.js';
 import newsletter from '../api-handlers/newsletter.js';
 import orderQuote from '../api-handlers/order-quote.js';
@@ -36,6 +37,7 @@ export function isBlockedDuringMaintenance(routeKey) {
 
 export const routeHandlers = Object.freeze({
   contact,
+  'pre-orders': preOrders,
   locations,
   newsletter,
   'order-quote': orderQuote,

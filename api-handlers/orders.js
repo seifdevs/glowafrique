@@ -64,6 +64,7 @@ function safeOrder(order) {
     paymentStatus: order.paymentStatus,
     paymentRejectionReason: order.paymentRejectionReason || null,
     paymentMethod: order.paymentMethod,
+    deliveryProvider: order.deliveryProvider || 'standard',
     currency: order.currency,
     items: order.items,
     customer: order.customer,
@@ -177,6 +178,11 @@ export default async function ordersApi(req, res) {
 
     const body = parseBody(req);
     const paymentMethod = String(body.paymentMethod || '').trim();
+    const deliveryProvider = String(body.deliveryProvider || 'standard').trim();
+    if (!['standard', 'yango'].includes(deliveryProvider))
+      return res.status(400).json({ error: 'Choose a valid delivery option.' });
+    if (deliveryProvider === 'yango' && paymentMethod !== 'wave')
+      return res.status(400).json({ error: 'Yango delivery orders must be paid with Wave.' });
     if (!['cash_on_delivery', 'wave', 'paystack'].includes(paymentMethod))
       return res.status(400).json({ error: 'Choose Cash on Delivery, Wave, or Paystack.' });
     if (paymentMethod === 'paystack' && !process.env.PAYSTACK_SECRET_KEY)
@@ -329,6 +335,7 @@ export default async function ordersApi(req, res) {
       currency: 'XOF',
       status: 'pending',
       paymentMethod,
+      deliveryProvider,
       paymentStatus:
         paymentMethod === 'wave'
           ? 'awaiting_verification'

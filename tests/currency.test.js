@@ -12,11 +12,11 @@ test('keeps XOF prices in XOF without converting twice', () => {
   assert.equal(formatXof(6300), '6,300 XOF');
 });
 
-test('awards one whole point per complete 630 XOF of eligible spending', () => {
-  assert.equal(pointsForXof(629), 0);
-  assert.equal(pointsForXof(630), 1);
-  assert.equal(pointsForXof(1259), 1);
-  assert.equal(pointsForXof(1260), 2);
+test('awards one whole point per complete 585 XOF of eligible spending', () => {
+  assert.equal(pointsForXof(584), 0);
+  assert.equal(pointsForXof(585), 1);
+  assert.equal(pointsForXof(1169), 1);
+  assert.equal(pointsForXof(1170), 2);
 });
 
 test('refuses ambiguous currencies and invalid decimal precision', () => {

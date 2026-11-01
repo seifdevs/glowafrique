@@ -9,7 +9,7 @@ test('Vercel exposes one API function for the existing endpoints', () => {
     .filter((entry) => entry.isFile() && entry.name.endsWith('.js'))
     .map((entry) => entry.name);
   assert.deepEqual(functionFiles, ['router.js']);
-  assert.equal(Object.keys(routeHandlers).length, 18);
+  assert.equal(Object.keys(routeHandlers).length, 19);
 });
 
 test('rewrites preserve all API paths and dispatch nested routes and query strings', () => {
@@ -25,6 +25,7 @@ test('rewrites preserve all API paths and dispatch nested routes and query strin
   }
   const routes = {
     '/api/router?route=contact': 'contact',
+    '/api/router?route=pre-orders': 'pre-orders',
     '/api/router?route=locations': 'locations',
     '/api/router?route=newsletter': 'newsletter',
     '/api/router?route=order-quote': 'order-quote',
@@ -49,7 +50,7 @@ test('rewrites preserve all API paths and dispatch nested routes and query strin
 });
 
 test('maintenance blocks public commerce APIs and keeps admin controls available', () => {
-  for (const route of ['orders', 'order-quote', 'reviews', 'contact', 'newsletter'])
+  for (const route of ['orders', 'order-quote', 'reviews', 'contact', 'pre-orders', 'newsletter'])
     assert.equal(isBlockedDuringMaintenance(route), true, `${route} should be blocked`);
   for (const route of [
     'maintenance',

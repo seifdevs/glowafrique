@@ -22,8 +22,7 @@ export const PRODUCTS = [
     "ingredients": "",
     "beforeAfter": null,
     "images": [
-      "images/catalog/kundal-linen-flower-deodorant-cover.webp",
-      "images/catalog/kundal-linen-flower-deodorant-0.webp"
+      "images/catalog/kundal-linen-flower-deodorant-cover.webp"
     ],
     "_sourceFiles": [
       "assets/products/Body Care/Kundal linen flower deodorant .WEBP"
@@ -70,7 +69,6 @@ export const PRODUCTS = [
     "beforeAfter": null,
     "images": [
       "images/catalog/kundal-travel-kit-baby-powder-cover.jpg",
-      "images/catalog/kundal-travel-kit-baby-powder-0.jpg",
       "images/catalog/kundal-travel-kit-baby-powder-1.webp",
       "images/catalog/kundal-travel-kit-baby-powder-2.webp",
       "images/catalog/kundal-travel-kit-baby-powder-3.webp"
@@ -123,7 +121,6 @@ export const PRODUCTS = [
     "beforeAfter": null,
     "images": [
       "images/catalog/medicube-deodorant-vanilla-pistachio-cover.webp",
-      "images/catalog/medicube-deodorant-vanilla-pistachio-0.webp",
       "images/catalog/medicube-deodorant-vanilla-pistachio-1.jpg",
       "images/catalog/medicube-deodorant-vanilla-pistachio-2.webp",
       "images/catalog/medicube-deodorant-vanilla-pistachio-3.webp",
@@ -178,7 +175,6 @@ export const PRODUCTS = [
     "beforeAfter": null,
     "images": [
       "images/catalog/medicube-glow-vanilla-hair-body-mist-cover.webp",
-      "images/catalog/medicube-glow-vanilla-hair-body-mist-0.webp",
       "images/catalog/medicube-glow-vanilla-hair-body-mist-1.webp"
     ],
     "_sourceFiles": [
@@ -227,7 +223,6 @@ export const PRODUCTS = [
     "beforeAfter": null,
     "images": [
       "images/catalog/kundal-caffeine-scalp-serum-cover.webp",
-      "images/catalog/kundal-caffeine-scalp-serum-0.webp",
       "images/catalog/kundal-caffeine-scalp-serum-1.webp"
     ],
     "_sourceFiles": [
@@ -379,7 +374,6 @@ export const PRODUCTS = [
     "beforeAfter": null,
     "images": [
       "images/catalog/biodance-bio-collagen-real-deep-mask-cover.webp",
-      "images/catalog/biodance-bio-collagen-real-deep-mask-0.webp",
       "images/catalog/biodance-bio-collagen-real-deep-mask-1.webp",
       "images/catalog/biodance-bio-collagen-real-deep-mask-2.webp",
       "images/catalog/biodance-bio-collagen-real-deep-mask-3.webp"
@@ -435,7 +429,6 @@ export const PRODUCTS = [
     "beforeAfter": null,
     "images": [
       "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-cover.webp",
-      "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-0.webp",
       "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-1.webp",
       "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-2.webp",
       "images/catalog/biodance-rejuvenating-caviar-pdrn-mask-3.webp",
@@ -601,7 +594,6 @@ export const PRODUCTS = [
     "beforeAfter": null,
     "images": [
       "images/catalog/dr-althea-147-barrier-cream-cover.webp",
-      "images/catalog/dr-althea-147-barrier-cream-0.webp",
       "images/catalog/dr-althea-147-barrier-cream-1.webp"
     ],
     "_sourceFiles": [
@@ -815,7 +807,6 @@ export const PRODUCTS = [
     "beforeAfter": null,
     "images": [
       "images/catalog/medicube-kojic-acid-capsule-cream-cover.webp",
-      "images/catalog/medicube-kojic-acid-capsule-cream-0.webp",
       "images/catalog/medicube-kojic-acid-capsule-cream-1.png",
       "images/catalog/medicube-kojic-acid-capsule-cream-2.webp"
     ],
@@ -930,7 +921,6 @@ export const PRODUCTS = [
     "beforeAfter": null,
     "images": [
       "images/catalog/medicube-pdrn-collagen-jelly-eye-mask-cover.webp",
-      "images/catalog/medicube-pdrn-collagen-jelly-eye-mask-0.webp",
       "images/catalog/medicube-pdrn-collagen-jelly-eye-mask-1.webp",
       "images/catalog/medicube-pdrn-collagen-jelly-eye-mask-2.webp",
       "images/catalog/medicube-pdrn-collagen-jelly-eye-mask-3.webp"
@@ -1150,7 +1140,6 @@ export const PRODUCTS = [
     "beforeAfter": null,
     "images": [
       "images/catalog/beauty-of-joseon-mate-sun-stick-cover.webp",
-      "images/catalog/beauty-of-joseon-mate-sun-stick-0.webp",
       "images/catalog/beauty-of-joseon-mate-sun-stick-1.webp"
     ],
     "_sourceFiles": [
@@ -1201,7 +1190,6 @@ export const PRODUCTS = [
     "beforeAfter": null,
     "images": [
       "images/catalog/medicube-glow-sunscreen-cover.webp",
-      "images/catalog/medicube-glow-sunscreen-0.webp",
       "images/catalog/medicube-glow-sunscreen-1.png",
       "images/catalog/medicube-glow-sunscreen-2.webp"
     ],

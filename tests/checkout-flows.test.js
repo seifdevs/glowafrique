@@ -236,6 +236,52 @@ test('Wave order attaches its screenshot for administrator review', async () => 
   }
 });
 
+test('Yango delivery requires Wave and is recorded on the order', async () => {
+  const previous = {
+    mongoUri: process.env.MONGODB_URI,
+    shippingFee: process.env.SHIPPING_FEE_XOF,
+    resendKey: process.env.RESEND_API_KEY,
+    resendFrom: process.env.RESEND_FROM_EMAIL,
+  };
+  process.env.MONGODB_URI = 'mongodb://test.invalid/glowafrique';
+  process.env.SHIPPING_FEE_XOF = '0';
+  delete process.env.RESEND_API_KEY;
+  delete process.env.RESEND_FROM_EMAIL;
+  const database = configureDatabase();
+  try {
+    const rejected = response();
+    await ordersApi(checkoutRequest('cash_on_delivery', { deliveryProvider: 'yango' }), rejected);
+    assert.equal(rejected.statusCode, 400);
+    assert.match(rejected.body.error, /Yango.*Wave/i);
+    assert.equal(database.savedOrders.length, 0);
+
+    const image = await readFile(new URL('../public/images/wave.jpeg', import.meta.url));
+    const accepted = response();
+    await ordersApi(checkoutRequest('wave', {
+      deliveryProvider: 'yango',
+      waveSenderPhone: '+2250700000000',
+      waveProof: { mimeType: 'image/jpeg', data: image.toString('base64') },
+    }), accepted);
+    assert.equal(accepted.statusCode, 201);
+    assert.equal(accepted.body.order.paymentMethod, 'wave');
+    assert.equal(accepted.body.order.deliveryProvider, 'yango');
+    assert.equal(database.savedOrders[0].deliveryProvider, 'yango');
+  } finally {
+    if (previous.mongoUri === undefined) delete process.env.MONGODB_URI;
+    else process.env.MONGODB_URI = previous.mongoUri;
+    if (previous.shippingFee === undefined) delete process.env.SHIPPING_FEE_XOF;
+    else process.env.SHIPPING_FEE_XOF = previous.shippingFee;
+    if (previous.resendKey === undefined) delete process.env.RESEND_API_KEY;
+    else process.env.RESEND_API_KEY = previous.resendKey;
+    if (previous.resendFrom === undefined) delete process.env.RESEND_FROM_EMAIL;
+    else process.env.RESEND_FROM_EMAIL = previous.resendFrom;
+    delete globalThis.__glowAfriqueMongoClientPromise;
+    delete globalThis.__glowAfriqueDatabase;
+    delete globalThis.__glowAfriqueRateLimitIndexes;
+    delete globalThis.__glowAfriqueOrderIndexes;
+  }
+});
+
 test('email validation safely rejects a missing customer email', () => {
   assert.equal(validEmail(undefined), false);
 });

@@ -464,8 +464,35 @@ function applyProductCovers(products) {
     if (!fs.existsSync(path.join(ROOT, 'public', cover))) {
       throw new Error(`Cover image not found for ${product.id}: ${cover}`);
     }
-    product.images = [cover, ...product.images.filter((image) => image !== cover)];
+    const seen = new Set();
+    product.images = [cover, ...product.images.filter((image) => image !== cover)].filter((image) => {
+      const decoded = decodeURIComponent(image);
+      const absolute = decoded.startsWith('images/')
+        ? path.join(ROOT, 'public', decoded)
+        : path.join(ROOT, decoded);
+      if (!fs.existsSync(absolute)) return false;
+      const digest = crypto.createHash('sha256').update(fs.readFileSync(absolute)).digest('hex');
+      if (seen.has(digest)) return false;
+      seen.add(digest);
+      return true;
+    });
     product.noGoodHero = false;
+  }
+}
+function removeDuplicateProductImages(products) {
+  for (const product of products) {
+    const seen = new Set();
+    product.images = product.images.filter((image) => {
+      const decoded = decodeURIComponent(image);
+      const absolute = decoded.startsWith('images/')
+        ? path.join(ROOT, 'public', decoded)
+        : path.join(ROOT, decoded);
+      if (!fs.existsSync(absolute)) return false;
+      const digest = crypto.createHash('sha256').update(fs.readFileSync(absolute)).digest('hex');
+      if (seen.has(digest)) return false;
+      seen.add(digest);
+      return true;
+    });
   }
 }
 function applyEdits(auto, csvRows, toXof) {
@@ -709,6 +736,7 @@ async function run() {
   orderAndApplyClassifications(products, imageRows);
   applyProductImageOverrides(products);
   applyProductCovers(products);
+  removeDuplicateProductImages(products);
   if (!csvExists) fs.writeFileSync(CSV_PATH, writeCsv(editRows));
   else {
     const existing = new Set(csvRows.map((r) => r.id));

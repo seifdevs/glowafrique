@@ -24,6 +24,7 @@ const paths = new Set([
   '/collections/concerns',
   '/about',
   '/contact',
+  '/pre-orders',
   '/account',
   '/order-confirmation',
   '/admin',

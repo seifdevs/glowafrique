@@ -12,29 +12,29 @@
 
 ## Produits importés
 
-- **KUNDAL linen flower deodorant** — KUNDAL — Catégorie : Cheveux & corps — Préoccupations : Cheveux & corps — 2 image(s)
+- **KUNDAL linen flower deodorant** — KUNDAL — Catégorie : Cheveux & corps — Préoccupations : Cheveux & corps — 1 image(s)
   - Fichiers : `assets/products/Body Care/Kundal linen flower deodorant .WEBP`
-- **KUNDAL Honey & Macadamia Travel Set** — KUNDAL — Catégorie : Cheveux & corps — Préoccupations : Cheveux & corps — 5 image(s)
+- **KUNDAL Honey & Macadamia Travel Set** — KUNDAL — Catégorie : Cheveux & corps — Préoccupations : Cheveux & corps — 4 image(s)
   - Fichiers : `assets/products/Body Care/KUNDAL Travel KIT-baby powder.JPG`, `assets/products/Body Care/KUNDAL Travel KIT-baby powder.WEBP`, `assets/products/Body Care/KUNDAL Travel KIT-baby powder(1).WEBP`, `assets/products/Body Care/KUNDAL Travel KIT-baby powder(2).WEBP`
-- **MEDICUBE deodorant vanilla pistachio** — MEDICUBE — Catégorie : Cheveux & corps — Préoccupations : Cheveux & corps — 6 image(s)
+- **MEDICUBE deodorant vanilla pistachio** — MEDICUBE — Catégorie : Cheveux & corps — Préoccupations : Cheveux & corps — 5 image(s)
   - Fichiers : `assets/products/Body Care/Medicube deodorant vanilla pistachio.JPG`, `assets/products/Body Care/Medicube deodorant vanilla pistachio.WEBP`, `assets/products/Body Care/Medicube deodorant vanilla pistachio(1).WEBP`, `assets/products/Body Care/Medicube deodorant vanilla pistachio(2).WEBP`, `assets/products/Body Care/Medicube deodorant vanilla pistachio(3).WEBP`
-- **MEDICUBE glow vanilla hair body mist** — MEDICUBE — Catégorie : Cheveux & corps — Préoccupations : Cheveux & corps — 3 image(s)
+- **MEDICUBE glow vanilla hair body mist** — MEDICUBE — Catégorie : Cheveux & corps — Préoccupations : Cheveux & corps — 2 image(s)
   - Fichiers : `assets/products/Body Care/Medicube glow vanilla hair body mist.WEBP`, `assets/products/Body Care/Medicube glow vanilla hair body mist(1).WEBP`
-- **KUNDAL caffeine scalp serum** — KUNDAL — Catégorie : Cheveux & corps — Préoccupations : Cheveux & corps — 3 image(s)
+- **KUNDAL caffeine scalp serum** — KUNDAL — Catégorie : Cheveux & corps — Préoccupations : Cheveux & corps — 2 image(s)
   - Fichiers : `assets/products/Hair Care/KUNDAL caffeine scalp serum.WEBP`, `assets/products/Hair Care/KUNDAL caffeine scalp serum(1).WEBP`
 - **MEDICUBE Lip Sleeping Mask** — MEDICUBE — Catégorie : Lèvres — Préoccupations : Lèvres — 4 image(s)
   - Fichiers : `assets/products/Lip Care/Medicube lip sleeping mask.WEBP`, `assets/products/Lip Care/Lip sleeping mask medicube.WEBP`, `assets/products/Lip Care/Lip sleeping mask.WEBP`
 - **AXIS-Y Sunday Morning Refreshing Cleansing Foam** — AXIS-Y — Catégorie : Soins de la peau — Préoccupations : Pores dilatés & excès de sébum — 3 image(s)
   - Fichiers : `assets/products/Skincare/AXIS Y Sunday morning cleansing foam.WEBP`, `assets/products/Skincare/AXIX Y unsay morning cleanser foam.WEBP`
-- **BIODANCE bio collagen real deep mask** — BIODANCE — Catégorie : Soins de la peau — Préoccupations : Peau sèche, Peau terne — 5 image(s) — ⚠ Plusieurs catégories
+- **BIODANCE bio collagen real deep mask** — BIODANCE — Catégorie : Soins de la peau — Préoccupations : Peau sèche, Peau terne — 4 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/BIODANCE bio collagen real deep mask.WEBP`, `assets/products/Skincare/BIODANCE bio collagen real deep mask(1).WEBP`, `assets/products/Skincare/BIODANCE bio collagen real deep mask(2).WEBP`, `assets/products/Skincare/BIODANCE bio collagen real deep mask(3).WEBP`
-- **BIODANCE rejuvenating caviar PDRN mask** — BIODANCE — Catégorie : Soins de la peau — Préoccupations : Peau sèche, Peau terne — 6 image(s) — ⚠ Plusieurs catégories
+- **BIODANCE rejuvenating caviar PDRN mask** — BIODANCE — Catégorie : Soins de la peau — Préoccupations : Peau sèche, Peau terne — 5 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/BIODANCE rejuvenating caviar PDRN mask.WEBP`, `assets/products/Skincare/BIODANCE rejuvenating caviar PDRN mask(1).WEBP`, `assets/products/Skincare/BIODANCE rejuvenating caviar PDRN mask(2).WEBP`, `assets/products/Skincare/BIODANCE rejuvenating caviar PDRN mask(3).WEBP`, `assets/products/Skincare/BIODANCE rejuvenating caviar PDRN mask(4).WEBP`
 - **Celimax The Vita A Retinal Shot Tightening Booster** — Celimax — Catégorie : Soins de la peau — Préoccupations : Rides & fermeté — 4 image(s)
   - Fichiers : `assets/products/Skincare/Celimax the vita A retinal shot tightening booster.PNG`, `assets/products/Skincare/Celimax retinal shot.WEBP`, `assets/products/Skincare/Celimax retinal shot(1).WEBP`
 - **COSRX Acne Pimple Master Patch** — COSRX — Catégorie : Soins de la peau — Préoccupations : Acné & imperfections — 5 image(s)
   - Fichiers : `assets/products/Skincare/COSRX Acne Pimple Master Patch (dup).JPG`, `assets/products/Skincare/COSRX Acne Pimple Master Patch.JPG`, `assets/products/Skincare/COSRX Acne Pimple Master Patch(1).JPG`, `assets/products/Skincare/COSRX pimple patch.WEBP`
-- **Dr. Althea 147 barrier cream** — Dr. Althea — Catégorie : Soins de la peau — Préoccupations : Barrière cutanée, Peau sèche — 3 image(s) — ⚠ Plusieurs catégories
+- **Dr. Althea 147 barrier cream** — Dr. Althea — Catégorie : Soins de la peau — Préoccupations : Barrière cutanée, Peau sèche — 2 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/Dr Althea 147 barrier cream.WEBP`, `assets/products/Skincare/Dr Althea 147 barrier cream(1).WEBP`
 - **Dr. Althea 345 relief cream** — Dr. Althea — Catégorie : Soins de la peau — Préoccupations : Barrière cutanée, Peau sèche — 4 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/Dr Althea 345 relief cream  .WEBP`, `assets/products/Skincare/Dr Althea 345 relief cream .WEBP`, `assets/products/Skincare/Dr Althea 345 relief cream (1).WEBP`, `assets/products/Skincare/Dr Althea 345 relief cream (2).WEBP`
@@ -42,11 +42,11 @@
   - Fichiers : `assets/products/Skincare/DR Althea 35 relief MIST.WEBP`, `assets/products/Skincare/DR Althea 35 relief MIST(1).WEBP`, `assets/products/Skincare/DR Althea 35 relief MIST WEBP.webp`, `assets/products/Skincare/DR Althea 35 relief MISTT.WEBP`
 - **DR. MELAXIN Peel Shot Exfoliating Black Rice Ampoule** — DR. MELAXIN — Catégorie : Soins de la peau — Préoccupations : Peau terne — 4 image(s)
   - Fichiers : `assets/products/Skincare/Dr MElaxin peel shot exfoliating black rice ampoule.PNG`, `assets/products/Skincare/DR melaxin black rice peel shot.WEBP`, `assets/products/Skincare/DR MELAXIN black rice peel shot(1).WEBP`
-- **MEDICUBE Kojic Acid Turmeric Vita Capsule Cream** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Taches & hyperpigmentation, Teint irrégulier, Barrière cutanée, Peau sèche — 4 image(s) — ⚠ Plusieurs catégories
+- **MEDICUBE Kojic Acid Turmeric Vita Capsule Cream** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Taches & hyperpigmentation, Teint irrégulier, Barrière cutanée, Peau sèche — 3 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/Medicube kojic acid CAPSULE cream.PNG`, `assets/products/Skincare/Medicube kojic acid CAPSULE CREAM.WEBP`, `assets/products/Skincare/Medicube kojic acid CAPSULE CREAM(1).WEBP`
 - **MEDICUBE Kojic Acid Turmeric Peel Shot, 80 ml** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Taches & hyperpigmentation, Teint irrégulier, Peau terne — 4 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/Medicube Kojic acid turmeric peel shot 80ML .PNG`, `assets/products/Skincare/Medicube Kojic acid turmeric peel shot 80ML (1).PNG`, `assets/products/Skincare/Medicube kojic acid peel shot 80ML.WEBP`, `assets/products/Skincare/Medicube kojic acid peel shot 80ML(1).WEBP`
-- **MEDICUBE PDRN collagen jelly eye mask** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Contour des yeux, Peau sèche, Peau terne — 5 image(s) — ⚠ Plusieurs catégories
+- **MEDICUBE PDRN collagen jelly eye mask** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Contour des yeux, Peau sèche, Peau terne — 4 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/Medicube PDRN collagen jelly eye mask.WEBP`, `assets/products/Skincare/Medicube PDRN collagen jelly eye mask(1).WEBP`, `assets/products/Skincare/Medicube PDRN collagen jelly eye mask(2).WEBP`, `assets/products/Skincare/Medicube PDRN collagen jelly eye mask(3).WEBP`
 - **MEDICUBE PDRN Pink Collagen Gel Mask** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Peau sèche, Peau terne — 4 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/Medicube PDRN gel mask.WEBP`, `assets/products/Skincare/Medicube PDRN gel mask(1).WEBP`, `assets/products/Skincare/Medicube PDRN gel mask(2).WEBP`, `assets/products/Skincare/MEDICUBE PDRN Pink Collagen Gel Mask.PNG`
@@ -54,9 +54,9 @@
   - Fichiers : `assets/products/Skincare/Medicube PDRN pink capsule cream.WEBP`, `assets/products/Skincare/Medicube PDRN pink capsule cream(1).WEBP`, `assets/products/Skincare/MEDICUBE pink PDRN capsule cream.PNG`
 - **MEDICUBE TXA SERUM** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Taches & hyperpigmentation, Teint irrégulier — 1 image(s) — ⚠ Plusieurs catégories
   - Fichiers : `assets/products/Skincare/MEDICUBE TXA SERUM .WEBP`, `assets/products/Skincare/Medicube TXA serum.WEBP`
-- **Beauty of Joseon mate sun stick** — Beauty of Joseon — Catégorie : Soins de la peau — Préoccupations : Protection solaire — 3 image(s)
+- **Beauty of Joseon mate sun stick** — Beauty of Joseon — Catégorie : Soins de la peau — Préoccupations : Protection solaire — 2 image(s)
   - Fichiers : `assets/products/Sun Care/Beauty of joseon mate sun stick .WEBP`, `assets/products/Sun Care/Beauty of joseon mate sun stick.WEBP`
-- **MEDICUBE Collagen Glow Sunscreen, SPF 50, 50 ml** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Protection solaire — 4 image(s)
+- **MEDICUBE Collagen Glow Sunscreen, SPF 50, 50 ml** — MEDICUBE — Catégorie : Soins de la peau — Préoccupations : Protection solaire — 3 image(s)
   - Fichiers : `assets/products/Sun Care/Medicube Glow Sunscreen.PNG`, `assets/products/Sun Care/Medicube glow sunscreen.WEBP`, `assets/products/Sun Care/Medicube glow sunscreen(1).WEBP`
 
 ## Price and currency audit
