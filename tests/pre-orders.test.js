@@ -11,12 +11,14 @@ test('pre-order emails the complete request with the product screenshot attached
   const previous = {
     mongoUri: process.env.MONGODB_URI, key: process.env.RESEND_API_KEY,
     from: process.env.RESEND_FROM_EMAIL, recipient: process.env.PREORDER_EMAIL,
+    support: process.env.SUPPORT_EMAIL,
     fetch: globalThis.fetch,
   };
   process.env.MONGODB_URI = 'mongodb://test.invalid/glowafrique';
   process.env.RESEND_API_KEY = 'test-key';
   process.env.RESEND_FROM_EMAIL = 'GlowAfrique <shop@example.com>';
-  process.env.PREORDER_EMAIL = 'owner@example.com';
+  delete process.env.PREORDER_EMAIL;
+  delete process.env.SUPPORT_EMAIL;
   const saved = [];
   const counters = new Map();
   const db = { collection(name) {
@@ -42,7 +44,7 @@ test('pre-order emails the complete request with the product screenshot attached
       body: { product: 'BIODANCE mask', name: 'Test Customer', email: 'customer@example.com', phone: '+2250700000000', image: { mimeType: 'image/jpeg', name: 'product.jpg', data: screenshot.toString('base64') } },
     }, res);
     assert.equal(res.statusCode, 201);
-    assert.equal(emailPayload.to, 'owner@example.com');
+    assert.equal(emailPayload.to, 'glowafrique.ci@gmail.com');
     assert.match(emailPayload.text, /BIODANCE mask/);
     assert.match(emailPayload.text, /Test Customer/);
     assert.match(emailPayload.text, /customer@example.com/);
@@ -50,7 +52,7 @@ test('pre-order emails the complete request with the product screenshot attached
     assert.equal(emailPayload.attachments[0].content, screenshot.toString('base64'));
     assert.equal(saved[0].notificationSent, true);
   } finally {
-    for (const [key, value] of [['MONGODB_URI', previous.mongoUri], ['RESEND_API_KEY', previous.key], ['RESEND_FROM_EMAIL', previous.from], ['PREORDER_EMAIL', previous.recipient]]) {
+    for (const [key, value] of [['MONGODB_URI', previous.mongoUri], ['RESEND_API_KEY', previous.key], ['RESEND_FROM_EMAIL', previous.from], ['PREORDER_EMAIL', previous.recipient], ['SUPPORT_EMAIL', previous.support]]) {
       if (value === undefined) delete process.env[key]; else process.env[key] = value;
     }
     if (previous.fetch) globalThis.fetch = previous.fetch;
