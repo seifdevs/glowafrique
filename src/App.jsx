@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { PRODUCTS } from '../data/catalog.js';
+import LEGACY_REVIEWS from '../data/legacy-reviews.json';
 import STORE_INFO from '../content/store-info.json';
 import { formatXof, toXof } from '../lib/currency.js';
 import { DELIVERY_ZONES } from '../lib/shipping-rates.js';
@@ -24,6 +25,7 @@ const SOLD_PER_SHEET_PRODUCT_IDS = new Set([
   'medicube-pdrn-collagen-jelly-eye-mask',
   'medicube-pdrn-gel-mask',
 ]);
+const EMPTY_REVIEWS = [];
 const COPY = {
   en: {
     home: 'Home',
@@ -40,6 +42,8 @@ const COPY = {
     view: 'View All',
     add: 'Add To Bag',
     all: 'All Products',
+    selectProduct: 'Jump To Product',
+    chooseProduct: 'Choose a product',
     search: 'Search Products',
     newsletter: 'Sign Up For New Stories And Personal Offers',
     email: 'Email Address',
@@ -97,7 +101,7 @@ const COPY = {
       'These store policies explain how GlowAfrique handles orders and customer information. Please contact us if you have questions before ordering.',
     published:
       'Product details are shown as provided in the product catalogue. Please check the manufacturer packaging for the latest directions and ingredients.',
-    review: 'Write A Review',
+    review: 'Reviews',
     rating: 'Rating',
     reviewText: 'Your Review',
     signInReview: 'Sign in to review this product. One review per product earns 20 Glow Points.',
@@ -132,6 +136,8 @@ const COPY = {
     view: 'Tout Voir',
     add: 'Ajouter Au Panier',
     all: 'Tous Les Produits',
+    selectProduct: 'Aller Au Produit',
+    chooseProduct: 'Choisir Un Produit',
     search: 'Rechercher Des Produits',
     newsletter: 'Recevez Nos Nouveautés Et Offres',
     email: 'Adresse E-mail',
@@ -190,7 +196,7 @@ const COPY = {
       'Ces politiques expliquent le traitement des commandes et des informations des clients. Contactez-nous si vous avez une question avant de commander.',
     published:
       'Les détails du produit sont ceux du catalogue. Consultez l’emballage du fabricant pour les consignes et ingrédients à jour.',
-    review: 'Écrire Un Avis',
+    review: 'Avis',
     rating: 'Note',
     reviewText: 'Votre Avis',
     signInReview:
@@ -264,6 +270,10 @@ function NavIcon({ name }) {
 
 function ProductCard({ product }) {
   const { locale } = useStore();
+  const legacyReviews = LEGACY_REVIEWS[product.id] || EMPTY_REVIEWS;
+  const reviewAverage = legacyReviews.length
+    ? legacyReviews.reduce((total, review) => total + review.rating, 0) / legacyReviews.length
+    : product.rating;
   return (
     <article className="product-card">
       <PageLink
@@ -280,9 +290,9 @@ function ProductCard({ product }) {
         </PageLink>
         <p
           className="rating"
-          aria-label={product.rating ? `${product.rating} out of 5` : undefined}
+          aria-label={reviewAverage ? `${reviewAverage.toFixed(1)} out of 5, ${legacyReviews.length} reviews` : undefined}
         >
-          {product.rating ? `★ ${Number(product.rating).toFixed(1)}` : ''}
+          {reviewAverage ? `★ ${reviewAverage.toFixed(1)}${legacyReviews.length ? ` · ${legacyReviews.length}` : ''}` : ''}
         </p>
         <p className="price">
           {!productHasVerifiedPrice(product)
@@ -641,6 +651,7 @@ function HomePage() {
 
 function ProductsPage() {
   const { locale } = useStore();
+  const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [brand, setBrand] = useState('');
   const [concern, setConcern] = useState('');
@@ -724,6 +735,21 @@ function ProductsPage() {
               {text(locale, 'filter')}{activeFilters ? ` · ${activeFilters}` : ''}
             </button>
             <span className="catalog-result-count">{results.length} {text(locale, 'filterResults')}</span>
+            <label className="catalog-sort-label catalog-product-picker">
+              {text(locale, 'selectProduct')}
+              <select
+                value=""
+                onChange={(event) => {
+                  const selectedProduct = PRODUCTS.find((product) => product.id === event.target.value);
+                  if (selectedProduct) navigate(localePath(productPath(selectedProduct), locale));
+                }}
+              >
+                <option value="">{text(locale, 'chooseProduct')}</option>
+                {[...PRODUCTS]
+                  .sort((a, b) => a.name.localeCompare(b.name, locale, { sensitivity: 'base' }))
+                  .map((product) => <option key={product.id} value={product.id}>{product.name}</option>)}
+              </select>
+            </label>
             <label className="catalog-sort-label">
             {text(locale, 'sort')}
             <select value={sort} onChange={(e) => setSort(e.target.value)}>
@@ -787,17 +813,20 @@ function CollectionPage({ path, search }) {
 function ProductPage({ id }) {
   const { locale, user, setUser } = useStore();
   const product = PRODUCTS.find((p) => p.id === id);
+  const legacyReviews = product ? LEGACY_REVIEWS[product.id] || EMPTY_REVIEWS : EMPTY_REVIEWS;
   const [reviews, setReviews] = useState([]);
   const [feedback, setFeedback] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   useEffect(() => {
     if (!product) return;
+    setReviews(legacyReviews);
+    if (import.meta.env.DEV) return;
     fetch(`/api/reviews?productId=${encodeURIComponent(product.id)}`)
       .then((r) => (r.ok ? r.json() : null))
-      .then((data) => setReviews(data?.reviews || []))
+      .then((data) => setReviews([...(data?.reviews || []), ...legacyReviews]))
       .catch(() => {});
-  }, [product]);
+  }, [product, legacyReviews]);
   if (!product)
     return (
       <section className="page-intro">
@@ -808,6 +837,19 @@ function ProductPage({ id }) {
   const similar = PRODUCTS.filter(
     (p) => p.id !== product.id && (p.brand === product.brand || p.category === product.category),
   ).slice(0, 4);
+  const reviewsForSummary = reviews.length ? reviews : legacyReviews;
+  const visibleReviews = reviewsForSummary.slice(0, 3);
+  const additionalReviews = reviewsForSummary.slice(3);
+  const reviewAverage = reviewsForSummary.length
+    ? reviewsForSummary.reduce((total, review) => total + review.rating, 0) / reviewsForSummary.length
+    : 0;
+  const renderReview = (review, i) => (
+    <article className="review-card" key={`${review.createdAt}-${i}`}>
+      <b>{review.name}{review.source === 'legacy' ? (locale === 'en' ? ' · Archived' : ' · Archivé') : ''}</b>
+      <p aria-label={`${review.rating} out of 5`}>{'★'.repeat(review.rating)}</p>
+      <p>{review.text}</p>
+    </article>
+  );
   const productContent = product.content?.[locale] || null;
   async function submitReview(event) {
     event.preventDefault();
@@ -919,13 +961,26 @@ function ProductPage({ id }) {
       </section>
       <section className="section">
         <h2>{text(locale, 'review')}</h2>
-        {reviews.map((review, i) => (
-          <article className="review-card" key={`${review.createdAt}-${i}`}>
-            <b>{review.name}</b>
-            <p aria-label={`${review.rating} out of 5`}>{'★'.repeat(review.rating)}</p>
-            <p>{review.text}</p>
-          </article>
-        ))}
+        {legacyReviews.length ? (
+          <p className="muted">{locale === 'en' ? 'Archived reviews from the previous website.' : 'Avis archivés de l’ancien site.'}</p>
+        ) : null}
+        <p className="rating-summary">
+          {reviewsForSummary.length
+            ? `★ ${reviewAverage.toFixed(1)} · ${reviewsForSummary.length} ${locale === 'en' ? 'reviews' : 'avis'}`
+            : locale === 'en' ? 'No reviews yet' : 'Aucun avis'}
+        </p>
+        {visibleReviews.map(renderReview)}
+        {additionalReviews.length ? (
+          <details className="review-dropdown">
+            <summary>
+              <span>{locale === 'en' ? 'Show more reviews' : 'Voir plus d’avis'}</span>
+              <span className="review-dropdown-summary">{additionalReviews.length}</span>
+            </summary>
+            <div className="review-dropdown-content">
+              {additionalReviews.map(renderReview)}
+            </div>
+          </details>
+        ) : null}
         {user ? (
           <form className="form-card" onSubmit={submitReview}>
             <label>

@@ -481,6 +481,18 @@ html,body,#root{max-width:100%;overflow-x:clip}
 .catalog-result-count{margin-right:auto;color:#806a62;font-size:13px}
 .catalog-sort-label{display:flex;align-items:center;gap:10px;font-size:13px;white-space:nowrap}
 .catalog-sort-label select{width:auto;min-width:145px}
+.catalog-product-picker select{min-width:190px}
+.rating-summary{margin:0 0 16px;color:#704635;font-weight:600}
+.review-card{margin:12px 0;padding:14px 16px;border:1px solid #efdfd3;border-radius:13px;background:linear-gradient(145deg,#fffdf9,#fff8f2)}
+.review-card>b{font-weight:600}
+.review-card>p{margin:5px 0 0}
+.review-dropdown{border:1px solid #ead9cb;border-radius:15px;background:linear-gradient(145deg,#fffdfa,#fff6ef);box-shadow:0 7px 20px #3a211c0c;overflow:hidden}
+.review-dropdown>summary{display:flex;align-items:center;gap:12px;min-height:56px;padding:13px 17px;cursor:pointer;list-style:none;font-weight:600}
+.review-dropdown>summary::-webkit-details-marker{display:none}
+.review-dropdown>summary::after{content:'＋';display:grid;place-items:center;width:26px;height:26px;flex:0 0 26px;margin-left:0;border-radius:50%;background:linear-gradient(135deg,#fff0e4,#f8d8cc);color:#844336;font-size:15px}
+.review-dropdown[open]>summary::after{content:'−'}
+.review-dropdown-summary{margin-left:auto;color:#704635;font-size:14px;font-weight:500}
+.review-dropdown-content{padding:0 17px 17px}
 .clear-filters:disabled{opacity:.45;cursor:default}
 .filter-scrim{display:none}
 .account-shell{width:min(620px,calc(100% - 40px));padding:clamp(24px,4vw,42px);background:linear-gradient(145deg,#fffdf9,#fff7f0 66%,#f9eae2);border:1px solid #edddd1;border-radius:22px;box-shadow:0 18px 48px #3a211c12;text-align:left}
@@ -606,6 +618,8 @@ html,body,#root{max-width:100%;overflow-x:clip}
   .catalog-result-count{font-size:11px}
   .catalog-sort-label{gap:5px;font-size:11px}
   .catalog-sort-label select{min-width:104px;min-height:39px;padding:7px 8px;font-size:12px}
+  .catalog-product-picker{flex:0 0 100%;display:grid;grid-template-columns:auto minmax(0,1fr);width:100%;}
+  .catalog-product-picker select{width:100%;min-width:0;min-height:39px;padding:7px 8px;font-size:12px}
   .catalog-results .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
   .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .product-grid{padding:0 14px 45px;gap:11px}
