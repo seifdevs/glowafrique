@@ -27,7 +27,7 @@ export default async function preOrders(req, res) {
       : mimeType === 'image/webp'
         ? imageBytes.length >= 12 && imageBytes.toString('ascii', 0, 4) === 'RIFF' && imageBytes.toString('ascii', 8, 12) === 'WEBP'
         : false;
-  const recipient = process.env.PREORDER_EMAIL || process.env.SUPPORT_EMAIL;
+  const recipient = process.env.PREORDER_EMAIL || process.env.SUPPORT_EMAIL || 'glowafrique.ci@gmail.com';
   if (product.length < 2 || product.length > 180 || name.length < 2 || name.length > 120 ||
       !validEmail(email) || !/^[+\d() .-]{8,32}$/.test(phone) || !TYPES.has(mimeType) ||
       !/^[A-Za-z0-9+/]+={0,2}$/.test(data) || imageBytes.toString('base64') !== data || !isImage || imageBytes.length > MAX_IMAGE_BYTES) {
