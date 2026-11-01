@@ -677,20 +677,20 @@ button:disabled,.button:disabled{box-shadow:0 3px 9px #3a211c12!important}
 @media(max-width:700px){.benefit-bar{margin-bottom:32px}}
 
 /* Seamless, swipeable infinite homepage carousels for concerns and brands. */
-.infinite-carousel{display:block;width:100%;max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;padding:10px 2px 18px;overscroll-behavior-x:contain;scrollbar-width:none;scroll-behavior:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+.infinite-carousel{display:block;width:100%;max-width:min(100%,1600px);min-width:0;margin-inline:auto;overflow-x:auto;overflow-y:hidden;padding:10px 2px 18px;overscroll-behavior-x:contain;scrollbar-width:none;scroll-behavior:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
 .infinite-carousel::-webkit-scrollbar{display:none}
 .infinite-carousel:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
 .infinite-carousel-track{display:flex;width:max-content;min-width:100%;will-change:scroll-position}
-.infinite-carousel-group{display:flex;flex:0 0 auto;align-items:stretch;gap:clamp(12px,1.5vw,20px);padding-right:clamp(12px,1.5vw,20px)}
+.infinite-carousel-group{display:flex;flex:0 0 auto;align-items:stretch;gap:clamp(20px,2vw,30px);padding-inline:clamp(20px,2vw,30px);box-sizing:border-box}
 .infinite-carousel-group[aria-hidden="true"]{pointer-events:none;user-select:none}
-.infinite-carousel .concern-tile{flex:0 0 clamp(175px,20vw,250px);min-width:0;min-height:190px;gap:12px;scroll-snap-align:start}
+.infinite-carousel .concern-tile{display:flex;flex:0 0 clamp(190px,18vw,260px);align-items:center;justify-content:center;box-sizing:border-box;min-width:0;min-height:190px;padding:20px;text-align:center;gap:12px;scroll-snap-align:start}
 .infinite-carousel .concern-icon{flex:0 0 54px;width:54px;height:54px;display:grid;place-items:center;border:1px solid #f0e0d5;border-radius:50%;background:linear-gradient(145deg,#fff,#fff5ed);color:#bd6849;box-shadow:0 8px 20px #3a211c10}
 .infinite-carousel .concern-icon svg{display:block;width:26px;height:26px;animation:none}
 .infinite-carousel .brand-tile{flex:0 0 clamp(122px,13vw,172px);min-width:0;min-height:76px;padding:10px;scroll-snap-align:start}
 .infinite-carousel .brand-tile{animation:none}
 .infinite-carousel .brand-logo{max-width:calc(100% - 16px);max-height:38px}
 .infinite-carousel .brand-wordmark-text{font-size:clamp(13px,1vw,16px)}
-@media(max-width:700px){.infinite-carousel{padding:8px 1px 16px;mask-image:linear-gradient(90deg,transparent,#000 2%,#000 98%,transparent)}.infinite-carousel .concern-tile{flex-basis:clamp(150px,61vw,220px);min-height:178px}.infinite-carousel .brand-tile{flex-basis:clamp(130px,42vw,170px);min-height:78px}}
+@media(max-width:700px){.infinite-carousel{padding:8px 1px 16px;mask-image:linear-gradient(90deg,transparent,#000 2%,#000 98%,transparent)}.infinite-carousel .concern-tile{flex-basis:clamp(150px,61vw,220px);min-height:178px;padding:16px}.infinite-carousel .brand-tile{flex-basis:clamp(130px,42vw,170px);min-height:78px}}
 @media(prefers-reduced-motion:reduce){.infinite-carousel-group[aria-hidden="true"]{display:none}}
 
 /* Signed-in account dashboard */

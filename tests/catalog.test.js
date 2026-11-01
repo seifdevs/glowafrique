@@ -11,7 +11,7 @@ test('supplied XOF retail prices are verified and duplicate listings are consoli
   assert.equal(PRODUCTS.length, 23);
   const suppliedPrices = {
     'beauty-of-joseon-mate-sun-stick': 13000,
-    'biodance-rejuvenating-caviar-pdrn-mask': 18000,
+    'biodance-rejuvenating-caviar-pdrn-mask': 6000,
     'celimax-the-vita-a-retinal-shot-tightening-booster': 14000,
     'cosrx-acne-pimple-master-patch': 3500,
     'dr-melaxin-peel-shot-exfoliating-black-rice-ampoule': 18000,
@@ -27,7 +27,7 @@ test('supplied XOF retail prices are verified and duplicate listings are consoli
     'medicube-glow-sunscreen': 13000,
     'medicube-pdrn-pink-capsule-cream': 16000,
     'medicube-lip-sleeping-mask': 12000,
-    'medicube-pdrn-collagen-jelly-eye-mask': 17500,
+    'medicube-pdrn-collagen-jelly-eye-mask': 1500,
     'medicube-txa-serum': 15500,
     'medicube-pdrn-gel-mask': 6000,
   };

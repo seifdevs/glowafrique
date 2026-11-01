@@ -363,7 +363,7 @@ function ProductGrid({ products }) {
 }
 
 function Carousel({ items, label, renderItem, variant = 'concern' }) {
-  const duration = `${Math.max(32, items.length * (variant === 'brand' ? 5.5 : 4.5))}s`;
+  const duration = `${Math.max(48, items.length * (variant === 'brand' ? 9 : 7))}s`;
   const viewportRef = useRef(null);
   const groupRef = useRef(null);
   const [copyCount, setCopyCount] = useState(3);
